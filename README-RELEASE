@@ -17,6 +17,7 @@ Release procedure:
   * Clean everything
     -> mvn -Dtycho.mode=maven clean
   * change the version (note: it will change the osgi version AND the pom versions)
+    -> mvn -Dtycho.mode=maven versions:set -DnewVersion=2.1.0-SNAPSHOT (needed for the next command to succeed updating osgi versions)
     -> mvn -Dtycho.mode=maven org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=2.2.0-SNAPSHOT
   * commit
     -> hg commit -m "increment to 2.2.0 development version"
