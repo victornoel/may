@@ -1,0 +1,29 @@
+Release procedure:
+
+ * Prepare for release:
+  * Clean everything
+    -> mvn -Dtycho.mode=maven clean
+  * change the version to a fixed one (for example, if we were to 2.1.0-SNAPSHOT, go to 2.1.0) (note: it won't change the osgi versions, on purpose to keep the qualifier)
+    -> mvn -Dtycho.mode=maven versions:set -DnewVersion=2.1.0
+  * commit and tag the release
+    -> hg commit -m "prepare for 2.1.0 release"
+    -> hg tag v2.1.0
+
+ * Do the release
+  * Compile, install in the local repository and deploy (the install is needed for the deploy to work after because of a bug in tycho repository which clean when deploy is called)
+    -> mvn install deploy
+    
+ * Increment for development
+  * Clean everything
+    -> mvn -Dtycho.mode=maven clean
+  * change the version (note: it will change the osgi version AND the pom versions)
+    -> mvn -Dtycho.mode=maven org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=2.2.0-SNAPSHOT
+  * commit
+    -> hg commit -m "increment to 2.2.0 development version"
+
+ * Develop!
+
+
+Notes:
+ * -Dtycho.mode=maven prevents tycho from resolving the p2 repositories when not needed (clean, set-version...)
+

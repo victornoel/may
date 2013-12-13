@@ -1,0 +1,41 @@
+﻿- auto-import lors la completion d'un type de composant
+ - pour le moment ça complète, mais ça met pas en import auto comme avec les types java
+ - voir : http://www.eclipse.org/forums/index.php/m/1072900/ 
+ - the best would be to delegate the acceptor as it is done in JdtTypesProposalProvider when it is extended by ImportingTypesProposalProvider
+   so that FQNImporter is used as the TextApplier
+
+- complétion pour les paramètres de types
+ - voir http://www.eclipse.org/forums/index.php/t/490232/ et https://bugs.eclipse.org/bugs/show_bug.cgi?id=413567 et https://bugs.eclipse.org/bugs/show_bug.cgi?id=413582
+ - marche un peu mieux en fait
+  - Pour le moment QualifiedNameProvider évite que les paramètres de types n'apparaissent
+    -> si on les laisse apparaitre ils sont mis dans le global scope lors de la completion, c'est plus ennuyant que de ne pas les voir !
+
+- Gèrer le problème de la completion du binding sur un provide (après le =)
+ - voir http://www.eclipse.org/forums/index.php/m/1016202 et http://www.eclipse.org/forums/index.php/m/1016189
+ - pour le moment les erreurs qui suivent quand on a pas fini d'écrire après le = font que les autres part ne sont pas visibles...
+ - ajouter un ; après le binding après le = réglerait le pb, mais c'est moche...
+
+- auto activer la completion une fois le point mis : http://christiandietrich.wordpress.com/2011/09/19/xtext-content-assist-auto-activation/
+  -> marche pas si le point n'est pas tappé au clavier
+ - voir aussi peut-être : DefaultAutoEditStrategyProvider et AutoEditStrategyProvider de xtend
+
+- le type checking avec des sous-type et des contraintes du genre MonComp[A extends Collection[B]] ne marchent pas
+ - ça ne marche pas non plus dans xtend…
+ - voir https://bugs.eclipse.org/bugs/show_bug.cgi?id=413610
+
+- ajouter une génération de stub pour les implem? à voir !!
+ - voir http://www.eclipse.org/forums/index.php/t/494268/
+
+- add multiple mode for outline (with and without inherited ports for e.g.)
+
+- add cycle checking for specializes...
+- add conflict with class name of specialise and type parameter name
+
+- disable the behaviour of F3 in eclipse that redirect to the speadl: see http://www.eclipse.org/forums/index.php/m/1205133 but careful not to disable it for references IN speadl, or maybe the best is to disable it for eveything but the type itself?! that would make sense...
+
+- warning port fournis non utilisés
+- groupes de ports (surtout pour type param et forward ou DirRef par exemple…)
+- introduire type de composant : eco est un type (ou pas!!), un type peut être déclaré seul
+- subtype au lieu de specialises, que pour type!
+- possibilité de spécifier implem dans speadl
+ - quid des paramètres des constructeurs ?

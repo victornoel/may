@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/fr.irit.smac.may.speadl.feature_0.0.0.jar" id="fr.irit.smac.may.speadl.feature" version="0.0.0">
+      <category name="may"/>
+   </feature>
+   <category-def name="may" label="Make Agents Yourself"/>
+</site>

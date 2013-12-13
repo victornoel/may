@@ -1,0 +1,118 @@
+grammar fr.irit.smac.may.speadl.SpeADL with org.eclipse.xtext.xbase.Xbase
+
+generate speadl "http://www.irit.fr/smac/may/speadl/SpeADL"
+
+import 'http://www.eclipse.org/xtext/xbase/Xbase'
+import 'http://www.eclipse.org/xtext/xbase/Xtype'
+import 'http://www.eclipse.org/xtext/common/JavaVMTypes'
+
+Model:
+	imports=XImportSection?
+	elements+=Namespace*;
+
+Namespace:
+	'namespace' name=QualifiedName '{'
+		(elements+=ModelElement)*
+	'}';
+
+ModelElement:
+	Namespace | Element;
+
+
+Element:
+	Ecosystem | Component;
+
+AbstractComponent:
+	Ecosystem | Species;
+FakeAbstractComponent returns AbstractComponent:
+	name=ValidID parameters+=Feature typeParameters+=JvmTypeParameter specializes=JvmParameterizedTypeReference provides+=ProvidedPort requires+=RequiredPort parts+=Part species+=Species;
+
+Port:
+	ProvidedPort | RequiredPort;
+FakeAbstractPort returns Port:
+	typeReference=JvmParameterizedTypeReference;
+
+// Used to check for name duplicate!
+ContentElement:
+	Port | Part;
+FakeContentElement returns ContentElement:
+	name=ValidID;
+
+Part:
+	ComponentPart | SpeciesPart;
+FakePart returns Part:
+	bindings+=Binding; // TODO maybe we could add elementReference=ParameterizedReferenceElement
+
+
+Feature:
+	name=ValidID ":" parameterType=JvmTypeReference;
+
+Ecosystem:
+	"ecosystem" name=ValidID
+	("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
+	("specializes" specializes=JvmParameterizedTypeReference)?
+	"{"
+		(	provides+=ProvidedPort
+		|	requires+=RequiredPort
+		|	parts+=ComponentPart
+		|	species+=Species
+		)*
+	"}";
+
+Component returns Ecosystem:
+	"component" name=ValidID
+	("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
+	("specializes" specializes=JvmParameterizedTypeReference)?
+	"{"
+		(	provides+=ProvidedPort
+		|	requires+=RequiredPort
+		|	parts+=ComponentPart
+		)*
+	"}";
+
+Species:
+	"species" name=ValidID
+	("(" (parameters+=Feature ("," parameters+=Feature)*)? ")")?
+	"{"
+		(	provides+=ProvidedPort
+		|	requires+=RequiredPort
+		|	parts+=Part
+		)*
+	"}";
+
+ProvidedPort:
+	"provides" name=ValidID ":" typeReference=JvmParameterizedTypeReference ("=" bound=PortRef)?;
+
+RequiredPort:
+	"requires" name=ValidID ":" typeReference=JvmParameterizedTypeReference;
+
+ComponentPart:
+	("part") name=ValidID ":" componentReference=JvmParameterizedTypeReference ("{"
+		(bindings+=Binding)*
+ 	"}")?;
+ 
+
+SpeciesPart:
+	("use") name=ValidID ":" speciesReference=SpeciesReference ("{"
+		(bindings+=Binding)*
+ 	"}")?;
+
+
+Binding:
+	"bind" from=[RequiredPort] "to" to=PortRef;
+
+// TODO le point gene a chaque fois pour la completion !!
+PortRef :
+	(part=[Part|ValidID] ".")? port=[Port|ValidID];
+
+
+SpeciesReference:
+	part=[ComponentPart|ValidID] "." species=[Species|ValidID] ("(" (arguments+=[Feature|ValidID] ("," arguments+=[Feature|ValidID])*)? ")")? ;
+
+// override JvmTypeReference definition
+JvmTypeReference:
+	JvmParameterizedTypeReference;
+
+// override JvmParameterizedTypeReference definition
+JvmParameterizedTypeReference:
+	type=[JvmType|QualifiedName] (=>'[' arguments+=JvmArgumentTypeReference (',' arguments+=JvmArgumentTypeReference)* ']')?;
