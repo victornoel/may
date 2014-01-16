@@ -14,6 +14,7 @@ import fr.irit.smac.may.speadl.speadl.RequiredPort
 import fr.irit.smac.may.speadl.speadl.Species
 import fr.irit.smac.may.speadl.speadl.SpeciesPart
 import java.util.List
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmGenericType
@@ -22,6 +23,9 @@ import org.eclipse.xtext.common.types.JvmType
 import org.eclipse.xtext.common.types.JvmTypeParameter
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.util.TypeReferences
+import org.eclipse.xtext.diagnostics.Severity
+import org.eclipse.xtext.validation.Issue
+import org.eclipse.xtext.xbase.compiler.IElementIssueProvider
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations
 import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner
 import org.eclipse.xtext.xbase.typesystem.references.LightweightMergedBoundTypeArgument
@@ -32,12 +36,14 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.typesystem.util.ConstraintAwareTypeArgumentCollector
 import org.eclipse.xtext.xbase.typesystem.util.StandardTypeParameterSubstitutor
 import org.eclipse.xtext.xbase.typesystem.util.VarianceInfo
+import java.util.Set
 
 class SpeADLUtils {
 	
 	@Inject extension IJvmModelAssociations
 	@Inject extension TypeReferences
 	
+	@Inject IElementIssueProvider.Factory issueProviderFactory
 	@Inject CommonTypeComputationServices services
 	
 	def parentEcosystem(Species s) {
@@ -121,6 +127,29 @@ class SpeADLUtils {
 		type.createTypeRef(typeParameters.map[createTypeRef]) as JvmParameterizedTypeReference
 	}
 	
+	def getTypeRef(JvmType type) {
+		if (type == null) return null
+		type.createTypeRef as JvmParameterizedTypeReference
+	}
+	
+	def hasCycleInHierarchy(Ecosystem ecosystem) {
+		ecosystem.hasCycleInHierarchy(newHashSet)
+	}
+	
+	// inspired from XtendJavaValidator
+	def boolean hasCycleInHierarchy(Ecosystem ecosystem, Set<Ecosystem> processedSuperTypes) {
+		if (processedSuperTypes.contains(ecosystem)) {
+			return true
+		}
+		processedSuperTypes.add(ecosystem)
+		val superType = ecosystem.specializes?.type?.associatedEcosystem
+		if (superType != null && superType.hasCycleInHierarchy(processedSuperTypes)) {
+			return true
+		}
+		processedSuperTypes.remove(ecosystem)
+		return false
+	}
+	
 	/*
 	 * these give the requires and the provides
 	 * the most specialized for a component and its hierarchy
@@ -129,12 +158,14 @@ class SpeADLUtils {
 	
 	// TODO we should clarify what are the rules for specializing!
 	def Iterable<RequiredPort> getAllRequires(AbstractComponent i) {
-		switch (i) {
-			Ecosystem case (i.specializes != null): {
-				i.requires + i.specializes.type.associatedEcosystem.allRequires.filter[ar|!i.requires.exists[r|r.name == ar.name]]
-			}
-			case i != null: {
-				i.requires
+		i.requires + switch i {
+			Ecosystem: {
+				val eco = i.specializes?.type?.associatedEcosystem
+				if (eco != null && !eco.hasCycleInHierarchy) {
+					eco.allRequires.filter[ar|!i.requires.exists[r|r.name == ar.name]]
+				} else {
+					#[]
+				}
 			}
 			default: {
 				#[]
@@ -143,14 +174,14 @@ class SpeADLUtils {
 	}
 	
 	def Iterable<ProvidedPort> getAllProvides(AbstractComponent i) {
-		switch (i) {
-			Ecosystem case i.specializes != null: {
-				i.provides + i.specializes.type.associatedEcosystem.allProvides.filter[ar|
-					!i.provides.exists[r|r.name == ar.name]
-				]
-			}
-			case i != null: {
-				i.provides
+		i.provides + switch i {
+			Ecosystem: {
+				val eco = i.specializes?.type?.associatedEcosystem
+				if (eco != null && !eco.hasCycleInHierarchy) {
+					eco.allProvides.filter[ar|!i.provides.exists[r|r.name == ar.name]]
+				} else {
+					#[]
+				}
 			}
 			default: {
 				#[]
@@ -221,71 +252,19 @@ class SpeADLUtils {
 		new StandardTypeParameterSubstitutor(mapping, containerTypeRef.owner).substitute(tr)
 	}
 	
-	/*
-	def resolveType(Port port, JvmTypeReference typeRef) {
-
-		val portTypeRef = port.typeReference.toLightweightTypeReference(port.eResource)
-		val partTypeRef = typeRef.toLightweightTypeReference(port.eResource)
-		
-		val mapping = new ConstraintAwareTypeArgumentCollector(partTypeRef.owner).getTypeParameterMapping(partTypeRef)
-		// TODO handle specializes
-		new StandardTypeParameterSubstitutor(mapping, partTypeRef.owner).substitute(portTypeRef)
-	}
-	* 
-	*/
-	
-	
-	
-	
-	/*
-	
-	private def LightweightTypeReference getRealType(Feature param, Part from) {
-		param.parameterType.getRealType(from.toPartType)
-	}
-	
-	private def LightweightTypeReference getRealType(Port port, Part from) {
-		val provider = switch from {
-			ComponentPart: from.componentReference.type.associatedEcosystem
-			SpeciesPart: from.speciesReference.species
+	def boolean modelElementHasError(EObject e, boolean ignoreContent, (Issue) => Boolean ignore, boolean ignoreContentOfIgnored) {
+		val issueProvider = issueProviderFactory.get(e.eResource)
+		var ignored = false
+		for(i: issueProvider.getIssues(e)) {
+			ignored = ignore.apply(i)
+			if (i.severity == Severity.ERROR && !ignored) return true
 		}
-		
-		if (provider.provides.contains(port)) {
-			port.typeReference.getRealType(from.toPartType)
-		} else if(provider.specializes != null) {
-			
-		} else {
-			throw new RuntimeException()
+		if (!ignoreContent && !(ignoreContentOfIgnored && ignored)) {
+			for(oe: e.eContents) {
+				if (oe.modelElementHasError(ignoreContent, ignore, ignoreContentOfIgnored)) return true
+			}
 		}
+		return false
 	}
-	
-	private def LightweightTypeReference getRealType(PortRef ref) {
-		if (ref.part == null) {
-			ref.port.typeReference.toLightweightTypeReference(ref.port.eResource)
-		} else {
-			ref.port.getRealType(ref.part)
-		}
-	}
-	
-	private def LightweightTypeReference getRealType(Port port, JvmTypeReference partFrom) {
-		port.typeReference.getRealType(partFrom.toLightweightTypeReference(port.eResource))
-	}
-	
-	private def LightweightTypeReference toPartType(Part part) {
-		switch(part) {
-			ComponentPart:
-				part.componentReference.toLightweightTypeReference(part.eResource)
-			SpeciesPart:
-				// a Species follows the same type as its ecosystem
-				// so we just need the real type of the part of the referenced species
-				// in the current species ecosystem
-				part.speciesReference.part.componentReference.toLightweightTypeReference(part.eResource)
-		}
-	}
-	
-	private def LightweightTypeReference getRealType(JvmTypeReference elementType, LightweightTypeReference contextType) {
-		val mapping = new ConstraintAwareTypeArgumentCollector(contextType.owner).getTypeParameterMapping(contextType)
-		new StandardTypeParameterSubstitutor(mapping, contextType.owner).substitute(elementType)
-	}
-	*/
 	
 }

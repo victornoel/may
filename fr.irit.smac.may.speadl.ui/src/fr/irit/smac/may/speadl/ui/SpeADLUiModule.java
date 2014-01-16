@@ -6,13 +6,17 @@ package fr.irit.smac.may.speadl.ui;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.builder.EclipseResourceFileSystemAccess2;
 import org.eclipse.xtext.builder.IXtextBuilderParticipant;
-import org.eclipse.xtext.builder.JDTAwareEclipseResourceFileSystemAccess2;
 import org.eclipse.xtext.ui.editor.IXtextEditorCallback;
 import org.eclipse.xtext.ui.editor.contentassist.AbstractJavaBasedContentProposalProvider.ReferenceProposalCreator;
+import org.eclipse.xtext.xbase.ui.editor.StacktraceBasedEditorDecider;
+import org.eclipse.xtext.xbase.ui.editor.XbaseEditorInputRedirector;
 
+import fr.irit.smac.may.speadl.ui.builder.SourceRelativeFileSystemAccess;
 import fr.irit.smac.may.speadl.ui.builder.SpeADLBuilderParticipant;
 import fr.irit.smac.may.speadl.ui.contentassist.SpeADLReferenceProposalCreator;
+import fr.irit.smac.may.speadl.ui.editor.SpeADLEditorInputRedirector;
 import fr.irit.smac.may.speadl.ui.editor.SpeADLNatureAddingEditorCallback;
+import fr.irit.smac.may.speadl.ui.editor.SpeADLStacktraceBasedEditorDecider;
 
 /**
  * Use this class to register components to be used within the IDE.
@@ -21,12 +25,10 @@ public class SpeADLUiModule extends	fr.irit.smac.may.speadl.ui.AbstractSpeADLUiM
 	public SpeADLUiModule(AbstractUIPlugin plugin) {
 		super(plugin);
 	}
-
-	// so that the src-gen folder is created as a source folder
-	// TODO make it source if it is not (see
-	// org.eclipse.xtend.ide.builder.XtendBuilderParticipant)
+	
+	// used by SpeADLBuilderParticipant
 	public Class<? extends EclipseResourceFileSystemAccess2> bindEclipseResourceFileSystemAccess2() {
-		return JDTAwareEclipseResourceFileSystemAccess2.class;
+		return SourceRelativeFileSystemAccess.class;
 	}
 	
 	@Override
@@ -57,4 +59,12 @@ public class SpeADLUiModule extends	fr.irit.smac.may.speadl.ui.AbstractSpeADLUiM
 			.annotatedWith(com.google.inject.name.Names.named((XtextContentAssistProcessor.COMPLETION_AUTO_ACTIVATION_CHARS)))
 			.toInstance(".:");
 	}*/
+	
+	public Class<? extends XbaseEditorInputRedirector> bindXbaseEditorInputRedirector() {
+		return SpeADLEditorInputRedirector.class;
+	}
+	
+	public Class<? extends StacktraceBasedEditorDecider> bindStacktraceBasedEditorDecider() {
+		return SpeADLStacktraceBasedEditorDecider.class;
+	}
 }

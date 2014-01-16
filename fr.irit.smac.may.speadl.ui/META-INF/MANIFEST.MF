@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: fr.irit.smac.may.speadl.ui
+Bundle-Name: Make Agents Yourself UI
 Bundle-Vendor: IRIT SMAC
 Bundle-Version: 3.2.2.qualifier
 Bundle-SymbolicName: fr.irit.smac.may.speadl.ui;singleton:=true
@@ -12,6 +12,7 @@ Require-Bundle: fr.irit.smac.may.speadl;visibility:=reexport,
  org.eclipse.xtext.ui.shared;bundle-version="[2.5.0,2.6.0)",
  org.eclipse.xtext.xbase.ui;bundle-version="[2.5.0,2.6.0)",
  org.eclipse.ui,
+ org.eclipse.jdt.core;bundle-version="[3.8.0,4.0.0)",
  org.eclipse.jdt.ui;bundle-version="[3.8.0,4.0.0)",
  org.eclipse.xtext.builder;bundle-version="[2.5.0,2.6.0)",
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",

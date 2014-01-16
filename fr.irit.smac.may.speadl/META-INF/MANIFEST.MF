@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: fr.irit.smac.may.speadl
+Bundle-Name: Make Agents Yourself
 Bundle-Vendor: IRIT SMAC
 Bundle-Version: 3.2.2.qualifier
 Bundle-SymbolicName: fr.irit.smac.may.speadl;singleton:=true

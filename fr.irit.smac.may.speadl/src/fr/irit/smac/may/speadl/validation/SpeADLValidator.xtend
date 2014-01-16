@@ -7,30 +7,38 @@ import fr.irit.smac.may.speadl.speadl.Binding
 import fr.irit.smac.may.speadl.speadl.ComponentPart
 import fr.irit.smac.may.speadl.speadl.ContentElement
 import fr.irit.smac.may.speadl.speadl.Ecosystem
+import fr.irit.smac.may.speadl.speadl.ImplementedBy
 import fr.irit.smac.may.speadl.speadl.Part
 import fr.irit.smac.may.speadl.speadl.PortRef
 import fr.irit.smac.may.speadl.speadl.ProvidedPort
 import fr.irit.smac.may.speadl.speadl.RequiredPort
 import fr.irit.smac.may.speadl.speadl.SpeadlPackage
 import fr.irit.smac.may.speadl.speadl.SpeciesReference
+import org.eclipse.xtext.common.types.JvmGenericType
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
 import org.eclipse.xtext.common.types.JvmTypeParameter
+import org.eclipse.xtext.common.types.JvmTypeReference
+import org.eclipse.xtext.common.types.JvmWildcardTypeReference
 import org.eclipse.xtext.common.types.TypesPackage
 import org.eclipse.xtext.validation.Check
+import org.eclipse.xtext.validation.CheckType
 import org.eclipse.xtext.validation.ComposedChecks
 import org.eclipse.xtext.validation.NamesAreUniqueValidator
-import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations
-import org.eclipse.xtext.xbase.typesystem.^override.OverrideHelper
+import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument
 
 /**
  * Custom validation rules. 
  *
  * see http://www.eclipse.org/Xtext/documentation.html#validation
+ * 
+ * Carefull, NORMAL check rules are not taken into account to prevent generation
+ * The idea is that there valiation rules are relying on the generated code to be valid...
  */
 @ComposedChecks(validators=#[SpeADLXtendXtextInspiredValidator, SpeADLJvmTypeReferenceValidator, NamesAreUniqueValidator])
 class SpeADLValidator extends AbstractSpeADLValidator {
 	
-	@Inject extension IJvmModelAssociations
-	@Inject extension OverrideHelper
+//	@Inject extension IJvmModelAssociations
+//	@Inject extension OverrideHelper
 	@Inject extension SpeADLUtils
 	
 //	@Check
@@ -59,9 +67,7 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 	def checkPortRef(PortRef pr) {
 		val typeTo = pr.resolveType
 		
-		val cont = pr.eContainer
-		
-		val typeFrom = switch cont {
+		val typeFrom = switch cont: pr.eContainer {
 			Binding: cont.resolveTypeFrom
 			ProvidedPort: cont.typeReference.toLightweightTypeReference(pr.eResource)
 			default: throw new RuntimeException("should not happen")
@@ -191,26 +197,77 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 	}
 	
 	@Check
-	def checkNoSubInImpl(Ecosystem i) {
-		val superInfra = i.specializes
-		if(superInfra != null) {
-			if(!superInfra.type.associatedEcosystem.parts.empty) {
-				error("Can only implements components without subcomponents", SpeadlPackage.Literals.ABSTRACT_COMPONENT__SPECIALIZES)
+	def checkSpecializeReference(Ecosystem ecosystem) {
+		val superTypeRef = ecosystem.specializes
+		if(superTypeRef != null && superTypeRef.type != null) {
+			val superType = superTypeRef.type.associatedEcosystem
+			if (superType == null) {
+				error(ecosystem.specializes.simpleName + " cannot be resolved", ecosystem.specializes, TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE)
+			} else {
+				if(!superType.parts.empty) {
+					error("Can only implements components without subcomponents", SpeadlPackage.Literals.ABSTRACT_COMPONENT__SPECIALIZES)
+				}
+				if (superType.hasCycleInHierarchy) {
+					error("The inheritance hierarchy of " + ecosystem.name + " contains cycles",
+							SpeadlPackage.Literals.ABSTRACT_COMPONENT__NAME);
+				}
+				if(superTypeRef.isInvalidWildcard) {
+					error("The type "
+						+ ecosystem.name 
+						+ " cannot extend or implement "
+						+ superTypeRef.getIdentifier() 
+						+ ". A supertype may not specify any wildcard", SpeadlPackage.Literals.ABSTRACT_COMPONENT__SPECIALIZES)
+					
+				}
 			}
 		}
 	}
-	
-	@Check
-	def checkSpecializeReference(Ecosystem ecosystem) {
-		if(ecosystem.specializes != null && ecosystem.specializes.type.associatedEcosystem == null) {
-			error(ecosystem.specializes.simpleName + " cannot be resolved", ecosystem.specializes, TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE)
+
+	// copied from XtendJavaValidator	
+	def isInvalidWildcard(JvmTypeReference typeRef) {
+		if (typeRef instanceof JvmWildcardTypeReference)
+			return true
+		else if (typeRef instanceof JvmParameterizedTypeReference) {
+			for(typeArgument: typeRef.getArguments()) {
+				if(typeArgument instanceof JvmWildcardTypeReference) 
+					return true
+			}
 		}
+		return false
 	}
 	
 	@Check
 	def checkComponentReference(ComponentPart p) {
-		if(p.componentReference.type.associatedEcosystem == null) {
+		val eco = p.componentReference.type.associatedEcosystem
+		if(eco == null) {
 			error(p.componentReference.simpleName + " cannot be resolved", p.componentReference, TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE)
 		}
+	}
+	
+	@Check(CheckType.NORMAL)
+	def checkImplementedBy(ImplementedBy ib) {
+		val eco = ib.eContainer as Ecosystem
+		val shouldBe = eco.associatedJvmClass.getTypeRef.toLightweightTypeReference(ib.eResource)
+		val is = ib.ref.toLightweightTypeReference(ib.eResource)
+		val argument = new TypeConformanceComputationArgument(true, false, true, true, false, true)
+		if (!shouldBe.isAssignableFrom(is, argument)) {
+			error(is.simpleName + " is not extending "+shouldBe.simpleName, SpeadlPackage.Literals.IMPLEMENTED_BY__REF)
+		} else {
+			val type = is.type as JvmGenericType
+			if (type.abstract) {
+				error(is.simpleName + " can't be instantiated (abstract)", SpeadlPackage.Literals.IMPLEMENTED_BY__REF)
+			} else {
+				val hasOkConstructor = type.declaredConstructors.empty || type.declaredConstructors.exists[parameters.empty]
+				if (!hasOkConstructor) {
+					error(is.simpleName + " does not have a parameter-less constructor", SpeadlPackage.Literals.IMPLEMENTED_BY__REF)
+				}
+			}
+		}
+	}
+	
+	// copied from XtendJavaValidator
+	@Check
+	def checkTypeParameterForwardReferences(AbstractComponent c) {
+		doCheckTypeParameterForwardReference(c.getTypeParameters())
 	}
 }
