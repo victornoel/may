@@ -21,7 +21,7 @@
 
 - le type checking avec des sous-type et des contraintes du genre MonComp[A extends Collection[B]] ne marchent pas
  - ça ne marche pas non plus dans xtend…
- - voir https://bugs.eclipse.org/bugs/show_bug.cgi?id=413610
+ - voir https://bugs.eclipse.org/bugs/show_bug.cgi?id=378454 (old dup: https://bugs.eclipse.org/bugs/show_bug.cgi?id=413610)
 
 - ajouter une génération de stub pour les implem? à voir !!
  - voir http://www.eclipse.org/forums/index.php/t/494268/
