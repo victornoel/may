@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/fr.irit.smac.may.speadl/src-gen" editDirectory="/fr.irit.smac.may.speadl.edit/src"
+    editorDirectory="/fr.irit.smac.may.speadl.editor/src" modelPluginID="fr.irit.smac.may.speadl"
+    forceOverwrite="true" modelName="SpeADL" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    complianceLevel="5.0" copyrightFields="false" editPluginID="fr.irit.smac.may.speadl.edit"
+    editorPluginID="fr.irit.smac.may.speadl.editor" runtimeVersion="2.9" usedGenPackages="../../../org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types ../../../org.eclipse.xtext.xbase/model/Xbase.genmodel#//xtype">
+  <genPackages prefix="Speadl" basePackage="fr.irit.smac.may.speadl" disposableProviderFactory="true"
+      fileExtensions="speadl" ecorePackage="SpeADL.ecore#/">
+    <genClasses ecoreClass="SpeADL.ecore#//Model">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//Model/imports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//Model/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//Namespace">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SpeADL.ecore#//Namespace/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//Namespace/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//ModelElement"/>
+    <genClasses ecoreClass="SpeADL.ecore#//Element"/>
+    <genClasses ecoreClass="SpeADL.ecore#//AbstractComponent">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SpeADL.ecore#//AbstractComponent/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//AbstractComponent/parameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//AbstractComponent/typeParameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//AbstractComponent/specializes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//AbstractComponent/provides"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//AbstractComponent/requires"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//AbstractComponent/parts"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//AbstractComponent/species"/>
+    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//Port">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//Port/typeReference"/>
+    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//ContentElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SpeADL.ecore#//ContentElement/name"/>
+    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//Part">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//Part/bindings"/>
+    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//Feature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SpeADL.ecore#//Feature/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//Feature/parameterType"/>
+    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//ImplementedBy">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//ImplementedBy/ref"/>
+    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//Ecosystem">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//Ecosystem/implementedBy"/>
+    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//Species"/>
+    <genClasses ecoreClass="SpeADL.ecore#//ProvidedPort">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//ProvidedPort/bound"/>
+    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//RequiredPort"/>
+    <genClasses ecoreClass="SpeADL.ecore#//ComponentPart">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//ComponentPart/componentReference"/>
+    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//SpeciesPart">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//SpeciesPart/speciesReference"/>
+    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//Binding">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SpeADL.ecore#//Binding/from"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//Binding/to"/>
+    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//PortRef">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SpeADL.ecore#//PortRef/part"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SpeADL.ecore#//PortRef/port"/>
+    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//SpeciesReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SpeADL.ecore#//SpeciesReference/part"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SpeADL.ecore#//SpeciesReference/species"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SpeADL.ecore#//SpeciesReference/arguments"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
