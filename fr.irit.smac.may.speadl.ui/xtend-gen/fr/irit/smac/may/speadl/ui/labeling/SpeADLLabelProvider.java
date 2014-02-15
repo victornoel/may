@@ -87,7 +87,7 @@ public class SpeADLLabelProvider extends XbaseLabelProvider {
       SpeciesReference _speciesReference_1 = p.getSpeciesReference();
       Species _species = _speciesReference_1.getSpecies();
       String _name_2 = _species.getName();
-      _xblockexpression = ((_plus + _name_2));
+      _xblockexpression = (_plus + _name_2);
     }
     return _xblockexpression;
   }

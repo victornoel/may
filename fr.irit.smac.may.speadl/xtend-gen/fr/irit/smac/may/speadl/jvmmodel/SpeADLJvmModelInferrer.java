@@ -1197,7 +1197,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
       EList<JvmTypeReference> _superTypes_1 = componentIf.getSuperTypes();
       EList<JvmTypeParameter> _typeParameters_2 = componentIf.getTypeParameters();
       JvmParameterizedTypeReference _parameterizedTypeRefWith = this._speADLUtils.getParameterizedTypeRefWith(provides, _typeParameters_2);
-      _xblockexpression = (this._speADLJvmTypesBuilder.<JvmParameterizedTypeReference>operator_add(_superTypes_1, _parameterizedTypeRefWith));
+      _xblockexpression = this._speADLJvmTypesBuilder.<JvmParameterizedTypeReference>operator_add(_superTypes_1, _parameterizedTypeRefWith);
     }
     return _xblockexpression;
   }

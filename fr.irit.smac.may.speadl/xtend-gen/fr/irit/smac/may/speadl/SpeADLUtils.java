@@ -147,7 +147,7 @@ public class SpeADLUtils {
       if (!_matched) {
         _switchResult = this._typeReferences.createTypeRef(iType);
       }
-      _xblockexpression = (_switchResult);
+      _xblockexpression = _switchResult;
     }
     return _xblockexpression;
   }
@@ -175,7 +175,7 @@ public class SpeADLUtils {
           _switchResult = IterableExtensions.<JvmGenericType>findFirst(_filter, _function);
         }
       }
-      _xblockexpression = (_switchResult);
+      _xblockexpression = _switchResult;
     }
     return _xblockexpression;
   }
@@ -199,7 +199,7 @@ public class SpeADLUtils {
               return in;
             }
             LightweightTypeReference _substituteTypeParameters = this.substituteTypeParameters(str, from, to);
-            _xblockexpression_1 = (_substituteTypeParameters.toJavaCompliantTypeReference());
+            _xblockexpression_1 = _substituteTypeParameters.toJavaCompliantTypeReference();
           }
           _switchResult = _xblockexpression_1;
         }
@@ -207,7 +207,7 @@ public class SpeADLUtils {
       if (!_matched) {
         _switchResult = in;
       }
-      _xblockexpression = (_switchResult);
+      _xblockexpression = _switchResult;
     }
     return _xblockexpression;
   }
@@ -225,7 +225,7 @@ public class SpeADLUtils {
             JvmTypeParameter _get = to.get(_indexOf);
             JvmParameterizedTypeReference _createTypeRef = SpeADLUtils.this._typeReferences.createTypeRef(_get);
             final LightweightTypeReference r = converter.toLightweightReference(_createTypeRef);
-            _xblockexpression = (new LightweightMergedBoundTypeArgument(r, VarianceInfo.INVARIANT));
+            _xblockexpression = new LightweightMergedBoundTypeArgument(r, VarianceInfo.INVARIANT);
           }
           return _xblockexpression;
         }
@@ -234,7 +234,7 @@ public class SpeADLUtils {
       ITypeReferenceOwner _owner_1 = in.getOwner();
       StandardTypeParameterSubstitutor _standardTypeParameterSubstitutor = new StandardTypeParameterSubstitutor(mapping, _owner_1);
       final LightweightTypeReference res = _standardTypeParameterSubstitutor.substitute(in);
-      _xblockexpression = (res);
+      _xblockexpression = res;
     }
     return _xblockexpression;
   }
@@ -253,7 +253,7 @@ public class SpeADLUtils {
       };
       List<JvmParameterizedTypeReference> _map = ListExtensions.<JvmTypeParameter, JvmParameterizedTypeReference>map(typeParameters, _function);
       JvmParameterizedTypeReference _createTypeRef = this._typeReferences.createTypeRef(type, ((JvmTypeReference[])Conversions.unwrapArray(_map, JvmTypeReference.class)));
-      _xblockexpression = (((JvmParameterizedTypeReference) _createTypeRef));
+      _xblockexpression = ((JvmParameterizedTypeReference) _createTypeRef);
     }
     return _xblockexpression;
   }
@@ -266,7 +266,7 @@ public class SpeADLUtils {
         return null;
       }
       JvmParameterizedTypeReference _createTypeRef = this._typeReferences.createTypeRef(type);
-      _xblockexpression = (((JvmParameterizedTypeReference) _createTypeRef));
+      _xblockexpression = ((JvmParameterizedTypeReference) _createTypeRef);
     }
     return _xblockexpression;
   }
@@ -360,7 +360,7 @@ public class SpeADLUtils {
           } else {
             _xifexpression = Collections.<RequiredPort>unmodifiableList(Lists.<RequiredPort>newArrayList());
           }
-          _xblockexpression = (_xifexpression);
+          _xblockexpression = _xifexpression;
         }
         _switchResult = _xblockexpression;
       }
@@ -420,7 +420,7 @@ public class SpeADLUtils {
           } else {
             _xifexpression = Collections.<ProvidedPort>unmodifiableList(Lists.<ProvidedPort>newArrayList());
           }
-          _xblockexpression = (_xifexpression);
+          _xblockexpression = _xifexpression;
         }
         _switchResult = _xblockexpression;
       }
@@ -436,7 +436,7 @@ public class SpeADLUtils {
     {
       StandardTypeReferenceOwner _standardTypeReferenceOwner = new StandardTypeReferenceOwner(this.services, context);
       final OwnedConverter converter = new OwnedConverter(_standardTypeReferenceOwner, false);
-      _xblockexpression = (converter.toLightweightReference(typeRef));
+      _xblockexpression = converter.toLightweightReference(typeRef);
     }
     return _xblockexpression;
   }
@@ -460,7 +460,7 @@ public class SpeADLUtils {
       JvmParameterizedTypeReference _ecosystemTypeReference = this.ecosystemTypeReference(p);
       Resource _eResource = p.eResource();
       final LightweightTypeReference ptr = this.toLightweightTypeReference(_ecosystemTypeReference, _eResource);
-      _xblockexpression = (this.resolveType(ftr, ptr));
+      _xblockexpression = this.resolveType(ftr, ptr);
     }
     return _xblockexpression;
   }
@@ -494,7 +494,7 @@ public class SpeADLUtils {
       JvmParameterizedTypeReference _typeReference_1 = this.typeReference(part);
       JvmType _type = _typeReference_1.getType();
       Ecosystem _associatedEcosystem = this.associatedEcosystem(_type);
-      _xblockexpression = (this.resolveType(portTypeRef, partTypeRef, port, _associatedEcosystem));
+      _xblockexpression = this.resolveType(portTypeRef, partTypeRef, port, _associatedEcosystem);
     }
     return _xblockexpression;
   }
@@ -538,14 +538,14 @@ public class SpeADLUtils {
           JvmParameterizedTypeReference _specializes_2 = ac.getSpecializes();
           JvmType _type = _specializes_2.getType();
           Ecosystem _associatedEcosystem = this.associatedEcosystem(_type);
-          _xblockexpression_1 = (this.resolveType(portTypeRef, nptr, port, _associatedEcosystem));
+          _xblockexpression_1 = this.resolveType(portTypeRef, nptr, port, _associatedEcosystem);
         }
         _xifexpression = _xblockexpression_1;
       } else {
         _xifexpression = portTypeRef;
       }
       final LightweightTypeReference tr = _xifexpression;
-      _xblockexpression = (this.resolveType(tr, containerTypeRef));
+      _xblockexpression = this.resolveType(tr, containerTypeRef);
     }
     return _xblockexpression;
   }
@@ -558,7 +558,7 @@ public class SpeADLUtils {
       final Map<JvmTypeParameter,LightweightMergedBoundTypeArgument> mapping = _constraintAwareTypeArgumentCollector.getTypeParameterMapping(containerTypeRef);
       ITypeReferenceOwner _owner_1 = containerTypeRef.getOwner();
       StandardTypeParameterSubstitutor _standardTypeParameterSubstitutor = new StandardTypeParameterSubstitutor(mapping, _owner_1);
-      _xblockexpression = (_standardTypeParameterSubstitutor.substitute(tr));
+      _xblockexpression = _standardTypeParameterSubstitutor.substitute(tr);
     }
     return _xblockexpression;
   }
