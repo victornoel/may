@@ -412,29 +412,27 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cSpecializesKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
 		private final Assignment cSpecializesAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cSpecializesJvmParameterizedTypeReferenceParserRuleCall_3_1_0 = (RuleCall)cSpecializesAssignment_3_1.eContents().get(0);
-		private final Assignment cImplementedByAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cImplementedByImplementedByParserRuleCall_4_0 = (RuleCall)cImplementedByAssignment_4.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
-		private final Alternatives cAlternatives_6 = (Alternatives)cGroup.eContents().get(6);
-		private final Assignment cProvidesAssignment_6_0 = (Assignment)cAlternatives_6.eContents().get(0);
-		private final RuleCall cProvidesProvidedPortParserRuleCall_6_0_0 = (RuleCall)cProvidesAssignment_6_0.eContents().get(0);
-		private final Assignment cRequiresAssignment_6_1 = (Assignment)cAlternatives_6.eContents().get(1);
-		private final RuleCall cRequiresRequiredPortParserRuleCall_6_1_0 = (RuleCall)cRequiresAssignment_6_1.eContents().get(0);
-		private final Assignment cPartsAssignment_6_2 = (Assignment)cAlternatives_6.eContents().get(2);
-		private final RuleCall cPartsComponentPartParserRuleCall_6_2_0 = (RuleCall)cPartsAssignment_6_2.eContents().get(0);
-		private final Assignment cSpeciesAssignment_6_3 = (Assignment)cAlternatives_6.eContents().get(3);
-		private final RuleCall cSpeciesSpeciesParserRuleCall_6_3_0 = (RuleCall)cSpeciesAssignment_6_3.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		private final Keyword cLeftCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Alternatives cAlternatives_5 = (Alternatives)cGroup.eContents().get(5);
+		private final Assignment cProvidesAssignment_5_0 = (Assignment)cAlternatives_5.eContents().get(0);
+		private final RuleCall cProvidesProvidedPortParserRuleCall_5_0_0 = (RuleCall)cProvidesAssignment_5_0.eContents().get(0);
+		private final Assignment cRequiresAssignment_5_1 = (Assignment)cAlternatives_5.eContents().get(1);
+		private final RuleCall cRequiresRequiredPortParserRuleCall_5_1_0 = (RuleCall)cRequiresAssignment_5_1.eContents().get(0);
+		private final Assignment cPartsAssignment_5_2 = (Assignment)cAlternatives_5.eContents().get(2);
+		private final RuleCall cPartsComponentPartParserRuleCall_5_2_0 = (RuleCall)cPartsAssignment_5_2.eContents().get(0);
+		private final Assignment cSpeciesAssignment_5_3 = (Assignment)cAlternatives_5.eContents().get(3);
+		private final RuleCall cSpeciesSpeciesParserRuleCall_5_3_0 = (RuleCall)cSpeciesAssignment_5_3.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//Ecosystem:
 		//	"ecosystem" name=ValidID ("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
-		//	("specializes" specializes=JvmParameterizedTypeReference)? implementedBy=ImplementedBy? "{" (provides+=ProvidedPort |
-		//	requires+=RequiredPort | parts+=ComponentPart | species+=Species)* "}";
+		//	("specializes" specializes=JvmParameterizedTypeReference)? //implementedBy=ImplementedBy?
+		//	"{" (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart | species+=Species)* "}";
 		public ParserRule getRule() { return rule; }
 
 		//"ecosystem" name=ValidID ("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
-		//("specializes" specializes=JvmParameterizedTypeReference)? implementedBy=ImplementedBy? "{" (provides+=ProvidedPort |
-		//requires+=RequiredPort | parts+=ComponentPart | species+=Species)* "}"
+		//("specializes" specializes=JvmParameterizedTypeReference)? //implementedBy=ImplementedBy?
+		//"{" (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart | species+=Species)* "}"
 		public Group getGroup() { return cGroup; }
 
 		//"ecosystem"
@@ -485,44 +483,39 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		//JvmParameterizedTypeReference
 		public RuleCall getSpecializesJvmParameterizedTypeReferenceParserRuleCall_3_1_0() { return cSpecializesJvmParameterizedTypeReferenceParserRuleCall_3_1_0; }
 
-		//implementedBy=ImplementedBy?
-		public Assignment getImplementedByAssignment_4() { return cImplementedByAssignment_4; }
-
-		//ImplementedBy
-		public RuleCall getImplementedByImplementedByParserRuleCall_4_0() { return cImplementedByImplementedByParserRuleCall_4_0; }
-
+		////implementedBy=ImplementedBy?
 		//"{"
-		public Keyword getLeftCurlyBracketKeyword_5() { return cLeftCurlyBracketKeyword_5; }
+		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
 
 		//(provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart | species+=Species)*
-		public Alternatives getAlternatives_6() { return cAlternatives_6; }
+		public Alternatives getAlternatives_5() { return cAlternatives_5; }
 
 		//provides+=ProvidedPort
-		public Assignment getProvidesAssignment_6_0() { return cProvidesAssignment_6_0; }
+		public Assignment getProvidesAssignment_5_0() { return cProvidesAssignment_5_0; }
 
 		//ProvidedPort
-		public RuleCall getProvidesProvidedPortParserRuleCall_6_0_0() { return cProvidesProvidedPortParserRuleCall_6_0_0; }
+		public RuleCall getProvidesProvidedPortParserRuleCall_5_0_0() { return cProvidesProvidedPortParserRuleCall_5_0_0; }
 
 		//requires+=RequiredPort
-		public Assignment getRequiresAssignment_6_1() { return cRequiresAssignment_6_1; }
+		public Assignment getRequiresAssignment_5_1() { return cRequiresAssignment_5_1; }
 
 		//RequiredPort
-		public RuleCall getRequiresRequiredPortParserRuleCall_6_1_0() { return cRequiresRequiredPortParserRuleCall_6_1_0; }
+		public RuleCall getRequiresRequiredPortParserRuleCall_5_1_0() { return cRequiresRequiredPortParserRuleCall_5_1_0; }
 
 		//parts+=ComponentPart
-		public Assignment getPartsAssignment_6_2() { return cPartsAssignment_6_2; }
+		public Assignment getPartsAssignment_5_2() { return cPartsAssignment_5_2; }
 
 		//ComponentPart
-		public RuleCall getPartsComponentPartParserRuleCall_6_2_0() { return cPartsComponentPartParserRuleCall_6_2_0; }
+		public RuleCall getPartsComponentPartParserRuleCall_5_2_0() { return cPartsComponentPartParserRuleCall_5_2_0; }
 
 		//species+=Species
-		public Assignment getSpeciesAssignment_6_3() { return cSpeciesAssignment_6_3; }
+		public Assignment getSpeciesAssignment_5_3() { return cSpeciesAssignment_5_3; }
 
 		//Species
-		public RuleCall getSpeciesSpeciesParserRuleCall_6_3_0() { return cSpeciesSpeciesParserRuleCall_6_3_0; }
+		public RuleCall getSpeciesSpeciesParserRuleCall_5_3_0() { return cSpeciesSpeciesParserRuleCall_5_3_0; }
 
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_7() { return cRightCurlyBracketKeyword_7; }
+		public Keyword getRightCurlyBracketKeyword_6() { return cRightCurlyBracketKeyword_6; }
 	}
 
 	public class ComponentElements extends AbstractParserRuleElementFinder {
@@ -544,27 +537,25 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cSpecializesKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
 		private final Assignment cSpecializesAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cSpecializesJvmParameterizedTypeReferenceParserRuleCall_3_1_0 = (RuleCall)cSpecializesAssignment_3_1.eContents().get(0);
-		private final Assignment cImplementedByAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cImplementedByImplementedByParserRuleCall_4_0 = (RuleCall)cImplementedByAssignment_4.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
-		private final Alternatives cAlternatives_6 = (Alternatives)cGroup.eContents().get(6);
-		private final Assignment cProvidesAssignment_6_0 = (Assignment)cAlternatives_6.eContents().get(0);
-		private final RuleCall cProvidesProvidedPortParserRuleCall_6_0_0 = (RuleCall)cProvidesAssignment_6_0.eContents().get(0);
-		private final Assignment cRequiresAssignment_6_1 = (Assignment)cAlternatives_6.eContents().get(1);
-		private final RuleCall cRequiresRequiredPortParserRuleCall_6_1_0 = (RuleCall)cRequiresAssignment_6_1.eContents().get(0);
-		private final Assignment cPartsAssignment_6_2 = (Assignment)cAlternatives_6.eContents().get(2);
-		private final RuleCall cPartsComponentPartParserRuleCall_6_2_0 = (RuleCall)cPartsAssignment_6_2.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		private final Keyword cLeftCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Alternatives cAlternatives_5 = (Alternatives)cGroup.eContents().get(5);
+		private final Assignment cProvidesAssignment_5_0 = (Assignment)cAlternatives_5.eContents().get(0);
+		private final RuleCall cProvidesProvidedPortParserRuleCall_5_0_0 = (RuleCall)cProvidesAssignment_5_0.eContents().get(0);
+		private final Assignment cRequiresAssignment_5_1 = (Assignment)cAlternatives_5.eContents().get(1);
+		private final RuleCall cRequiresRequiredPortParserRuleCall_5_1_0 = (RuleCall)cRequiresAssignment_5_1.eContents().get(0);
+		private final Assignment cPartsAssignment_5_2 = (Assignment)cAlternatives_5.eContents().get(2);
+		private final RuleCall cPartsComponentPartParserRuleCall_5_2_0 = (RuleCall)cPartsAssignment_5_2.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//Component returns Ecosystem:
 		//	"component" name=ValidID ("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
-		//	("specializes" specializes=JvmParameterizedTypeReference)? implementedBy=ImplementedBy? "{" (provides+=ProvidedPort |
-		//	requires+=RequiredPort | parts+=ComponentPart)* "}";
+		//	("specializes" specializes=JvmParameterizedTypeReference)? //implementedBy=ImplementedBy?
+		//	"{" (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart)* "}";
 		public ParserRule getRule() { return rule; }
 
 		//"component" name=ValidID ("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
-		//("specializes" specializes=JvmParameterizedTypeReference)? implementedBy=ImplementedBy? "{" (provides+=ProvidedPort |
-		//requires+=RequiredPort | parts+=ComponentPart)* "}"
+		//("specializes" specializes=JvmParameterizedTypeReference)? //implementedBy=ImplementedBy?
+		//"{" (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart)* "}"
 		public Group getGroup() { return cGroup; }
 
 		//"component"
@@ -615,38 +606,33 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		//JvmParameterizedTypeReference
 		public RuleCall getSpecializesJvmParameterizedTypeReferenceParserRuleCall_3_1_0() { return cSpecializesJvmParameterizedTypeReferenceParserRuleCall_3_1_0; }
 
-		//implementedBy=ImplementedBy?
-		public Assignment getImplementedByAssignment_4() { return cImplementedByAssignment_4; }
-
-		//ImplementedBy
-		public RuleCall getImplementedByImplementedByParserRuleCall_4_0() { return cImplementedByImplementedByParserRuleCall_4_0; }
-
+		////implementedBy=ImplementedBy?
 		//"{"
-		public Keyword getLeftCurlyBracketKeyword_5() { return cLeftCurlyBracketKeyword_5; }
+		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
 
 		//(provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart)*
-		public Alternatives getAlternatives_6() { return cAlternatives_6; }
+		public Alternatives getAlternatives_5() { return cAlternatives_5; }
 
 		//provides+=ProvidedPort
-		public Assignment getProvidesAssignment_6_0() { return cProvidesAssignment_6_0; }
+		public Assignment getProvidesAssignment_5_0() { return cProvidesAssignment_5_0; }
 
 		//ProvidedPort
-		public RuleCall getProvidesProvidedPortParserRuleCall_6_0_0() { return cProvidesProvidedPortParserRuleCall_6_0_0; }
+		public RuleCall getProvidesProvidedPortParserRuleCall_5_0_0() { return cProvidesProvidedPortParserRuleCall_5_0_0; }
 
 		//requires+=RequiredPort
-		public Assignment getRequiresAssignment_6_1() { return cRequiresAssignment_6_1; }
+		public Assignment getRequiresAssignment_5_1() { return cRequiresAssignment_5_1; }
 
 		//RequiredPort
-		public RuleCall getRequiresRequiredPortParserRuleCall_6_1_0() { return cRequiresRequiredPortParserRuleCall_6_1_0; }
+		public RuleCall getRequiresRequiredPortParserRuleCall_5_1_0() { return cRequiresRequiredPortParserRuleCall_5_1_0; }
 
 		//parts+=ComponentPart
-		public Assignment getPartsAssignment_6_2() { return cPartsAssignment_6_2; }
+		public Assignment getPartsAssignment_5_2() { return cPartsAssignment_5_2; }
 
 		//ComponentPart
-		public RuleCall getPartsComponentPartParserRuleCall_6_2_0() { return cPartsComponentPartParserRuleCall_6_2_0; }
+		public RuleCall getPartsComponentPartParserRuleCall_5_2_0() { return cPartsComponentPartParserRuleCall_5_2_0; }
 
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_7() { return cRightCurlyBracketKeyword_7; }
+		public Keyword getRightCurlyBracketKeyword_6() { return cRightCurlyBracketKeyword_6; }
 	}
 
 	public class SpeciesElements extends AbstractParserRuleElementFinder {
@@ -1414,8 +1400,8 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 
 	//Ecosystem:
 	//	"ecosystem" name=ValidID ("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
-	//	("specializes" specializes=JvmParameterizedTypeReference)? implementedBy=ImplementedBy? "{" (provides+=ProvidedPort |
-	//	requires+=RequiredPort | parts+=ComponentPart | species+=Species)* "}";
+	//	("specializes" specializes=JvmParameterizedTypeReference)? //implementedBy=ImplementedBy?
+	//	"{" (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart | species+=Species)* "}";
 	public EcosystemElements getEcosystemAccess() {
 		return (pEcosystem != null) ? pEcosystem : (pEcosystem = new EcosystemElements());
 	}
@@ -1426,8 +1412,8 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 
 	//Component returns Ecosystem:
 	//	"component" name=ValidID ("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
-	//	("specializes" specializes=JvmParameterizedTypeReference)? implementedBy=ImplementedBy? "{" (provides+=ProvidedPort |
-	//	requires+=RequiredPort | parts+=ComponentPart)* "}";
+	//	("specializes" specializes=JvmParameterizedTypeReference)? //implementedBy=ImplementedBy?
+	//	"{" (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart)* "}";
 	public ComponentElements getComponentAccess() {
 		return (pComponent != null) ? pComponent : (pComponent = new ComponentElements());
 	}

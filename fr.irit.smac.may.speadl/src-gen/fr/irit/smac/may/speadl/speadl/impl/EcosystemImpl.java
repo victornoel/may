@@ -5,7 +5,6 @@ package fr.irit.smac.may.speadl.speadl.impl;
 import fr.irit.smac.may.speadl.speadl.AbstractComponent;
 import fr.irit.smac.may.speadl.speadl.Ecosystem;
 import fr.irit.smac.may.speadl.speadl.Feature;
-import fr.irit.smac.may.speadl.speadl.ImplementedBy;
 import fr.irit.smac.may.speadl.speadl.Part;
 import fr.irit.smac.may.speadl.speadl.ProvidedPort;
 import fr.irit.smac.may.speadl.speadl.RequiredPort;
@@ -45,7 +44,6 @@ import org.eclipse.xtext.common.types.JvmTypeParameter;
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.EcosystemImpl#getRequires <em>Requires</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.EcosystemImpl#getParts <em>Parts</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.EcosystemImpl#getSpecies <em>Species</em>}</li>
- *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.EcosystemImpl#getImplementedBy <em>Implemented By</em>}</li>
  * </ul>
  * </p>
  *
@@ -142,16 +140,6 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
    * @ordered
    */
   protected EList<Species> species;
-
-  /**
-   * The cached value of the '{@link #getImplementedBy() <em>Implemented By</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getImplementedBy()
-   * @generated
-   * @ordered
-   */
-  protected ImplementedBy implementedBy;
 
   /**
    * <!-- begin-user-doc -->
@@ -334,54 +322,6 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
    * <!-- end-user-doc -->
    * @generated
    */
-  public ImplementedBy getImplementedBy()
-  {
-    return implementedBy;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetImplementedBy(ImplementedBy newImplementedBy, NotificationChain msgs)
-  {
-    ImplementedBy oldImplementedBy = implementedBy;
-    implementedBy = newImplementedBy;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SpeadlPackage.ECOSYSTEM__IMPLEMENTED_BY, oldImplementedBy, newImplementedBy);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setImplementedBy(ImplementedBy newImplementedBy)
-  {
-    if (newImplementedBy != implementedBy)
-    {
-      NotificationChain msgs = null;
-      if (implementedBy != null)
-        msgs = ((InternalEObject)implementedBy).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SpeadlPackage.ECOSYSTEM__IMPLEMENTED_BY, null, msgs);
-      if (newImplementedBy != null)
-        msgs = ((InternalEObject)newImplementedBy).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SpeadlPackage.ECOSYSTEM__IMPLEMENTED_BY, null, msgs);
-      msgs = basicSetImplementedBy(newImplementedBy, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, SpeadlPackage.ECOSYSTEM__IMPLEMENTED_BY, newImplementedBy, newImplementedBy));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
@@ -401,8 +341,6 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
         return ((InternalEList<?>)getParts()).basicRemove(otherEnd, msgs);
       case SpeadlPackage.ECOSYSTEM__SPECIES:
         return ((InternalEList<?>)getSpecies()).basicRemove(otherEnd, msgs);
-      case SpeadlPackage.ECOSYSTEM__IMPLEMENTED_BY:
-        return basicSetImplementedBy(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -433,8 +371,6 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
         return getParts();
       case SpeadlPackage.ECOSYSTEM__SPECIES:
         return getSpecies();
-      case SpeadlPackage.ECOSYSTEM__IMPLEMENTED_BY:
-        return getImplementedBy();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -480,9 +416,6 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
         getSpecies().clear();
         getSpecies().addAll((Collection<? extends Species>)newValue);
         return;
-      case SpeadlPackage.ECOSYSTEM__IMPLEMENTED_BY:
-        setImplementedBy((ImplementedBy)newValue);
-        return;
     }
     super.eSet(featureID, newValue);
   }
@@ -521,9 +454,6 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
       case SpeadlPackage.ECOSYSTEM__SPECIES:
         getSpecies().clear();
         return;
-      case SpeadlPackage.ECOSYSTEM__IMPLEMENTED_BY:
-        setImplementedBy((ImplementedBy)null);
-        return;
     }
     super.eUnset(featureID);
   }
@@ -554,8 +484,6 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
         return parts != null && !parts.isEmpty();
       case SpeadlPackage.ECOSYSTEM__SPECIES:
         return species != null && !species.isEmpty();
-      case SpeadlPackage.ECOSYSTEM__IMPLEMENTED_BY:
-        return implementedBy != null;
     }
     return super.eIsSet(featureID);
   }

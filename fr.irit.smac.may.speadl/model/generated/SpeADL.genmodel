@@ -43,9 +43,7 @@
     <genClasses ecoreClass="SpeADL.ecore#//ImplementedBy">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//ImplementedBy/ref"/>
     </genClasses>
-    <genClasses ecoreClass="SpeADL.ecore#//Ecosystem">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//Ecosystem/implementedBy"/>
-    </genClasses>
+    <genClasses ecoreClass="SpeADL.ecore#//Ecosystem"/>
     <genClasses ecoreClass="SpeADL.ecore#//Species"/>
     <genClasses ecoreClass="SpeADL.ecore#//ProvidedPort">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//ProvidedPort/bound"/>

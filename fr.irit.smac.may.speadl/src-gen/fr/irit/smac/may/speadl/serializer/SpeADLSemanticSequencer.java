@@ -1168,7 +1168,6 @@ public class SpeADLSemanticSequencer extends XbaseSemanticSequencer {
 	 *         name=ValidID 
 	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
 	 *         specializes=JvmParameterizedTypeReference? 
-	 *         implementedBy=ImplementedBy? 
 	 *         (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart)*
 	 *     )
 	 */
@@ -1184,14 +1183,12 @@ public class SpeADLSemanticSequencer extends XbaseSemanticSequencer {
 	 *             name=ValidID 
 	 *             (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
 	 *             specializes=JvmParameterizedTypeReference? 
-	 *             implementedBy=ImplementedBy? 
 	 *             (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart | species+=Species)*
 	 *         ) | 
 	 *         (
 	 *             name=ValidID 
 	 *             (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
 	 *             specializes=JvmParameterizedTypeReference? 
-	 *             implementedBy=ImplementedBy? 
 	 *             (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart)*
 	 *         )
 	 *     )
@@ -1207,7 +1204,6 @@ public class SpeADLSemanticSequencer extends XbaseSemanticSequencer {
 	 *         name=ValidID 
 	 *         (typeParameters+=JvmTypeParameter typeParameters+=JvmTypeParameter*)? 
 	 *         specializes=JvmParameterizedTypeReference? 
-	 *         implementedBy=ImplementedBy? 
 	 *         (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart | species+=Species)*
 	 *     )
 	 */

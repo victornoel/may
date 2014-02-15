@@ -537,16 +537,6 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getEcosystem_ImplementedBy()
-  {
-    return (EReference)ecosystemEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EClass getSpecies()
   {
     return speciesEClass;
@@ -791,7 +781,6 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
     createEReference(implementedByEClass, IMPLEMENTED_BY__REF);
 
     ecosystemEClass = createEClass(ECOSYSTEM);
-    createEReference(ecosystemEClass, ECOSYSTEM__IMPLEMENTED_BY);
 
     speciesEClass = createEClass(SPECIES);
 
@@ -905,7 +894,6 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
     initEReference(getImplementedBy_Ref(), theTypesPackage.getJvmParameterizedTypeReference(), null, "ref", null, 0, 1, ImplementedBy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(ecosystemEClass, Ecosystem.class, "Ecosystem", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getEcosystem_ImplementedBy(), this.getImplementedBy(), null, "implementedBy", null, 0, 1, Ecosystem.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(speciesEClass, Species.class, "Species", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

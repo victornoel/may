@@ -52,10 +52,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="ecore:EClass ../../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Ecosystem" eSuperTypes="#//Element #//AbstractComponent">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="implementedBy" eType="#//ImplementedBy"
-        containment="true"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Ecosystem" eSuperTypes="#//Element #//AbstractComponent"/>
   <eClassifiers xsi:type="ecore:EClass" name="Species" eSuperTypes="#//AbstractComponent"/>
   <eClassifiers xsi:type="ecore:EClass" name="ProvidedPort" eSuperTypes="#//Port">
     <eStructuralFeatures xsi:type="ecore:EReference" name="bound" eType="#//PortRef"

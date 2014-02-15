@@ -509,22 +509,13 @@ public interface SpeadlPackage extends EPackage
   int ECOSYSTEM__SPECIES = ELEMENT_FEATURE_COUNT + 7;
 
   /**
-   * The feature id for the '<em><b>Implemented By</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ECOSYSTEM__IMPLEMENTED_BY = ELEMENT_FEATURE_COUNT + 8;
-
-  /**
    * The number of structural features of the '<em>Ecosystem</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ECOSYSTEM_FEATURE_COUNT = ELEMENT_FEATURE_COUNT + 9;
+  int ECOSYSTEM_FEATURE_COUNT = ELEMENT_FEATURE_COUNT + 8;
 
   /**
    * The meta object id for the '{@link fr.irit.smac.may.speadl.speadl.impl.SpeciesImpl <em>Species</em>}' class.
@@ -1222,17 +1213,6 @@ public interface SpeadlPackage extends EPackage
   EClass getEcosystem();
 
   /**
-   * Returns the meta object for the containment reference '{@link fr.irit.smac.may.speadl.speadl.Ecosystem#getImplementedBy <em>Implemented By</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Implemented By</em>'.
-   * @see fr.irit.smac.may.speadl.speadl.Ecosystem#getImplementedBy()
-   * @see #getEcosystem()
-   * @generated
-   */
-  EReference getEcosystem_ImplementedBy();
-
-  /**
    * Returns the meta object for class '{@link fr.irit.smac.may.speadl.speadl.Species <em>Species</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1698,14 +1678,6 @@ public interface SpeadlPackage extends EPackage
      * @generated
      */
     EClass ECOSYSTEM = eINSTANCE.getEcosystem();
-
-    /**
-     * The meta object literal for the '<em><b>Implemented By</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference ECOSYSTEM__IMPLEMENTED_BY = eINSTANCE.getEcosystem_ImplementedBy();
 
     /**
      * The meta object literal for the '{@link fr.irit.smac.may.speadl.speadl.impl.SpeciesImpl <em>Species</em>}' class.

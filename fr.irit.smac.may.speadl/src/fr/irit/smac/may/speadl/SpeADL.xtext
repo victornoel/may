@@ -58,7 +58,7 @@ Ecosystem:
 	"ecosystem" name=ValidID
 	("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
 	("specializes" specializes=JvmParameterizedTypeReference)?
-	implementedBy=ImplementedBy?
+	//implementedBy=ImplementedBy?
 	"{"
 		(	provides+=ProvidedPort
 		|	requires+=RequiredPort
@@ -71,7 +71,7 @@ Component returns Ecosystem:
 	"component" name=ValidID
 	("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
 	("specializes" specializes=JvmParameterizedTypeReference)?
-	implementedBy=ImplementedBy?
+	//implementedBy=ImplementedBy?
 	"{"
 		(	provides+=ProvidedPort
 		|	requires+=RequiredPort

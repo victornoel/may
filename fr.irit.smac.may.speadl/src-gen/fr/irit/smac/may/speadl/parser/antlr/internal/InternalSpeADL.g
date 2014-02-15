@@ -422,47 +422,6 @@ ruleFeature returns [EObject current=null]
 
 
 
-// Entry rule entryRuleImplementedBy
-entryRuleImplementedBy returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getImplementedByRule()); }
-	 iv_ruleImplementedBy=ruleImplementedBy 
-	 { $current=$iv_ruleImplementedBy.current; } 
-	 EOF 
-;
-
-// Rule ImplementedBy
-ruleImplementedBy returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-(	otherlv_0='implementedBy' 
-    {
-    	newLeafNode(otherlv_0, grammarAccess.getImplementedByAccess().getImplementedByKeyword_0());
-    }
-(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getImplementedByAccess().getRefJvmParameterizedTypeReferenceParserRuleCall_1_0()); 
-	    }
-		lv_ref_1_0=ruleJvmParameterizedTypeReference		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getImplementedByRule());
-	        }
-       		set(
-       			$current, 
-       			"ref",
-        		lv_ref_1_0, 
-        		"JvmParameterizedTypeReference");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-))
-;
-
-
-
 
 
 // Entry rule entryRuleEcosystem
@@ -571,41 +530,23 @@ ruleEcosystem returns [EObject current=null]
 	    }
 
 )
-))?(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getEcosystemAccess().getImplementedByImplementedByParserRuleCall_4_0()); 
-	    }
-		lv_implementedBy_9_0=ruleImplementedBy		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getEcosystemRule());
-	        }
-       		set(
-       			$current, 
-       			"implementedBy",
-        		lv_implementedBy_9_0, 
-        		"ImplementedBy");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-)?	otherlv_10='{' 
+))?	otherlv_9='{' 
     {
-    	newLeafNode(otherlv_10, grammarAccess.getEcosystemAccess().getLeftCurlyBracketKeyword_5());
+    	newLeafNode(otherlv_9, grammarAccess.getEcosystemAccess().getLeftCurlyBracketKeyword_4());
     }
 ((
 (
 		{ 
-	        newCompositeNode(grammarAccess.getEcosystemAccess().getProvidesProvidedPortParserRuleCall_6_0_0()); 
+	        newCompositeNode(grammarAccess.getEcosystemAccess().getProvidesProvidedPortParserRuleCall_5_0_0()); 
 	    }
-		lv_provides_11_0=ruleProvidedPort		{
+		lv_provides_10_0=ruleProvidedPort		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getEcosystemRule());
 	        }
        		add(
        			$current, 
        			"provides",
-        		lv_provides_11_0, 
+        		lv_provides_10_0, 
         		"ProvidedPort");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -615,16 +556,16 @@ ruleEcosystem returns [EObject current=null]
     |(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getEcosystemAccess().getRequiresRequiredPortParserRuleCall_6_1_0()); 
+	        newCompositeNode(grammarAccess.getEcosystemAccess().getRequiresRequiredPortParserRuleCall_5_1_0()); 
 	    }
-		lv_requires_12_0=ruleRequiredPort		{
+		lv_requires_11_0=ruleRequiredPort		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getEcosystemRule());
 	        }
        		add(
        			$current, 
        			"requires",
-        		lv_requires_12_0, 
+        		lv_requires_11_0, 
         		"RequiredPort");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -634,16 +575,16 @@ ruleEcosystem returns [EObject current=null]
     |(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getEcosystemAccess().getPartsComponentPartParserRuleCall_6_2_0()); 
+	        newCompositeNode(grammarAccess.getEcosystemAccess().getPartsComponentPartParserRuleCall_5_2_0()); 
 	    }
-		lv_parts_13_0=ruleComponentPart		{
+		lv_parts_12_0=ruleComponentPart		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getEcosystemRule());
 	        }
        		add(
        			$current, 
        			"parts",
-        		lv_parts_13_0, 
+        		lv_parts_12_0, 
         		"ComponentPart");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -653,24 +594,24 @@ ruleEcosystem returns [EObject current=null]
     |(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getEcosystemAccess().getSpeciesSpeciesParserRuleCall_6_3_0()); 
+	        newCompositeNode(grammarAccess.getEcosystemAccess().getSpeciesSpeciesParserRuleCall_5_3_0()); 
 	    }
-		lv_species_14_0=ruleSpecies		{
+		lv_species_13_0=ruleSpecies		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getEcosystemRule());
 	        }
        		add(
        			$current, 
        			"species",
-        		lv_species_14_0, 
+        		lv_species_13_0, 
         		"Species");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))*	otherlv_15='}' 
+))*	otherlv_14='}' 
     {
-    	newLeafNode(otherlv_15, grammarAccess.getEcosystemAccess().getRightCurlyBracketKeyword_7());
+    	newLeafNode(otherlv_14, grammarAccess.getEcosystemAccess().getRightCurlyBracketKeyword_6());
     }
 )
 ;
@@ -785,41 +726,23 @@ ruleComponent returns [EObject current=null]
 	    }
 
 )
-))?(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getComponentAccess().getImplementedByImplementedByParserRuleCall_4_0()); 
-	    }
-		lv_implementedBy_9_0=ruleImplementedBy		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getComponentRule());
-	        }
-       		set(
-       			$current, 
-       			"implementedBy",
-        		lv_implementedBy_9_0, 
-        		"ImplementedBy");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-)?	otherlv_10='{' 
+))?	otherlv_9='{' 
     {
-    	newLeafNode(otherlv_10, grammarAccess.getComponentAccess().getLeftCurlyBracketKeyword_5());
+    	newLeafNode(otherlv_9, grammarAccess.getComponentAccess().getLeftCurlyBracketKeyword_4());
     }
 ((
 (
 		{ 
-	        newCompositeNode(grammarAccess.getComponentAccess().getProvidesProvidedPortParserRuleCall_6_0_0()); 
+	        newCompositeNode(grammarAccess.getComponentAccess().getProvidesProvidedPortParserRuleCall_5_0_0()); 
 	    }
-		lv_provides_11_0=ruleProvidedPort		{
+		lv_provides_10_0=ruleProvidedPort		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getComponentRule());
 	        }
        		add(
        			$current, 
        			"provides",
-        		lv_provides_11_0, 
+        		lv_provides_10_0, 
         		"ProvidedPort");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -829,16 +752,16 @@ ruleComponent returns [EObject current=null]
     |(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getComponentAccess().getRequiresRequiredPortParserRuleCall_6_1_0()); 
+	        newCompositeNode(grammarAccess.getComponentAccess().getRequiresRequiredPortParserRuleCall_5_1_0()); 
 	    }
-		lv_requires_12_0=ruleRequiredPort		{
+		lv_requires_11_0=ruleRequiredPort		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getComponentRule());
 	        }
        		add(
        			$current, 
        			"requires",
-        		lv_requires_12_0, 
+        		lv_requires_11_0, 
         		"RequiredPort");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -848,24 +771,24 @@ ruleComponent returns [EObject current=null]
     |(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getComponentAccess().getPartsComponentPartParserRuleCall_6_2_0()); 
+	        newCompositeNode(grammarAccess.getComponentAccess().getPartsComponentPartParserRuleCall_5_2_0()); 
 	    }
-		lv_parts_13_0=ruleComponentPart		{
+		lv_parts_12_0=ruleComponentPart		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getComponentRule());
 	        }
        		add(
        			$current, 
        			"parts",
-        		lv_parts_13_0, 
+        		lv_parts_12_0, 
         		"ComponentPart");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-))*	otherlv_14='}' 
+))*	otherlv_13='}' 
     {
-    	newLeafNode(otherlv_14, grammarAccess.getComponentAccess().getRightCurlyBracketKeyword_7());
+    	newLeafNode(otherlv_13, grammarAccess.getComponentAccess().getRightCurlyBracketKeyword_6());
     }
 )
 ;
