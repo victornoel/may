@@ -16,30 +16,42 @@
 		<plugins>
 			<!-- Clean the src-gen folders of the ui and test project. The Xtext generator 
 				will create files in those directories during generation. The ui and test 
-				project will *not* clean those directories later. -->
+				project will *not* clean those directories later. It is disabled because 
+				we want them to be versionned: note that src-gen and model are cleaned by 
+				GenerateSpeADL.mwe2 before generation so it is ok. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>${basedir}/src-gen</directory>
-						</fileset>
-						<fileset>
-							<directory>${basedir}/xtend-gen</directory>
-						</fileset>
-						<fileset>
-							<directory>${basedir}/model</directory>
-						</fileset>
-						<!-- clean ui plugin as well -->
-						<fileset>
-							<directory>${basedir}/../${project.artifactId}.ui/src-gen</directory>
-						</fileset>
-						<fileset>
-							<directory>${basedir}/../${project.artifactId}.ui/xtend-gen</directory>
-						</fileset>
-					</filesets>
-				</configuration>
+				<executions>
+					<execution>
+						<!-- hack in order for the file not to be removed on clean but only 
+							prior to code generation from xtend-maven-plugin
+							and exec-maven-plugin -->
+						<phase>initialize</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>${basedir}/src-gen</directory>
+								</fileset>
+								<fileset>
+									<directory>${basedir}/xtend-gen</directory>
+								</fileset>
+								<fileset>
+									<directory>${basedir}/model</directory>
+								</fileset>
+								<fileset>
+									<directory>${basedir}/../${project.artifactId}.ui/src-gen</directory>
+								</fileset>
+								<fileset>
+									<directory>${basedir}/../${project.artifactId}.ui/xtend-gen</directory>
+								</fileset>
+							</filesets>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -80,5 +92,40 @@
 				<artifactId>xtend-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-clean-plugin
+										</artifactId>
+										<versionRange>
+											[2.5,)
+										</versionRange>
+										<goals>
+											<goal>clean</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 </project>

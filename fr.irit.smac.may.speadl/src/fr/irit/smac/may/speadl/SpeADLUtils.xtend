@@ -123,13 +123,13 @@ class SpeADLUtils {
 	}
 	
 	def getParameterizedTypeRefWith(JvmType type, List<JvmTypeParameter> typeParameters) {
-		if (type == null) return null
-		type.createTypeRef(typeParameters.map[createTypeRef]) as JvmParameterizedTypeReference
+		if (type == null) null
+		else type.createTypeRef(typeParameters.map[createTypeRef])
 	}
 	
 	def getTypeRef(JvmType type) {
-		if (type == null) return null
-		type.createTypeRef as JvmParameterizedTypeReference
+		if (type == null) null
+		else type.createTypeRef
 	}
 	
 	def hasCycleInHierarchy(Ecosystem ecosystem) {

@@ -240,35 +240,31 @@ public class SpeADLUtils {
   }
   
   public JvmParameterizedTypeReference getParameterizedTypeRefWith(final JvmType type, final List<JvmTypeParameter> typeParameters) {
-    JvmParameterizedTypeReference _xblockexpression = null;
-    {
-      boolean _equals = Objects.equal(type, null);
-      if (_equals) {
-        return null;
-      }
+    JvmParameterizedTypeReference _xifexpression = null;
+    boolean _equals = Objects.equal(type, null);
+    if (_equals) {
+      _xifexpression = null;
+    } else {
       final Function1<JvmTypeParameter,JvmParameterizedTypeReference> _function = new Function1<JvmTypeParameter,JvmParameterizedTypeReference>() {
         public JvmParameterizedTypeReference apply(final JvmTypeParameter it) {
           return SpeADLUtils.this._typeReferences.createTypeRef(it);
         }
       };
       List<JvmParameterizedTypeReference> _map = ListExtensions.<JvmTypeParameter, JvmParameterizedTypeReference>map(typeParameters, _function);
-      JvmParameterizedTypeReference _createTypeRef = this._typeReferences.createTypeRef(type, ((JvmTypeReference[])Conversions.unwrapArray(_map, JvmTypeReference.class)));
-      _xblockexpression = ((JvmParameterizedTypeReference) _createTypeRef);
+      _xifexpression = this._typeReferences.createTypeRef(type, ((JvmTypeReference[])Conversions.unwrapArray(_map, JvmTypeReference.class)));
     }
-    return _xblockexpression;
+    return _xifexpression;
   }
   
   public JvmParameterizedTypeReference getTypeRef(final JvmType type) {
-    JvmParameterizedTypeReference _xblockexpression = null;
-    {
-      boolean _equals = Objects.equal(type, null);
-      if (_equals) {
-        return null;
-      }
-      JvmParameterizedTypeReference _createTypeRef = this._typeReferences.createTypeRef(type);
-      _xblockexpression = ((JvmParameterizedTypeReference) _createTypeRef);
+    JvmParameterizedTypeReference _xifexpression = null;
+    boolean _equals = Objects.equal(type, null);
+    if (_equals) {
+      _xifexpression = null;
+    } else {
+      _xifexpression = this._typeReferences.createTypeRef(type);
     }
-    return _xblockexpression;
+    return _xifexpression;
   }
   
   public boolean hasCycleInHierarchy(final Ecosystem ecosystem) {
