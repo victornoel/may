@@ -12,8 +12,8 @@ Release procedure:
     -> hg tag v2.1.0
 
  * Do the release
-  * Compile, install in the local repository and deploy (the install is needed for the deploy to work after because of a bug in tycho repository which clean when deploy is called)
-    -> mvn install deploy
+  * Compile, install in the local repository and deploy (the install is needed for the deploy to work after because of a bug in tycho repository which clean when deploy is called, and thus installed artefacts are used for deployment)
+    -> mvn package install deploy
     
  * Increment for development
   * Clean everything
