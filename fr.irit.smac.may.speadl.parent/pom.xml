@@ -10,7 +10,7 @@
 
 	<groupId>fr.irit.smac.may</groupId>
 	<artifactId>fr.irit.smac.may.speadl.parent</artifactId>
-	<version>3.2.3</version>
+	<version>3.2.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
