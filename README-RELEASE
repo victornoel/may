@@ -13,7 +13,9 @@ Release procedure:
 
  * Do the release
   * Compile, install in the local repository and deploy (the install is needed for the deploy to work after because of a bug in tycho repository which clean when deploy is called, and thus installed artefacts are used for deployment)
-    -> mvn package install deploy
+    -> mvn install deploy
+
+(if this fail, you can go in the updatesite project and run mvn install deploy)
     
  * Increment for development
   * Clean everything
