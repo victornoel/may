@@ -9,10 +9,8 @@ import fr.irit.smac.may.speadl.speadl.PortRef
 import fr.irit.smac.may.speadl.speadl.RequiredPort
 import fr.irit.smac.may.speadl.speadl.Species
 import fr.irit.smac.may.speadl.speadl.SpeciesPart
-import java.util.List
 import org.apache.log4j.Logger
 import org.eclipse.xtext.common.types.JvmGenericType
-import org.eclipse.xtext.common.types.JvmTypeParameter
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.common.types.util.TypeReferences
 import org.eclipse.xtext.naming.IQualifiedNameProvider
@@ -52,29 +50,28 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 	@Inject extension TypeReferenceSerializer
 	
 	def dispatch void infer(Ecosystem ecosystem, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		val clazz = ecosystem.toClass(ecosystem.fullyQualifiedName) [c|
-			c.abstract = true
-			c.typeParameters += ecosystem.typeParameters.map[cloneWithProxies]
-			c.initNowAbstractComponent(ecosystem)
-			
-			for(species: ecosystem.species) {
-				newClass(species.name) [s|
-					s.abstract = true
-					s.static = true
-					s.typeParameters += c.typeParameters.map[cloneEObjectWithProxies]
-					s.initNowAbstractComponent(species)
-					c.members += s
-				]
-			}
-		]
-		
-		acceptor.accept(clazz).initializeLater [ c |
+		acceptor.accept(
+			ecosystem.toClass(ecosystem.fullyQualifiedName) [c|
+				c.abstract = true
+				c.typeParameters += ecosystem.typeParameters.map[cloneWithProxies]
+				c.initNowAbstractComponent(ecosystem)
+				
+				for(species: ecosystem.species) {
+					c.members += newClass(species.name) [s|
+						s.abstract = true
+						s.static = true
+						s.typeParameters += c.typeParameters.map[cloneEObjectWithProxies]
+						s.initNowAbstractComponent(species)
+					]
+				}
+			]
+		).initializeLater [ c |
 			try {
-				initLaterAbstractComponent(c, ecosystem)
+				ecosystem.initLaterAbstractComponent(c, c)
 				for(species: ecosystem.species) {
 					val sc = c.getInnerType(species.name)
 					if (sc != null) { // can happen if there is an error and the species does not exist
-						initLaterAbstractComponent(sc, species)
+						species.initLaterAbstractComponent(sc, c)
 					}
 				}
 			} catch (Exception e) {
@@ -119,72 +116,58 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		
 	}
 	
-	def void initLaterAbstractComponent(JvmGenericType c, AbstractComponent comp) {
+	def void initLaterAbstractComponent(AbstractComponent comp, JvmGenericType compClass, JvmGenericType parametersHolder) {
+
+		val myTypeParameters = compClass.typeParameters
 		
-		// all the references to typeParameters in the SpeADL are
-		// to those inferred for the ecosystem
-		val referencedTypeParameters = switch comp {
-			Ecosystem : c.typeParameters
-			Species : comp.parentEcosystem.associatedJvmClass.typeParameters
-		}
+		val containerRef = parametersHolder.getParameterizedTypeRefWith(myTypeParameters)
+		val substitutor = containerRef.getSubstitutor(comp.eResource)
 		
-		val myTypeParameters = c.typeParameters
-		val myTypeParametersRefs = myTypeParameters.map[createTypeRef]
+		// this will be used in two cases:
+		// replace parameters for the inferred class of the species
+		// replace parameters for the inferred subclasses
+		// -> there is a useless replacement in the current method
+		// for ecosystems (since in that case referencedTypeParameters == myTypeParameters)
+		// TODO use a lambda for substituting and avoid useless substitution => does not work well…
+		// TODO see if there is something that can take care of the constraints…
 		
 		for(co: myTypeParameters.map[constraints].flatten) {
-			val tr = co.typeReference.substituteTypeParameters(referencedTypeParameters, myTypeParametersRefs, comp.eResource)
+			val tr = co.typeReference.substituteWith(substitutor)
 			co.setTypeReference(tr)
 		}
-		
-//		var JvmGenericType requirest
-		
-//		if (comp.specializes.useless) {
-//			requires = c.getInnerType(REQUIRES_INTERFACE)
-//			provides = c.getInnerType(PROVIDES_INTERFACE)
-//			componentIf = c.getInnerType(COMPONENT_INTERFACE)
-//			initRequires(comp, referencedTypeParameters, requires)
-//			initProvides(comp, referencedTypeParameters, provides)
-//			initComponent(comp, referencedTypeParameters, componentIf, provides)
-//		} else {
-//			val superType = comp.specializes.substituteTypeParameters(referencedTypeParameters, myTypeParameters, comp.eResource)
-//			c.superTypes += superType
-//			requires = superType.type.getInnerType(REQUIRES_INTERFACE)
-//			provides = superType.type.getInnerType(PROVIDES_INTERFACE)
-//			componentIf = superType.type.getInnerType(COMPONENT_INTERFACE)
-//		}
 
 		if (!comp.specializes.useless) {
-			val superType = comp.specializes.substituteTypeParameters(referencedTypeParameters, myTypeParametersRefs, comp.eResource)
-			c.superTypes += superType
+			val superType = comp.specializes.substituteWith(substitutor)
+			compClass.superTypes += superType
 		}
-
-		val requiresRef = if (!comp.specializes.useless) {
-			val superType = comp.specializes.substituteTypeParameters(referencedTypeParameters, myTypeParametersRefs, comp.eResource)
-			superType.rootSupertype.getInnerTypeReference(REQUIRES_INTERFACE)
-		} else {
-			val requires = c.getInnerType(REQUIRES_INTERFACE)
-			initRequires(comp, referencedTypeParameters, requires)
-			requires.getParameterizedTypeRefWith(myTypeParameters)
-		}
-
-		val parts = c.getInnerType(PARTS_INTERFACE)
-		val componentClass = c.getInnerType(COMPONENT_CLASS)
-		val provides = c.getInnerType(PROVIDES_INTERFACE)
-		val componentIf = c.getInnerType(COMPONENT_INTERFACE)
 		
-		initProvides(comp, referencedTypeParameters, provides)
-		initComponent(comp, referencedTypeParameters, componentIf, provides)
-		initParts(comp, referencedTypeParameters, parts)
-		initComponentImpl(comp, referencedTypeParameters, c, componentClass)
+		val parts = compClass.getInnerType(PARTS_INTERFACE)
+		val componentClass = compClass.getInnerType(COMPONENT_CLASS)
+		val provides = compClass.getInnerType(PROVIDES_INTERFACE)
+		val componentIf = compClass.getInnerType(COMPONENT_INTERFACE)
+		
+		initProvides(comp, parametersHolder, provides)
+		initComponent(comp, parametersHolder, componentIf, provides)
+		initParts(comp, parametersHolder, parts)
+		initComponentImpl(comp, parametersHolder, componentClass, compClass)
 		
 		// they must be cloned before being directly assigned to an element of an EObject!
+		// TODO do they??
 		val componentClassRef = componentClass.getParameterizedTypeRefWith(myTypeParameters)
 		val componentIfRef = componentIf.getParameterizedTypeRefWith(myTypeParameters)
 		val providesRef = provides.getParameterizedTypeRefWith(myTypeParameters)
-		//val requiresRef = requires.getParameterizedTypeRefWith(myTypeParameters)
 		val partsRef = parts.getParameterizedTypeRefWith(myTypeParameters)
 		
-		c.members += newField("init", Boolean.TYPE.getTypeForName(c)) [
+		val requiresRef = if (!comp.specializes.useless) {
+			val superType = comp.specializes.substituteWith(substitutor)
+			superType.rootSupertype.getInnerTypeReference(REQUIRES_INTERFACE)
+		} else {
+			val requires = compClass.getInnerType(REQUIRES_INTERFACE)
+			initRequires(comp, parametersHolder, requires)
+			requires.getParameterizedTypeRefWith(myTypeParameters)
+		}
+		
+		compClass.members += newField("init", Boolean.TYPE.getTypeForName(compClass)) [
 			initializer = [append('''false;''')]
 			visibility = JvmVisibility.PRIVATE
 			documentation = '''
@@ -194,17 +177,17 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			'''
 		]
 		
-		c.members += newField("started", Boolean.TYPE.getTypeForName(c)) [
+		compClass.members += newField("started", Boolean.TYPE.getTypeForName(compClass)) [
 			initializer = [append('''false;''')]
 			visibility = JvmVisibility.PRIVATE
 			documentation = "Used to check that the component is not started by hand."
 		]
 		
-		c.members += newField("selfComponent", componentClassRef)[]
+		compClass.members += newField("selfComponent", componentClassRef)[]
 		
-		c.members += newMethod("start", Void.TYPE.getTypeForName(c)) [
+		compClass.members += newMethod("start", Void.TYPE.getTypeForName(compClass)) [
 			if (!comp.specializes.useless) {
-				annotations += c.toAnnotation(Override)
+				annotations += compClass.toAnnotation(Override)
 			}
 			visibility = JvmVisibility.PROTECTED
 			documentation = '''
@@ -220,9 +203,9 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			]
 		]
 		
-		c.members += newMethod("provides", providesRef) [
+		compClass.members += newMethod("provides", providesRef) [
 			if (!comp.specializes.useless) {
-				annotations += c.toAnnotation(Override)
+				annotations += compClass.toAnnotation(Override)
 			}
 			visibility = JvmVisibility.PROTECTED
 			documentation = '''
@@ -241,7 +224,13 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		
 		for (port : comp.provides) {
 			if (port.bound == null) {
-				c.members += newMethod("make_" + port.name, port.typeReference.substituteTypeParameters(referencedTypeParameters, myTypeParametersRefs, comp.eResource)) [
+				
+				compClass.members += newMethod("make_" + port.name,
+					port.typeReference.substituteWith(substitutor)
+				) [
+					if (port.overridedProvidedPortTypeRef != null) {
+						annotations += compClass.toAnnotation(Override)
+					}
 					abstract = true
 					visibility = JvmVisibility.PROTECTED
 					documentation = '''
@@ -252,9 +241,9 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			}
 		}
 		
-		c.members += newMethod("requires", requiresRef) [
+		compClass.members += newMethod("requires", requiresRef) [
 			if (!comp.specializes.useless) {
-				annotations += c.toAnnotation(Override)
+				annotations += compClass.toAnnotation(Override)
 			}
 			visibility = JvmVisibility.PROTECTED
 			documentation = '''
@@ -271,9 +260,9 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			]
 		]
 		
-		c.members += newMethod("parts", partsRef) [
+		compClass.members += newMethod("parts", partsRef) [
 			if (!comp.specializes.useless) {
-				annotations += c.toAnnotation(Override)
+				annotations += compClass.toAnnotation(Override)
 			}
 			visibility = JvmVisibility.PROTECTED
 			documentation = '''
@@ -290,10 +279,10 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		]
 		
 		for (part : comp.parts) {
-			val ptr = part.typeReference.substituteTypeParameters(referencedTypeParameters, myTypeParametersRefs, comp.eResource)
+			val ptr = part.typeReference.substituteWith(substitutor)
 			switch part {
 				ComponentPart: {
-					c.members += newMethod("make_"+part.name, ptr) [
+					compClass.members += newMethod("make_"+part.name, ptr) [
 						visibility = JvmVisibility.PROTECTED
 						abstract = true
 						documentation = '''
@@ -303,17 +292,17 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 					]
 				}
 				SpeciesPart: {
-					c.members += newField("use_"+part.name, ptr) []
+					compClass.members += newField("use_"+part.name, ptr) []
 				}
 			}
 		}
 		
-		c.members += newMethod("_newComponent", componentIfRef) [
+		compClass.members += newMethod("_newComponent", componentIfRef) [
 			if (!comp.specializes.useless) {
-				annotations += c.toAnnotation(Override)
+				annotations += compClass.toAnnotation(Override)
 			}
 			parameters += newParameter("b", requiresRef)
-			parameters += newParameter("start", Boolean.TYPE.getTypeForName(componentClass))
+			parameters += newParameter("start", Boolean.TYPE.getTypeForName(compClass))
 			
 			synchronized = true
 			documentation = '''
@@ -323,13 +312,13 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			body = [
 				append('''
 				if (this.init) {
-					throw new RuntimeException("This instance of «c.simpleName» has already been used to create a component, use another one.");
+					throw new RuntimeException("This instance of «compClass.simpleName» has already been used to create a component, use another one.");
 				}
 				this.init = true;
 				''')
-				componentClassRef.serialize(c, it)
+				componentClassRef.serialize(compClass, it)
 				append(''' «declareSyntheticVariable(m, "comp")» = new ''')
-				componentClassRef.serialize(c, it)
+				componentClassRef.serialize(compClass, it)
 				append('''(this, b, true);
 				''')
 				append('''
@@ -344,12 +333,12 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		switch comp {
 			Ecosystem: {
 				for(species: comp.species) {
-					val str = c.getInnerType(species.name).getParameterizedTypeRefWith(myTypeParameters)
+					val str = compClass.getInnerType(species.name).getParameterizedTypeRefWith(myTypeParameters)
 					
 					// careful about the type parameters (substitution)
 					// here it is ok, because we are in c and the reference to type params
 					// are to those of the inferred class which is c
-					c.members += newMethod("make_"+species.name, str) [
+					compClass.members += newMethod("make_"+species.name, str) [
 						parameters += species.parameters.map[p|newParameter(p.name, p.parameterType)]
 						visibility = JvmVisibility.PROTECTED
 						abstract = true
@@ -358,19 +347,19 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 						'''
 					]
 					
-					c.members += newMethod("_createImplementationOf"+species.name, str) [
+					compClass.members += newMethod("_createImplementationOf"+species.name, str) [
 						parameters += species.parameters.map[p|newParameter(p.name, p.parameterType)]
 						documentation = '''
 						Do not call, used by generated code.
 						'''
 						val m = it
 						body = [
-							str.serialize(c, it)
+							str.serialize(compClass, it)
 							append(''' «declareSyntheticVariable(m,"implem")» = make_«species.name»(«species.parameters.map[name].join(",")»);
 							''')
 							append('''
 							if («getName(m)» == null) {
-								throw new RuntimeException("make_«species.name»() in «c.qualifiedName» should not return null.");
+								throw new RuntimeException("make_«species.name»() in «compClass.qualifiedName» should not return null.");
 							}
 							assert «getName(m)».ecosystemComponent == null: "This is a bug.";
 							assert this.selfComponent != null: "This is a bug.";
@@ -388,7 +377,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 					]
 					
 					if (species.allRequires.empty) {
-						c.members += newMethod("new"+species.name, str.getInnerTypeReference(COMPONENT_INTERFACE)) [
+						compClass.members += newMethod("new"+species.name, str.getInnerTypeReference(COMPONENT_INTERFACE)) [
 							parameters += species.parameters.map[p|newParameter(p.name, p.parameterType)]
 							visibility = JvmVisibility.PROTECTED
 							documentation = '''
@@ -396,13 +385,13 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 							'''
 							val m = it
 							body = [
-								str.serialize(c, it)
+								str.serialize(compClass, it)
 								append(''' «declareSyntheticVariable(m, "implem")» = _createImplementationOf«species.name»(«species.parameters.map[name].join(",")»);
 								''')
 								append('''
 								return «getName(m)»._newComponent(new ''')
 								val i = str.getInnerTypeReference(REQUIRES_INTERFACE)
-								i.serialize(c, it)
+								i.serialize(compClass, it)
 								append('''() {},true);''')
 							]
 						]
@@ -410,9 +399,9 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				}
 				
 				if (comp.allRequires.empty) {
-					c.members += newMethod("newComponent", componentIfRef) [
+					compClass.members += newMethod("newComponent", componentIfRef) [
 						if (!comp.specializes.useless) {
-							annotations += c.toAnnotation(Override)
+							annotations += compClass.toAnnotation(Override)
 						}
 						documentation = '''
 						Use to instantiate a component from this implementation.
@@ -420,7 +409,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 						body = [
 							append('''
 							return this._newComponent(new ''')
-							requiresRef.serialize(c, it)
+							requiresRef.serialize(compClass, it)
 							append('''() {}, true);''')
 						]
 					]
@@ -430,8 +419,8 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			Species: {
 				val parentRef = comp.parentEcosystem.associatedJvmClass.getParameterizedTypeRefWith(myTypeParameters)
 				
-				c.members += newField("ecosystemComponent", parentRef.getInnerTypeReference(COMPONENT_CLASS)) []
-				c.members += newMethod("eco_provides", parentRef.getInnerTypeReference(PROVIDES_INTERFACE)) [
+				compClass.members += newField("ecosystemComponent", parentRef.getInnerTypeReference(COMPONENT_CLASS)) []
+				compClass.members += newMethod("eco_provides", parentRef.getInnerTypeReference(PROVIDES_INTERFACE)) [
 					visibility = JvmVisibility.PROTECTED
 					documentation = '''
 					This can be called by the species implementation to access the provided ports of its ecosystem.
@@ -444,8 +433,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 					]
 				]
 				
-				// TODO get the super super super
-				c.members += newMethod("eco_requires", parentRef.rootSupertype.getInnerTypeReference(REQUIRES_INTERFACE)) [
+				compClass.members += newMethod("eco_requires", parentRef.rootSupertype.getInnerTypeReference(REQUIRES_INTERFACE)) [
 					visibility = JvmVisibility.PROTECTED
 					documentation = '''
 					This can be called by the species implementation to access the required ports of its ecosystem.
@@ -457,7 +445,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 						''')
 					]
 				]
-				c.members += newMethod("eco_parts", parentRef.getInnerTypeReference(PARTS_INTERFACE)) [
+				compClass.members += newMethod("eco_parts", parentRef.getInnerTypeReference(PARTS_INTERFACE)) [
 					visibility = JvmVisibility.PROTECTED
 					documentation = '''
 					This can be called by the species implementation to access the parts of its ecosystem and their provided ports.
@@ -473,17 +461,20 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		}
 	}
 	
-	def initRequires(AbstractComponent comp, List<JvmTypeParameter> originalTypeParameters, JvmGenericType requires) {
+	def initRequires(AbstractComponent comp, JvmGenericType parametersHolder, JvmGenericType requires) {
+		
+		val containerRef = parametersHolder.getParameterizedTypeRefWith(requires.typeParameters)
+		val substitutor = containerRef.getSubstitutor(comp.eResource)
 		
 		val myTypeParametersRefs = requires.typeParameters.map[createTypeRef]
 		
 		for(c: requires.typeParameters.map[constraints].flatten) {
-			val tr = c.typeReference.substituteTypeParameters(originalTypeParameters, myTypeParametersRefs, comp.eResource)
+			val tr = c.typeReference.substituteWith(substitutor)
 			c.setTypeReference(tr)
 		}
 		
 		for (port : comp.requires) {
-			requires.members += newMethod(port.name, port.typeReference.substituteTypeParameters(originalTypeParameters, requires.typeParameters.map[createTypeRef], comp.eResource))[
+			requires.members += newMethod(port.name, port.typeReference.substituteWith(substitutor))[
 				documentation = '''
 				This can be called by the implementation to access this required port.
 				'''
@@ -491,22 +482,25 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		}
 	}
 	
-	def initProvides(AbstractComponent comp, List<JvmTypeParameter> originalTypeParameters, JvmGenericType provides) {
+	def initProvides(AbstractComponent comp, JvmGenericType parametersHolder, JvmGenericType provides) {
+		
+		val containerRef = parametersHolder.getParameterizedTypeRefWith(provides.typeParameters)
+		val substitutor = containerRef.getSubstitutor(comp.eResource)
 		
 		val myTypeParametersRefs = provides.typeParameters.map[createTypeRef]
 		
 		for(c: provides.typeParameters.map[constraints].flatten) {
-			val tr = c.typeReference.substituteTypeParameters(originalTypeParameters, myTypeParametersRefs, comp.eResource)
+			val tr = c.typeReference.substituteWith(substitutor)
 			c.setTypeReference(tr)
 		}
 		
 		if (!comp.specializes.useless) {
-			val nstr = comp.specializes.substituteTypeParameters(originalTypeParameters, myTypeParametersRefs, comp.eResource)
+			val nstr = comp.specializes.substituteWith(substitutor)
 			provides.superTypes += nstr.getInnerTypeReference(PROVIDES_INTERFACE)
 		}
 		
 		for (port : comp.provides) {
-			provides.members += newMethod(port.name, port.typeReference.substituteTypeParameters(originalTypeParameters, myTypeParametersRefs, comp.eResource)) [
+			provides.members += newMethod(port.name, port.typeReference.substituteWith(substitutor)) [
 				documentation = '''
 				This can be called to access the provided port.
 				'''
@@ -514,22 +508,25 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		}
 	}
 	
-	def initParts(AbstractComponent comp, List<JvmTypeParameter> originalTypeParameters, JvmGenericType parts) {
+	def initParts(AbstractComponent comp, JvmGenericType parametersHolder, JvmGenericType parts) {
+		
+		val containerRef = parametersHolder.getParameterizedTypeRefWith(parts.typeParameters)
+		val substitutor = containerRef.getSubstitutor(comp.eResource)
 		
 		val myTypeParametersRefs = parts.typeParameters.map[createTypeRef]
 		
 		for(c: parts.typeParameters.map[constraints].flatten) {
-			val tr = c.typeReference.substituteTypeParameters(originalTypeParameters, myTypeParametersRefs, comp.eResource)
+			val tr = c.typeReference.substituteWith(substitutor)
 			c.setTypeReference(tr)
 		}
 		
 		if (!comp.specializes.useless) {
-			val nstr = comp.specializes.substituteTypeParameters(originalTypeParameters, myTypeParametersRefs, comp.eResource)
+			val nstr = comp.specializes.substituteWith(substitutor)
 			parts.superTypes += nstr.getInnerTypeReference(PARTS_INTERFACE)
 		}
 		
 		for(part: comp.parts) {
-			val nptr = part.typeReference.substituteTypeParameters(originalTypeParameters, myTypeParametersRefs, comp.eResource)
+			val nptr = part.typeReference.substituteWith(substitutor)
 			parts.members += newMethod(part.name, nptr.getInnerTypeReference(COMPONENT_INTERFACE)) [
 				documentation = '''
 				This can be called by the implementation to access the part and its provided ports.
@@ -539,39 +536,43 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		}
 	}
 	
-	def initComponent(AbstractComponent comp, List<JvmTypeParameter> originalTypeParameters, JvmGenericType componentIf, JvmGenericType provides) {
+	def initComponent(AbstractComponent comp, JvmGenericType parametersHolder, JvmGenericType componentIf, JvmGenericType provides) {
+		
+		val containerRef = parametersHolder.getParameterizedTypeRefWith(componentIf.typeParameters)
+		val substitutor = containerRef.getSubstitutor(comp.eResource)
 		
 		val myTypeParametersRef = componentIf.typeParameters.map[createTypeRef]
 		
 		for(c: componentIf.typeParameters.map[constraints].flatten) {
-			val tr = c.typeReference.substituteTypeParameters(originalTypeParameters, myTypeParametersRef, comp.eResource)
+			val tr = c.typeReference.substituteWith(substitutor)
 			c.setTypeReference(tr)
 		}
 		
 		if (!comp.specializes.useless) {
-			val nstr = comp.specializes.substituteTypeParameters(originalTypeParameters, myTypeParametersRef, comp.eResource)
+			val nstr = comp.specializes.substituteWith(substitutor)
 			componentIf.superTypes += nstr.getInnerTypeReference(COMPONENT_INTERFACE)
 		}
 		
 		componentIf.superTypes += provides.getParameterizedTypeRefWith(componentIf.typeParameters)
 	}
 	
-	def initComponentImpl(AbstractComponent comp, List<JvmTypeParameter> originalTypeParameters, JvmGenericType implem, JvmGenericType componentClass) {
+	def initComponentImpl(AbstractComponent comp, JvmGenericType parametersHolder, JvmGenericType componentClass, JvmGenericType implem) {
 		
-		val myTypeParameters = componentClass.typeParameters
-		val myTypeParametersRefs = myTypeParameters.map[createTypeRef]
+		val containerRef = parametersHolder.getParameterizedTypeRefWith(componentClass.typeParameters)
+		val implemRef = implem.getParameterizedTypeRefWith(componentClass.typeParameters)
+		
+		val substitutor = containerRef.getSubstitutor(comp.eResource)
 		
 		for(c: componentClass.typeParameters.map[constraints].flatten) {
-			val tr = c.typeReference.substituteTypeParameters(originalTypeParameters, myTypeParametersRefs, comp.eResource)
+			val tr = c.typeReference.substituteWith(substitutor)
 			c.setTypeReference(tr)
 		}
 		
 		componentClass.static = true
 		
-		val implemRef = implem.getParameterizedTypeRefWith(myTypeParameters)
 		
 		if (!comp.specializes.useless) {
-			val nstr = comp.specializes.substituteTypeParameters(originalTypeParameters, myTypeParametersRefs, comp.eResource)
+			val nstr = comp.specializes.substituteWith(substitutor)
 			componentClass.superTypes += nstr.getInnerTypeReference(COMPONENT_CLASS)
 		}
 		
@@ -579,7 +580,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		componentClass.superTypes += implemRef.getInnerTypeReference(PARTS_INTERFACE)
 		
 		val requiresRef = if (!comp.specializes.useless) {
-			val nstr = comp.specializes.substituteTypeParameters(originalTypeParameters, myTypeParametersRefs, comp.eResource)
+			val nstr = comp.specializes.substituteWith(substitutor)
 			nstr.rootSupertype.getInnerTypeReference(REQUIRES_INTERFACE)
 		} else {
 			implemRef.getInnerTypeReference(REQUIRES_INTERFACE)
@@ -606,7 +607,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				''')
 				for (part : comp.parts) {
 					val tr = part.typeReference
-					val nptr = tr.substituteTypeParameters(originalTypeParameters, myTypeParametersRefs, comp.eResource)
+					val nptr = tr.substituteWith(substitutor)
 					val ctr = nptr.getInnerTypeReference(COMPONENT_CLASS)
 					append('''
 					assert this.«part.name» != null: "This is a bug.";
@@ -671,7 +672,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				«IF !comp.specializes.useless»
 				super.initProvidedPorts();
 				«ENDIF»
-				«FOR port : comp.provides.filter[bound == null]»
+				«FOR port : comp.provides.filter[bound == null && overridedProvidedPortTypeRef == null]»
 				assert this.«port.name» == null: "This is a bug.";
 				this.«port.name» = this.implementation.make_«port.name»();
 				if (this.«port.name» == null) {
@@ -711,29 +712,42 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		for (port : comp.provides) {
 			val bound = port.bound
 			
-			val ptr = port.typeReference.substituteTypeParameters(originalTypeParameters, myTypeParametersRefs, comp.eResource)
+			val ptr = port.typeReference.substituteWith(substitutor)
 			
-			if (bound == null) {
+			val isOverride = port.overridedProvidedPortTypeRef != null
+			
+			if (bound == null && !isOverride) {
 				componentClass.members += newField(port.name, ptr) []
 			}
 			
 			componentClass.members += newMethod(port.name, ptr) [
-				final = true
-				body = [
-					append('''return this.''')
-					if (bound == null) {
-						append(port.name)
-					} else {
-						appendPortRefCall(bound, comp instanceof Species)
-					}
-					append(";")
-				]
+				if (isOverride) {
+					annotations += componentClass.toAnnotation(Override)
+					body = [
+						append('''
+						// it's ok to cast because make_«port.name»()
+						// fill the parent class «port.name» field with the correct type
+						return (''')
+						ptr.serialize(componentClass, it)
+						append(''') super.«port.name»();''')
+					]
+				} else {
+					body = [
+						append('''return this.''')
+						if (bound == null) {
+							append(port.name)
+						} else {
+							appendPortRefCall(bound, comp instanceof Species)
+						}
+						append(";")
+					]
+				}
 			]
 		}
 		
 		for (part : comp.parts) {
 			val tr = part.typeReference
-			val nptr = tr.substituteTypeParameters(originalTypeParameters, myTypeParametersRefs, comp.eResource)
+			val nptr = tr.substituteWith(substitutor)
 			val ctr = nptr.getInnerTypeReference(COMPONENT_INTERFACE)
 			
 			componentClass.members += newField(part.name, ctr) []
@@ -756,7 +770,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				superTypes += nptr.rootSupertype.getInnerTypeReference(REQUIRES_INTERFACE)
 				for(binding: part.bindings) {
 					val bound = binding.to
-					val rt = binding.resolveTypeFrom.toJavaCompliantTypeReference.substituteTypeParameters(originalTypeParameters, myTypeParametersRefs, part.eResource)
+					val rt = binding.resolveTypeFrom.substituteWith(substitutor).toJavaCompliantTypeReference
 					members += newMethod(binding.from.name, rt) [
 						final = true
 						body = [

@@ -141,48 +141,18 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 			}
 		}
 	}
-	
-	/**
-	 * TODO
-	 *  - can add provide
-	 *  - can't wrongly override
-	 *  - 
-	 * 
-	 */
+		 
 	@Check
-	def checkNoNewProvWhenImpl(Ecosystem eco) {
-		if (!eco.specializes.useless) {
-			var index = 0
-			for(ProvidedPort p: eco.provides) {
-				error("Provides can't be declared in a specialising component", SpeadlPackage.Literals.ABSTRACT_COMPONENT__PROVIDES, index)
-				index = index + 1
+	def providesOverrideAreOk(ProvidedPort p) {
+		val typeTo = p.typeReference.toLightweightTypeReference(p.eResource)
+		val typeFrom = p.overridedProvidedPortTypeRef
+		
+		if(typeFrom != null && typeTo != null) {
+			if(!typeFrom.isAssignableFrom(typeTo)) {
+				error("Incompatible type override: " +typeFrom +" is not the same or a supertype of "+typeTo, SpeadlPackage.Literals.PORT__TYPE_REFERENCE)
 			}
 		}
 	}
-	
-//	@Check
-//	def checkNoNewProvWhenImpl2(Ecosystem eco) {
-//		val superInfra = eco.specializes
-//		if(superInfra != null) {
-//			val provides = eco.provides.map[name]
-//			val ecoOperations = eco.associatedJvmClass.resolvedOperations.declaredOperations.filter[provides.contains(declaration.simpleName)]
-//			val superInfraOperations = superInfra.type.associatedEcosystem.provides.map[associatedJvmOperation]
-//			
-//			ecoOperations.forEach[operation, index|
-//				var isOverridenWithoutProblem = false
-//				val ite = superInfraOperations.iterator
-//				while(ite.hasNext && !isOverridenWithoutProblem) {
-//					val superOperation = ite.next
-//					val result = operation.isOverridingOrImplementing(superOperation)
-//					isOverridenWithoutProblem = result.overridingOrImplementing && !result.hasProblems
-//				}
-//				
-//				if(!isOverridenWithoutProblem) {
-//					error("Provides can't be declared in a specialising component", SpeadlPackage.Literals.ABSTRACT_COMPONENT__PROVIDES, index)
-//				}
-//			]
-//		}
-//	}
 	
 	@Check
 	def checkNoNewReqWhenImpl(Ecosystem eco) {

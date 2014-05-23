@@ -46,17 +46,14 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.ListExtensions;
 import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner;
-import org.eclipse.xtext.xbase.typesystem.override.OverrideHelper;
-import org.eclipse.xtext.xbase.typesystem.override.ResolvedOperations;
 import org.eclipse.xtext.xbase.typesystem.references.ITypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightMergedBoundTypeArgument;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter;
-import org.eclipse.xtext.xbase.typesystem.references.ParameterizedTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.typesystem.util.ConstraintAwareTypeArgumentCollector;
 import org.eclipse.xtext.xbase.typesystem.util.StandardTypeParameterSubstitutor;
-import org.eclipse.xtext.xbase.typesystem.util.VarianceInfo;
+import org.eclipse.xtext.xbase.typesystem.util.TypeParameterSubstitutor;
 
 @SuppressWarnings("all")
 public class SpeADLUtils {
@@ -67,10 +64,6 @@ public class SpeADLUtils {
   @Inject
   @Extension
   private TypeReferences _typeReferences;
-  
-  @Inject
-  @Extension
-  private OverrideHelper _overrideHelper;
   
   @Inject
   private IElementIssueProvider.Factory issueProviderFactory;
@@ -162,9 +155,16 @@ public class SpeADLUtils {
       boolean _matched = false;
       if (!_matched) {
         if (r instanceof JvmParameterizedTypeReference) {
-          _matched=true;
+          EList<JvmTypeParameter> _typeParameters = iType.getTypeParameters();
+          int _size = _typeParameters.size();
           EList<JvmTypeReference> _arguments = ((JvmParameterizedTypeReference)r).getArguments();
-          _switchResult = this._typeReferences.createTypeRef(iType, ((JvmTypeReference[])Conversions.unwrapArray(_arguments, JvmTypeReference.class)));
+          int _size_1 = _arguments.size();
+          boolean _equals_2 = (_size == _size_1);
+          if (_equals_2) {
+            _matched=true;
+            EList<JvmTypeReference> _arguments_1 = ((JvmParameterizedTypeReference)r).getArguments();
+            _switchResult = this._typeReferences.createTypeRef(iType, ((JvmTypeReference[])Conversions.unwrapArray(_arguments_1, JvmTypeReference.class)));
+          }
         }
       }
       if (!_matched) {
@@ -228,13 +228,14 @@ public class SpeADLUtils {
           }
           if (_and) {
             _matched=true;
-            JvmParameterizedTypeReference _specializes_1 = comp.getSpecializes();
-            JvmType _type_1 = ((JvmParameterizedTypeReference)in).getType();
-            EList<JvmTypeParameter> _typeParameters = ((JvmGenericType) _type_1).getTypeParameters();
-            EList<JvmTypeReference> _arguments = ((JvmParameterizedTypeReference)in).getArguments();
-            Resource _eResource = comp.eResource();
-            JvmTypeReference _substituteTypeParameters = this.substituteTypeParameters(_specializes_1, _typeParameters, _arguments, _eResource);
-            _switchResult = this.rootSupertype(_substituteTypeParameters);
+            JvmTypeReference _xblockexpression_1 = null;
+            {
+              Resource _eResource = comp.eResource();
+              final StandardTypeParameterSubstitutor substitutor = this.getSubstitutor(in, _eResource);
+              JvmParameterizedTypeReference _specializes_1 = comp.getSpecializes();
+              _xblockexpression_1 = this.substituteWith(_specializes_1, substitutor);
+            }
+            _switchResult = _xblockexpression_1;
           }
         }
       }
@@ -246,62 +247,93 @@ public class SpeADLUtils {
     return _xblockexpression;
   }
   
-  public JvmTypeReference substituteTypeParameters(final JvmTypeReference in, final List<JvmTypeParameter> from, final List<? extends JvmTypeReference> to, final Resource context) {
-    JvmTypeReference _xblockexpression = null;
+  public LightweightTypeReference getOverridedProvidedPortTypeRef(final ProvidedPort p) {
+    LightweightTypeReference _switchResult = null;
+    EObject _eContainer = p.eContainer();
+    final EObject e = _eContainer;
+    boolean _matched = false;
+    if (!_matched) {
+      if (e instanceof Species) {
+        _matched=true;
+        return null;
+      }
+    }
+    if (!_matched) {
+      if (e instanceof Ecosystem) {
+        _matched=true;
+        String _name = p.getName();
+        _switchResult = this.getOverridedProvidedPortTypeRef(_name, ((Ecosystem)e));
+      }
+    }
+    return _switchResult;
+  }
+  
+  private LightweightTypeReference getOverridedProvidedPortTypeRef(final String name, final Ecosystem e) {
+    LightweightTypeReference _xblockexpression = null;
     {
-      boolean _equals = Objects.equal(in, null);
+      JvmParameterizedTypeReference _specializes = e.getSpecializes();
+      boolean _isUseless = this.isUseless(_specializes);
+      if (_isUseless) {
+        return null;
+      }
+      JvmParameterizedTypeReference _specializes_1 = e.getSpecializes();
+      JvmType _type = _specializes_1.getType();
+      final Ecosystem se = this.associatedEcosystem(_type);
+      boolean _equals = Objects.equal(se, null);
       if (_equals) {
         return null;
       }
-      JvmTypeReference _switchResult = null;
-      boolean _matched = false;
-      if (!_matched) {
-        if (in instanceof JvmParameterizedTypeReference) {
-          _matched=true;
-          JvmTypeReference _xblockexpression_1 = null;
-          {
-            final LightweightTypeReference str = this.toLightweightTypeReference(in, context);
-            if ((!(str instanceof ParameterizedTypeReference))) {
-              return in;
-            }
-            LightweightTypeReference _substituteTypeParameters = this.substituteTypeParameters(str, from, to);
-            _xblockexpression_1 = _substituteTypeParameters.toJavaCompliantTypeReference();
-          }
-          _switchResult = _xblockexpression_1;
+      JvmParameterizedTypeReference _specializes_2 = e.getSpecializes();
+      JvmType _type_1 = _specializes_2.getType();
+      final JvmGenericType sert = ((JvmGenericType) _type_1);
+      JvmParameterizedTypeReference _specializes_3 = e.getSpecializes();
+      Resource _eResource = se.eResource();
+      final StandardTypeParameterSubstitutor substitutor = this.getSubstitutor(_specializes_3, _eResource);
+      EList<ProvidedPort> _provides = se.getProvides();
+      final Function1<ProvidedPort, Boolean> _function = new Function1<ProvidedPort, Boolean>() {
+        public Boolean apply(final ProvidedPort p) {
+          String _name = p.getName();
+          return Boolean.valueOf(Objects.equal(_name, name));
         }
+      };
+      final ProvidedPort ov = IterableExtensions.<ProvidedPort>findFirst(_provides, _function);
+      LightweightTypeReference _xifexpression = null;
+      boolean _equals_1 = Objects.equal(ov, null);
+      if (_equals_1) {
+        _xifexpression = this.getOverridedProvidedPortTypeRef(name, se);
+      } else {
+        _xifexpression = this.substituteWith(
+          this.toLightweightTypeReference(ov.getTypeReference(), ov.eResource()), substitutor);
       }
-      if (!_matched) {
-        _switchResult = in;
-      }
-      _xblockexpression = _switchResult;
+      _xblockexpression = _xifexpression;
     }
     return _xblockexpression;
   }
   
-  public LightweightTypeReference substituteTypeParameters(final LightweightTypeReference in, final List<JvmTypeParameter> from, final List<? extends JvmTypeReference> to) {
-    LightweightTypeReference _xblockexpression = null;
+  public StandardTypeParameterSubstitutor getSubstitutor(final JvmTypeReference containerRef, final Resource context) {
+    LightweightTypeReference _lightweightTypeReference = this.toLightweightTypeReference(containerRef, context);
+    return this.getSubstitutor(_lightweightTypeReference);
+  }
+  
+  public StandardTypeParameterSubstitutor getSubstitutor(final LightweightTypeReference containerRef) {
+    StandardTypeParameterSubstitutor _xblockexpression = null;
     {
-      ITypeReferenceOwner _owner = in.getOwner();
-      final OwnedConverter converter = new OwnedConverter(_owner, false);
-      final Function1<JvmTypeParameter, LightweightMergedBoundTypeArgument> _function = new Function1<JvmTypeParameter, LightweightMergedBoundTypeArgument>() {
-        public LightweightMergedBoundTypeArgument apply(final JvmTypeParameter k) {
-          LightweightMergedBoundTypeArgument _xblockexpression = null;
-          {
-            int _indexOf = from.indexOf(k);
-            JvmTypeReference _get = to.get(_indexOf);
-            final LightweightTypeReference r = converter.toLightweightReference(_get);
-            _xblockexpression = new LightweightMergedBoundTypeArgument(r, VarianceInfo.INVARIANT);
-          }
-          return _xblockexpression;
-        }
-      };
-      final Map<JvmTypeParameter, LightweightMergedBoundTypeArgument> mapping = IterableExtensions.<JvmTypeParameter, LightweightMergedBoundTypeArgument>toInvertedMap(from, _function);
-      ITypeReferenceOwner _owner_1 = in.getOwner();
-      StandardTypeParameterSubstitutor _standardTypeParameterSubstitutor = new StandardTypeParameterSubstitutor(mapping, _owner_1);
-      final LightweightTypeReference res = _standardTypeParameterSubstitutor.substitute(in);
-      _xblockexpression = res;
+      ITypeReferenceOwner _owner = containerRef.getOwner();
+      ConstraintAwareTypeArgumentCollector _constraintAwareTypeArgumentCollector = new ConstraintAwareTypeArgumentCollector(_owner);
+      final Map<JvmTypeParameter, LightweightMergedBoundTypeArgument> mapping = _constraintAwareTypeArgumentCollector.getTypeParameterMapping(containerRef);
+      ITypeReferenceOwner _owner_1 = containerRef.getOwner();
+      _xblockexpression = new StandardTypeParameterSubstitutor(mapping, _owner_1);
     }
     return _xblockexpression;
+  }
+  
+  public JvmTypeReference substituteWith(final JvmTypeReference ref, final TypeParameterSubstitutor substitutor) {
+    LightweightTypeReference _substitute = substitutor.substitute(ref);
+    return _substitute.toJavaCompliantTypeReference();
+  }
+  
+  public LightweightTypeReference substituteWith(final LightweightTypeReference ref, final TypeParameterSubstitutor substitutor) {
+    return substitutor.substitute(ref);
   }
   
   public JvmParameterizedTypeReference getParameterizedTypeRefWith(final JvmType type, final List<JvmTypeParameter> typeParameters) {
@@ -474,21 +506,6 @@ public class SpeADLUtils {
     }
   }
   
-  public ResolvedOperations myResolvedOperations(final JvmGenericType type, final Resource context) {
-    ResolvedOperations _xblockexpression = null;
-    {
-      final StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(this.services, context);
-      final ParameterizedTypeReference contextType = new ParameterizedTypeReference(owner, type);
-      EList<JvmTypeParameter> _typeParameters = type.getTypeParameters();
-      for (final JvmTypeParameter typeParameter : _typeParameters) {
-        ParameterizedTypeReference _parameterizedTypeReference = new ParameterizedTypeReference(owner, typeParameter);
-        contextType.addTypeArgument(_parameterizedTypeReference);
-      }
-      _xblockexpression = this._overrideHelper.getResolvedOperations(contextType);
-    }
-    return _xblockexpression;
-  }
-  
   public boolean isUseless(final JvmTypeReference typeReference) {
     boolean _or = false;
     boolean _or_1 = false;
@@ -630,16 +647,8 @@ public class SpeADLUtils {
   }
   
   private LightweightTypeReference resolveType(final LightweightTypeReference tr, final LightweightTypeReference containerTypeRef) {
-    LightweightTypeReference _xblockexpression = null;
-    {
-      ITypeReferenceOwner _owner = containerTypeRef.getOwner();
-      ConstraintAwareTypeArgumentCollector _constraintAwareTypeArgumentCollector = new ConstraintAwareTypeArgumentCollector(_owner);
-      final Map<JvmTypeParameter, LightweightMergedBoundTypeArgument> mapping = _constraintAwareTypeArgumentCollector.getTypeParameterMapping(containerTypeRef);
-      ITypeReferenceOwner _owner_1 = containerTypeRef.getOwner();
-      StandardTypeParameterSubstitutor _standardTypeParameterSubstitutor = new StandardTypeParameterSubstitutor(mapping, _owner_1);
-      _xblockexpression = _standardTypeParameterSubstitutor.substitute(tr);
-    }
-    return _xblockexpression;
+    StandardTypeParameterSubstitutor _substitutor = this.getSubstitutor(containerTypeRef);
+    return _substitutor.substitute(tr);
   }
   
   public boolean modelElementHasError(final EObject e, final boolean ignoreContent, final Function1<? super Issue, ? extends Boolean> ignore, final boolean ignoreContentOfIgnored) {

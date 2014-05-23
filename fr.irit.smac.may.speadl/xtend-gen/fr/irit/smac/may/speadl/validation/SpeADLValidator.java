@@ -233,25 +233,25 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
     }
   }
   
-  /**
-   * TODO
-   *  - can add provide
-   *  - can't wrongly override
-   *  -
-   */
   @Check
-  public void checkNoNewProvWhenImpl(final Ecosystem eco) {
-    JvmParameterizedTypeReference _specializes = eco.getSpecializes();
-    boolean _isUseless = this._speADLUtils.isUseless(_specializes);
-    boolean _not = (!_isUseless);
-    if (_not) {
-      int index = 0;
-      EList<ProvidedPort> _provides = eco.getProvides();
-      for (final ProvidedPort p : _provides) {
-        {
-          this.error("Provides can\'t be declared in a specialising component", SpeadlPackage.Literals.ABSTRACT_COMPONENT__PROVIDES, index);
-          index = (index + 1);
-        }
+  public void providesOverrideAreOk(final ProvidedPort p) {
+    JvmParameterizedTypeReference _typeReference = p.getTypeReference();
+    Resource _eResource = p.eResource();
+    final LightweightTypeReference typeTo = this._speADLUtils.toLightweightTypeReference(_typeReference, _eResource);
+    final LightweightTypeReference typeFrom = this._speADLUtils.getOverridedProvidedPortTypeRef(p);
+    boolean _and = false;
+    boolean _notEquals = (!Objects.equal(typeFrom, null));
+    if (!_notEquals) {
+      _and = false;
+    } else {
+      boolean _notEquals_1 = (!Objects.equal(typeTo, null));
+      _and = _notEquals_1;
+    }
+    if (_and) {
+      boolean _isAssignableFrom = typeFrom.isAssignableFrom(typeTo);
+      boolean _not = (!_isAssignableFrom);
+      if (_not) {
+        this.error(((("Incompatible type override: " + typeFrom) + " is not the same or a supertype of ") + typeTo), SpeadlPackage.Literals.PORT__TYPE_REFERENCE);
       }
     }
   }
