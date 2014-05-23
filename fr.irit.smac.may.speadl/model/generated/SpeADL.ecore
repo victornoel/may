@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="speadl" nsURI="http://www.irit.fr/smac/may/speadl/SpeADL" nsPrefix="speadl">
   <eClassifiers xsi:type="ecore:EClass" name="Model">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="imports" eType="ecore:EClass ../../../org.eclipse.xtext.xbase/model/Xtype.ecore#//XImportSection"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="imports" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xtype.ecore#//XImportSection"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//Namespace" containment="true"/>
@@ -19,9 +19,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
         eType="#//Feature" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeParameters" upperBound="-1"
-        eType="ecore:EClass ../../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeParameter"
+        eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeParameter"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="specializes" eType="ecore:EClass ../../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="specializes" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="provides" upperBound="-1"
         eType="#//ProvidedPort" containment="true"/>
@@ -33,7 +33,7 @@
         eType="#//Species" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Port" eSuperTypes="#//ContentElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="typeReference" eType="ecore:EClass ../../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeReference" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContentElement">
@@ -45,11 +45,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Feature">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parameterType" eType="ecore:EClass ../../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ImplementedBy">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="ecore:EClass ../../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameterType" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Ecosystem" eSuperTypes="#//Element #//AbstractComponent"/>
@@ -60,7 +56,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RequiredPort" eSuperTypes="#//Port"/>
   <eClassifiers xsi:type="ecore:EClass" name="ComponentPart" eSuperTypes="#//Part">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="componentReference" eType="ecore:EClass ../../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="componentReference" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmParameterizedTypeReference"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SpeciesPart" eSuperTypes="#//Part">

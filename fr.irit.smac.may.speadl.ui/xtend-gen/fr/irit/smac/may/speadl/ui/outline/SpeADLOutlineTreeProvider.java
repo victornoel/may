@@ -70,7 +70,7 @@ public class SpeADLOutlineTreeProvider extends DefaultOutlineTreeProvider {
   
   public void _createChildren(final IOutlineNode parentNode, final Ecosystem modelElement) {
     EList<EObject> _eContents = modelElement.eContents();
-    final Function1<EObject,Boolean> _function = new Function1<EObject,Boolean>() {
+    final Function1<EObject, Boolean> _function = new Function1<EObject, Boolean>() {
       public Boolean apply(final EObject e) {
         boolean _or = false;
         EClass _contentElement = SpeadlPackage.eINSTANCE.getContentElement();
@@ -98,7 +98,7 @@ public class SpeADLOutlineTreeProvider extends DefaultOutlineTreeProvider {
   
   public void _createChildren(final IOutlineNode parentNode, final Species modelElement) {
     EList<EObject> _eContents = modelElement.eContents();
-    final Function1<EObject,Boolean> _function = new Function1<EObject,Boolean>() {
+    final Function1<EObject, Boolean> _function = new Function1<EObject, Boolean>() {
       public Boolean apply(final EObject e) {
         EClass _contentElement = SpeadlPackage.eINSTANCE.getContentElement();
         EClass _eClass = e.eClass();

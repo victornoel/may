@@ -4,7 +4,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
@@ -35,8 +34,7 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 	@Inject
 	private TypesFactory typesFactory;
 	
-	@Nullable 
-	public JvmGenericType newClass(@Nullable QualifiedName name, @Nullable Procedure1<? super JvmGenericType> initializer) {
+	public JvmGenericType newClass(QualifiedName name, Procedure1<? super JvmGenericType> initializer) {
 		return newClass(name != null ? name.toString() : null, initializer);
 	}
 	
@@ -54,8 +52,7 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 	 * @return a {@link JvmGenericType} representing a Java class of the given name, <code>null</code> 
 	 *            if sourceElement or name are <code>null</code>.
 	 */
-	@Nullable 
-	public JvmGenericType newClass(@Nullable String name, @Nullable Procedure1<? super JvmGenericType> initializer) {
+	public JvmGenericType newClass(String name, Procedure1<? super JvmGenericType> initializer) {
 		final JvmGenericType result = createJvmGenericType(name);
 		if (result == null)
 			return null;
@@ -76,9 +73,8 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 	 * 
 	 * @return a {@link JvmGenericType} representing a Java class of the given name, <code>null</code> 
 	 *            if sourceElement or name are <code>null</code>.
-	 */
-	@Nullable 
-	public JvmGenericType newInterface(@Nullable String name, @Nullable Procedure1<? super JvmGenericType> initializer) {
+	 */ 
+	public JvmGenericType newInterface(String name, Procedure1<? super JvmGenericType> initializer) {
 		final JvmGenericType result = createJvmGenericType(name);
 		if (result == null)
 			return null;
@@ -86,8 +82,7 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 		return initializeSafely(result, initializer);
 	}
 	
-	@Nullable 
-	protected JvmGenericType createJvmGenericType(@Nullable String name) {
+	protected JvmGenericType createJvmGenericType(String name) {
 		if (name == null)
 			return null;
 		Pair<String, String> fullName = splitQualifiedName(name);
@@ -105,8 +100,7 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 	 * 
 	 * @return a Java parameter given name, <code>null</code> if sourceElement or name are <code>null</code>.
 	 */
-	@Nullable 
-	public JvmFormalParameter newParameter(@Nullable String name, @Nullable JvmTypeReference typeRef) {
+	public JvmFormalParameter newParameter(String name, JvmTypeReference typeRef) {
 		if(name == null)
 			return null;
 		JvmFormalParameter result = typesFactory.createJvmFormalParameter();
@@ -126,8 +120,7 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 	 * 
 	 * @return a result representing a Java constructor with the given name, <code>null</code> if sourceElement is <code>null</code>.
 	 */
-	@Nullable 
-	public JvmConstructor newConstructor(@Nullable Procedure1<? super JvmConstructor> initializer) {
+	public JvmConstructor newConstructor(Procedure1<? super JvmConstructor> initializer) {
 		JvmConstructor constructor = typesFactory.createJvmConstructor();
 		constructor.setVisibility(JvmVisibility.PUBLIC);
 		return initializeSafely(constructor, initializer);
@@ -148,9 +141,8 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 	 * 
 	 * @return a result representing a Java method with the given name, <code>null</code> if sourceElement or name are <code>null</code>.
 	 */
-	@Nullable
-	public JvmOperation newMethod(@Nullable String name, @Nullable JvmTypeReference returnType,
-			@Nullable Procedure1<? super JvmOperation> initializer) {
+	public JvmOperation newMethod(String name, JvmTypeReference returnType,
+			Procedure1<? super JvmOperation> initializer) {
 		if(name == null) 
 			return null;
 		JvmOperation result = typesFactory.createJvmOperation();
@@ -160,8 +152,7 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 		return initializeSafely(result, initializer);
 	}
 	
-	@Nullable
-	public JvmOperation newMethod(@Nullable String name, @Nullable Procedure1<? super JvmOperation> initializer) {
+	public JvmOperation newMethod(String name, Procedure1<? super JvmOperation> initializer) {
 		if(name == null) 
 			return null;
 		JvmOperation result = typesFactory.createJvmOperation();
@@ -173,9 +164,8 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 	/**
 	 * Same as {@link #toField(EObject, String, JvmTypeReference)} but with an initializer passed as the last argument.
 	 */
-	@Nullable	
-	public JvmField newField(@Nullable String name, @Nullable JvmTypeReference typeRef, 
-			@Nullable Procedure1<? super JvmField> initializer) {
+	public JvmField newField(String name, JvmTypeReference typeRef, 
+			Procedure1<? super JvmField> initializer) {
 		if(name == null) 
 			return null;
 		JvmField result = typesFactory.createJvmField();
@@ -212,7 +202,7 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public EObject copy(@Nullable EObject eObject) {
+			public EObject copy(EObject eObject) {
 				EObject result = super.copy(eObject);
 				if (result instanceof JvmWildcardTypeReference) {
 					boolean upperBoundSeen = false;
@@ -255,8 +245,8 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
  	 * @param original the element to be cloned.
 	 * @return a clone of original associated with the original, <code>null</code> if original is <code>null</code>. 
 	 */
-	@Nullable 
-	public <T extends JvmIdentifiableElement> T cloneEObjectWithProxies(@Nullable T original) {
+	
+	public <T extends JvmIdentifiableElement> T cloneEObjectWithProxies(T original) {
 		if(original == null)
 			return null;
 		return cloneEObject(original);
@@ -270,8 +260,8 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 	 * @return a clone of typeRef, <code>null</code> if typeRef is <code>null</code> or a {@link JvmUnknownTypeReference} 
 	 *     if there is a problem with the typeRef. 
 	 */
-	@Nullable 
-	public JvmTypeReference cloneEObjectWithProxies(@Nullable JvmTypeReference typeRef) {
+	
+	public JvmTypeReference cloneEObjectWithProxies(JvmTypeReference typeRef) {
 		if(typeRef == null)
 			return null;
 		if (typeRef instanceof JvmParameterizedTypeReference && !typeRef.eIsProxy()

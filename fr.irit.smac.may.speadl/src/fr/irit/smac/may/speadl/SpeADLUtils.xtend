@@ -1,6 +1,7 @@
 package fr.irit.smac.may.speadl
 
 import com.google.inject.Inject
+import fr.irit.smac.may.speadl.jvmmodel.SpeADLJvmModelInferrer
 import fr.irit.smac.may.speadl.speadl.AbstractComponent
 import fr.irit.smac.may.speadl.speadl.Binding
 import fr.irit.smac.may.speadl.speadl.ComponentPart
@@ -14,20 +15,25 @@ import fr.irit.smac.may.speadl.speadl.RequiredPort
 import fr.irit.smac.may.speadl.speadl.Species
 import fr.irit.smac.may.speadl.speadl.SpeciesPart
 import java.util.List
+import java.util.Set
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmGenericType
+import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
 import org.eclipse.xtext.common.types.JvmType
 import org.eclipse.xtext.common.types.JvmTypeParameter
 import org.eclipse.xtext.common.types.JvmTypeReference
+import org.eclipse.xtext.common.types.JvmVoid
 import org.eclipse.xtext.common.types.util.TypeReferences
 import org.eclipse.xtext.diagnostics.Severity
 import org.eclipse.xtext.validation.Issue
 import org.eclipse.xtext.xbase.compiler.IElementIssueProvider
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations
 import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner
+import org.eclipse.xtext.xbase.typesystem.^override.OverrideHelper
+import org.eclipse.xtext.xbase.typesystem.references.ITypeReferenceOwner
 import org.eclipse.xtext.xbase.typesystem.references.LightweightMergedBoundTypeArgument
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter
@@ -36,12 +42,13 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.typesystem.util.ConstraintAwareTypeArgumentCollector
 import org.eclipse.xtext.xbase.typesystem.util.StandardTypeParameterSubstitutor
 import org.eclipse.xtext.xbase.typesystem.util.VarianceInfo
-import java.util.Set
+import java.util.ArrayList
 
 class SpeADLUtils {
 	
 	@Inject extension IJvmModelAssociations
 	@Inject extension TypeReferences
+	@Inject extension OverrideHelper
 	
 	@Inject IElementIssueProvider.Factory issueProviderFactory
 	@Inject CommonTypeComputationServices services
@@ -56,6 +63,18 @@ class SpeADLUtils {
 	
 	def associatedEcosystem(JvmType type) {
 		type.primarySourceElement as Ecosystem
+	}
+	
+	def associatedJvmOperation(Port p) {
+		p.jvmElements.head as JvmOperation
+	}
+	
+	def associatedProvidedPort(JvmOperation o) {
+		o.primarySourceElement as ProvidedPort
+	}
+	
+	def associatedRequiredPort(JvmOperation o) {
+		o.primarySourceElement as RequiredPort
 	}
 	
 	def dispatch abstractComponent(ComponentPart part) {
@@ -99,7 +118,18 @@ class SpeADLUtils {
 		}
 	}
 	
-	def substituteTypeParameters(JvmTypeReference in, List<JvmTypeParameter> from, List<JvmTypeParameter> to, Resource context) {
+	def JvmTypeReference rootSupertype(JvmTypeReference in) {
+		if (in.useless) return null
+		val comp = in.type.associatedEcosystem
+		switch in {
+			JvmParameterizedTypeReference case comp != null && !comp.specializes.useless: {
+				comp.specializes.substituteTypeParameters((in.type as JvmGenericType).typeParameters, in.arguments, comp.eResource).rootSupertype
+			}
+			default: in
+		}
+	}
+	
+	def substituteTypeParameters(JvmTypeReference in, List<JvmTypeParameter> from, List<? extends JvmTypeReference> to, Resource context) {
 		if (in == null) return null
 		switch in {
 			JvmParameterizedTypeReference: {
@@ -112,10 +142,10 @@ class SpeADLUtils {
 		}
 	}
 	
-	def substituteTypeParameters(LightweightTypeReference in, List<JvmTypeParameter> from, List<JvmTypeParameter> to) {
+	def substituteTypeParameters(LightweightTypeReference in, List<JvmTypeParameter> from, List<? extends JvmTypeReference> to) {
 		val converter = new OwnedConverter(in.owner, false)
 		val mapping = from.toInvertedMap [ k |
-			val r = converter.toLightweightReference(to.get(from.indexOf(k)).createTypeRef)
+			val r = converter.toLightweightReference(to.get(from.indexOf(k)))
 			new LightweightMergedBoundTypeArgument(r, VarianceInfo.INVARIANT)
 		]
 		val res = new StandardTypeParameterSubstitutor(mapping, in.owner).substitute(in)
@@ -142,9 +172,11 @@ class SpeADLUtils {
 			return true
 		}
 		processedSuperTypes.add(ecosystem)
-		val superType = ecosystem.specializes?.type?.associatedEcosystem
-		if (superType != null && superType.hasCycleInHierarchy(processedSuperTypes)) {
-			return true
+		if (!ecosystem.specializes.useless) {
+			val superType = ecosystem.specializes.type.associatedEcosystem
+			if (superType != null && superType.hasCycleInHierarchy(processedSuperTypes)) {
+				return true
+			}
 		}
 		processedSuperTypes.remove(ecosystem)
 		return false
@@ -156,40 +188,70 @@ class SpeADLUtils {
 	 * 
 	 */
 	
-	// TODO we should clarify what are the rules for specializing!
-	def Iterable<RequiredPort> getAllRequires(AbstractComponent i) {
-		i.requires + switch i {
-			Ecosystem: {
-				val eco = i.specializes?.type?.associatedEcosystem
-				if (eco != null && !eco.hasCycleInHierarchy) {
-					eco.allRequires.filter[ar|!i.requires.exists[r|r.name == ar.name]]
-				} else {
-					#[]
-				}
-			}
-			default: {
-				#[]
+	dispatch def Iterable<RequiredPort> getAllRequires(Ecosystem i) {
+		if (i.hasCycleInHierarchy) {
+			i.requires
+		} else {
+			val res = newArrayList()
+			i.fillRequires(res)
+			res
+		}
+	}
+	
+	dispatch def Iterable<RequiredPort> getAllRequires(Species i) {
+		i.requires
+	}
+	
+	private def void fillRequires(Ecosystem i, ArrayList<RequiredPort> ports) {
+		ports += i.requires.filter[ar|!ports.exists[r|r.name == ar.name]]
+		if (!i.specializes.useless) {
+			val eco = i.specializes.type.associatedEcosystem
+			if (eco != null) {
+				eco.fillRequires(ports)
 			}
 		}
 	}
 	
-	def Iterable<ProvidedPort> getAllProvides(AbstractComponent i) {
-		i.provides + switch i {
-			Ecosystem: {
-				val eco = i.specializes?.type?.associatedEcosystem
-				if (eco != null && !eco.hasCycleInHierarchy) {
-					eco.allProvides.filter[ar|!i.provides.exists[r|r.name == ar.name]]
-				} else {
-					#[]
-				}
-			}
-			default: {
-				#[]
+	dispatch def Iterable<ProvidedPort> getAllProvides(Ecosystem i) {
+		if (i.hasCycleInHierarchy) {
+			i.provides
+		} else {
+			val res = newArrayList()
+			i.fillProvides(res)
+			res
+		}
+	}
+	
+	dispatch def Iterable<ProvidedPort> getAllProvides(Species i) {
+		i.provides
+	}
+	
+	private def void fillProvides(Ecosystem i, ArrayList<ProvidedPort> ports) {
+		ports += i.provides.filter[ar|!ports.exists[r|r.name == ar.name]]
+		if (!i.specializes.useless) {
+			val eco = i.specializes.type.associatedEcosystem
+			if (eco != null) {
+				eco.fillProvides(ports)
 			}
 		}
+	}
+	
+	def myResolvedOperations(JvmGenericType type, Resource context) {
+		val owner = new StandardTypeReferenceOwner(services, context)
+		val contextType = new ParameterizedTypeReference(owner, type)
+		for(JvmTypeParameter typeParameter: type.typeParameters) {
+			contextType.addTypeArgument(new ParameterizedTypeReference(owner, typeParameter))
+		}
+		contextType.resolvedOperations
 	}
 	
 	// utils
+	
+	def isUseless(JvmTypeReference typeReference) {
+		typeReference == null
+		|| typeReference.type == null
+		|| typeReference.type instanceof JvmVoid
+	}
 	
 	def toLightweightTypeReference(JvmTypeReference typeRef, Resource context) {
 		val converter = new OwnedConverter(new StandardTypeReferenceOwner(services, context), false)
@@ -238,7 +300,7 @@ class SpeADLUtils {
 	private def LightweightTypeReference resolveType(LightweightTypeReference portTypeRef, LightweightTypeReference containerTypeRef, Port port, AbstractComponent ac) {
 		// ac is null if it is a species but then there is no need to recurse
 		// can use also eContainer to check!
-		val tr = if (ac != null && !(ac.provides.contains(port) || ac.requires.contains(port)) && ac.specializes != null) {
+		val tr = if (ac != null && !(ac.provides.contains(port) || ac.requires.contains(port)) && !ac.specializes.useless) {
 			val nptr = ac.specializes.toLightweightTypeReference(ac.eResource)
 			resolveType(portTypeRef, nptr, port, ac.specializes.type.associatedEcosystem)
 		} else {
@@ -265,6 +327,10 @@ class SpeADLUtils {
 			}
 		}
 		return false
+	}
+	
+	def <A> List<A> vary(List<? extends A> l) {
+		l as List<A>
 	}
 	
 }

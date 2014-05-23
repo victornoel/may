@@ -399,34 +399,6 @@ public interface SpeadlPackage extends EPackage
   int FEATURE_FEATURE_COUNT = 2;
 
   /**
-   * The meta object id for the '{@link fr.irit.smac.may.speadl.speadl.impl.ImplementedByImpl <em>Implemented By</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see fr.irit.smac.may.speadl.speadl.impl.ImplementedByImpl
-   * @see fr.irit.smac.may.speadl.speadl.impl.SpeadlPackageImpl#getImplementedBy()
-   * @generated
-   */
-  int IMPLEMENTED_BY = 9;
-
-  /**
-   * The feature id for the '<em><b>Ref</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int IMPLEMENTED_BY__REF = 0;
-
-  /**
-   * The number of structural features of the '<em>Implemented By</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int IMPLEMENTED_BY_FEATURE_COUNT = 1;
-
-  /**
    * The meta object id for the '{@link fr.irit.smac.may.speadl.speadl.impl.EcosystemImpl <em>Ecosystem</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -434,7 +406,7 @@ public interface SpeadlPackage extends EPackage
    * @see fr.irit.smac.may.speadl.speadl.impl.SpeadlPackageImpl#getEcosystem()
    * @generated
    */
-  int ECOSYSTEM = 10;
+  int ECOSYSTEM = 9;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -525,7 +497,7 @@ public interface SpeadlPackage extends EPackage
    * @see fr.irit.smac.may.speadl.speadl.impl.SpeadlPackageImpl#getSpecies()
    * @generated
    */
-  int SPECIES = 11;
+  int SPECIES = 10;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -616,7 +588,7 @@ public interface SpeadlPackage extends EPackage
    * @see fr.irit.smac.may.speadl.speadl.impl.SpeadlPackageImpl#getProvidedPort()
    * @generated
    */
-  int PROVIDED_PORT = 12;
+  int PROVIDED_PORT = 11;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -662,7 +634,7 @@ public interface SpeadlPackage extends EPackage
    * @see fr.irit.smac.may.speadl.speadl.impl.SpeadlPackageImpl#getRequiredPort()
    * @generated
    */
-  int REQUIRED_PORT = 13;
+  int REQUIRED_PORT = 12;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -699,7 +671,7 @@ public interface SpeadlPackage extends EPackage
    * @see fr.irit.smac.may.speadl.speadl.impl.SpeadlPackageImpl#getComponentPart()
    * @generated
    */
-  int COMPONENT_PART = 14;
+  int COMPONENT_PART = 13;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -745,7 +717,7 @@ public interface SpeadlPackage extends EPackage
    * @see fr.irit.smac.may.speadl.speadl.impl.SpeadlPackageImpl#getSpeciesPart()
    * @generated
    */
-  int SPECIES_PART = 15;
+  int SPECIES_PART = 14;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -791,7 +763,7 @@ public interface SpeadlPackage extends EPackage
    * @see fr.irit.smac.may.speadl.speadl.impl.SpeadlPackageImpl#getBinding()
    * @generated
    */
-  int BINDING = 16;
+  int BINDING = 15;
 
   /**
    * The feature id for the '<em><b>From</b></em>' reference.
@@ -828,7 +800,7 @@ public interface SpeadlPackage extends EPackage
    * @see fr.irit.smac.may.speadl.speadl.impl.SpeadlPackageImpl#getPortRef()
    * @generated
    */
-  int PORT_REF = 17;
+  int PORT_REF = 16;
 
   /**
    * The feature id for the '<em><b>Part</b></em>' reference.
@@ -865,7 +837,7 @@ public interface SpeadlPackage extends EPackage
    * @see fr.irit.smac.may.speadl.speadl.impl.SpeadlPackageImpl#getSpeciesReference()
    * @generated
    */
-  int SPECIES_REFERENCE = 18;
+  int SPECIES_REFERENCE = 17;
 
   /**
    * The feature id for the '<em><b>Part</b></em>' reference.
@@ -1180,27 +1152,6 @@ public interface SpeadlPackage extends EPackage
    * @generated
    */
   EReference getFeature_ParameterType();
-
-  /**
-   * Returns the meta object for class '{@link fr.irit.smac.may.speadl.speadl.ImplementedBy <em>Implemented By</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Implemented By</em>'.
-   * @see fr.irit.smac.may.speadl.speadl.ImplementedBy
-   * @generated
-   */
-  EClass getImplementedBy();
-
-  /**
-   * Returns the meta object for the containment reference '{@link fr.irit.smac.may.speadl.speadl.ImplementedBy#getRef <em>Ref</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Ref</em>'.
-   * @see fr.irit.smac.may.speadl.speadl.ImplementedBy#getRef()
-   * @see #getImplementedBy()
-   * @generated
-   */
-  EReference getImplementedBy_Ref();
 
   /**
    * Returns the meta object for class '{@link fr.irit.smac.may.speadl.speadl.Ecosystem <em>Ecosystem</em>}'.
@@ -1650,24 +1601,6 @@ public interface SpeadlPackage extends EPackage
      * @generated
      */
     EReference FEATURE__PARAMETER_TYPE = eINSTANCE.getFeature_ParameterType();
-
-    /**
-     * The meta object literal for the '{@link fr.irit.smac.may.speadl.speadl.impl.ImplementedByImpl <em>Implemented By</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see fr.irit.smac.may.speadl.speadl.impl.ImplementedByImpl
-     * @see fr.irit.smac.may.speadl.speadl.impl.SpeadlPackageImpl#getImplementedBy()
-     * @generated
-     */
-    EClass IMPLEMENTED_BY = eINSTANCE.getImplementedBy();
-
-    /**
-     * The meta object literal for the '<em><b>Ref</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference IMPLEMENTED_BY__REF = eINSTANCE.getImplementedBy_Ref();
 
     /**
      * The meta object literal for the '{@link fr.irit.smac.may.speadl.speadl.impl.EcosystemImpl <em>Ecosystem</em>}' class.

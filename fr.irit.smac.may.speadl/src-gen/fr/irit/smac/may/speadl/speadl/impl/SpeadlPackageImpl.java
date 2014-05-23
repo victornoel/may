@@ -9,7 +9,6 @@ import fr.irit.smac.may.speadl.speadl.ContentElement;
 import fr.irit.smac.may.speadl.speadl.Ecosystem;
 import fr.irit.smac.may.speadl.speadl.Element;
 import fr.irit.smac.may.speadl.speadl.Feature;
-import fr.irit.smac.may.speadl.speadl.ImplementedBy;
 import fr.irit.smac.may.speadl.speadl.Model;
 import fr.irit.smac.may.speadl.speadl.ModelElement;
 import fr.irit.smac.may.speadl.speadl.Namespace;
@@ -105,13 +104,6 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * @generated
    */
   private EClass featureEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass implementedByEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -507,26 +499,6 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getImplementedBy()
-  {
-    return implementedByEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getImplementedBy_Ref()
-  {
-    return (EReference)implementedByEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EClass getEcosystem()
   {
     return ecosystemEClass;
@@ -777,9 +749,6 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
     createEAttribute(featureEClass, FEATURE__NAME);
     createEReference(featureEClass, FEATURE__PARAMETER_TYPE);
 
-    implementedByEClass = createEClass(IMPLEMENTED_BY);
-    createEReference(implementedByEClass, IMPLEMENTED_BY__REF);
-
     ecosystemEClass = createEClass(ECOSYSTEM);
 
     speciesEClass = createEClass(SPECIES);
@@ -889,9 +858,6 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
     initEClass(featureEClass, Feature.class, "Feature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getFeature_Name(), ecorePackage.getEString(), "name", null, 0, 1, Feature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getFeature_ParameterType(), theTypesPackage.getJvmTypeReference(), null, "parameterType", null, 0, 1, Feature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(implementedByEClass, ImplementedBy.class, "ImplementedBy", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getImplementedBy_Ref(), theTypesPackage.getJvmParameterizedTypeReference(), null, "ref", null, 0, 1, ImplementedBy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(ecosystemEClass, Ecosystem.class, "Ecosystem", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

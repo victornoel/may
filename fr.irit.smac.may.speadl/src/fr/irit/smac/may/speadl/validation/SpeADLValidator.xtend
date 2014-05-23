@@ -7,24 +7,21 @@ import fr.irit.smac.may.speadl.speadl.Binding
 import fr.irit.smac.may.speadl.speadl.ComponentPart
 import fr.irit.smac.may.speadl.speadl.ContentElement
 import fr.irit.smac.may.speadl.speadl.Ecosystem
-import fr.irit.smac.may.speadl.speadl.ImplementedBy
 import fr.irit.smac.may.speadl.speadl.Part
 import fr.irit.smac.may.speadl.speadl.PortRef
 import fr.irit.smac.may.speadl.speadl.ProvidedPort
 import fr.irit.smac.may.speadl.speadl.RequiredPort
 import fr.irit.smac.may.speadl.speadl.SpeadlPackage
 import fr.irit.smac.may.speadl.speadl.SpeciesReference
-import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
 import org.eclipse.xtext.common.types.JvmTypeParameter
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.JvmWildcardTypeReference
 import org.eclipse.xtext.common.types.TypesPackage
 import org.eclipse.xtext.validation.Check
-import org.eclipse.xtext.validation.CheckType
 import org.eclipse.xtext.validation.ComposedChecks
 import org.eclipse.xtext.validation.NamesAreUniqueValidator
-import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument
+import org.eclipse.xtext.xbase.typesystem.^override.OverrideHelper
 
 /**
  * Custom validation rules. 
@@ -37,8 +34,7 @@ import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputation
 @ComposedChecks(validators=#[SpeADLXtendXtextInspiredValidator, SpeADLJvmTypeReferenceValidator, NamesAreUniqueValidator])
 class SpeADLValidator extends AbstractSpeADLValidator {
 	
-//	@Inject extension IJvmModelAssociations
-//	@Inject extension OverrideHelper
+	@Inject extension OverrideHelper
 	@Inject extension SpeADLUtils
 	
 //	@Check
@@ -70,7 +66,6 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 		val typeFrom = switch cont: pr.eContainer {
 			Binding: cont.resolveTypeFrom
 			ProvidedPort: cont.typeReference.toLightweightTypeReference(pr.eResource)
-			default: throw new RuntimeException("should not happen")
 		}
 		
 		if(typeFrom != null && typeTo != null) {
@@ -147,9 +142,16 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 		}
 	}
 	
+	/**
+	 * TODO
+	 *  - can add provide
+	 *  - can't wrongly override
+	 *  - 
+	 * 
+	 */
 	@Check
 	def checkNoNewProvWhenImpl(Ecosystem eco) {
-		if (eco.specializes != null) {
+		if (!eco.specializes.useless) {
 			var index = 0
 			for(ProvidedPort p: eco.provides) {
 				error("Provides can't be declared in a specialising component", SpeadlPackage.Literals.ABSTRACT_COMPONENT__PROVIDES, index)
@@ -159,35 +161,32 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 	}
 	
 //	@Check
-//	def checkNoNewProvWhenImpl(Ecosystem eco) {
+//	def checkNoNewProvWhenImpl2(Ecosystem eco) {
 //		val superInfra = eco.specializes
 //		if(superInfra != null) {
 //			val provides = eco.provides.map[name]
 //			val ecoOperations = eco.associatedJvmClass.resolvedOperations.declaredOperations.filter[provides.contains(declaration.simpleName)]
-//			val superInfraOperations = superInfra.type.associatedEcosystem.provides.map[jvmElements.head as JvmOperation]
+//			val superInfraOperations = superInfra.type.associatedEcosystem.provides.map[associatedJvmOperation]
 //			
-//			var index = 0
-//			for(operation: ecoOperations) {
+//			ecoOperations.forEach[operation, index|
 //				var isOverridenWithoutProblem = false
-//				var i = 0
-//				while(i < superInfraOperations.size && !isOverridenWithoutProblem) {
-//					val superOperation = superInfraOperations.get(i)
+//				val ite = superInfraOperations.iterator
+//				while(ite.hasNext && !isOverridenWithoutProblem) {
+//					val superOperation = ite.next
 //					val result = operation.isOverridingOrImplementing(superOperation)
 //					isOverridenWithoutProblem = result.overridingOrImplementing && !result.hasProblems
-//					i = i + 1
 //				}
 //				
 //				if(!isOverridenWithoutProblem) {
 //					error("Provides can't be declared in a specialising component", SpeadlPackage.Literals.ABSTRACT_COMPONENT__PROVIDES, index)
 //				}
-//				index = index + 1
-//			}
+//			]
 //		}
 //	}
 	
 	@Check
 	def checkNoNewReqWhenImpl(Ecosystem eco) {
-		if(eco.specializes != null) {
+		if(!eco.specializes.useless) {
 			var index = 0
 			for(RequiredPort p : eco.requires) {
 				error("Requires can't be declared in a specialising component", SpeadlPackage.Literals.ABSTRACT_COMPONENT__REQUIRES, index)
@@ -199,7 +198,7 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 	@Check
 	def checkSpecializeReference(Ecosystem ecosystem) {
 		val superTypeRef = ecosystem.specializes
-		if(superTypeRef != null && superTypeRef.type != null) {
+		if(!superTypeRef.useless) {
 			val superType = superTypeRef.type.associatedEcosystem
 			if (superType == null) {
 				error(ecosystem.specializes.simpleName + " cannot be resolved", ecosystem.specializes, TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE)
@@ -244,26 +243,26 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 		}
 	}
 	
-	@Check(CheckType.NORMAL)
-	def checkImplementedBy(ImplementedBy ib) {
-		val eco = ib.eContainer as Ecosystem
-		val shouldBe = eco.associatedJvmClass.getTypeRef.toLightweightTypeReference(ib.eResource)
-		val is = ib.ref.toLightweightTypeReference(ib.eResource)
-		val argument = new TypeConformanceComputationArgument(true, false, true, true, false, true)
-		if (!shouldBe.isAssignableFrom(is, argument)) {
-			error(is.simpleName + " is not extending "+shouldBe.simpleName, SpeadlPackage.Literals.IMPLEMENTED_BY__REF)
-		} else {
-			val type = is.type as JvmGenericType
-			if (type.abstract) {
-				error(is.simpleName + " can't be instantiated (abstract)", SpeadlPackage.Literals.IMPLEMENTED_BY__REF)
-			} else {
-				val hasOkConstructor = type.declaredConstructors.empty || type.declaredConstructors.exists[parameters.empty]
-				if (!hasOkConstructor) {
-					error(is.simpleName + " does not have a parameter-less constructor", SpeadlPackage.Literals.IMPLEMENTED_BY__REF)
-				}
-			}
-		}
-	}
+//	@Check(CheckType.NORMAL)
+//	def checkImplementedBy(ImplementedBy ib) {
+//		val eco = ib.eContainer as Ecosystem
+//		val shouldBe = eco.associatedJvmClass.getTypeRef.toLightweightTypeReference(ib.eResource)
+//		val is = ib.ref.toLightweightTypeReference(ib.eResource)
+//		val argument = new TypeConformanceComputationArgument(true, false, true, true, false, true)
+//		if (!shouldBe.isAssignableFrom(is, argument)) {
+//			error(is.simpleName + " is not extending "+shouldBe.simpleName, SpeadlPackage.Literals.IMPLEMENTED_BY__REF)
+//		} else {
+//			val type = is.type as JvmGenericType
+//			if (type.abstract) {
+//				error(is.simpleName + " can't be instantiated (abstract)", SpeadlPackage.Literals.IMPLEMENTED_BY__REF)
+//			} else {
+//				val hasOkConstructor = type.declaredConstructors.empty || type.declaredConstructors.exists[parameters.empty]
+//				if (!hasOkConstructor) {
+//					error(is.simpleName + " does not have a parameter-less constructor", SpeadlPackage.Literals.IMPLEMENTED_BY__REF)
+//				}
+//			}
+//		}
+//	}
 	
 	// copied from XtendJavaValidator
 	@Check

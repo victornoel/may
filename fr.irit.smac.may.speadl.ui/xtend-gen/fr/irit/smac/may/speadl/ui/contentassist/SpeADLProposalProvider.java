@@ -45,7 +45,7 @@ public class SpeADLProposalProvider extends AbstractSpeADLProposalProvider {
         final EReference eref = EcoreFactory.eINSTANCE.createEReference();
         eref.setEType(SpeadlPackage.Literals.ECOSYSTEM);
         Predicate<IEObjectDescription> _alwaysTrue = Predicates.<IEObjectDescription>alwaysTrue();
-        Function<IEObjectDescription,ICompletionProposal> _proposalFactory = this.getProposalFactory("QualifiedName", context);
+        Function<IEObjectDescription, ICompletionProposal> _proposalFactory = this.getProposalFactory("QualifiedName", context);
         this.lookupCrossReference(model, eref, acceptor, _alwaysTrue, _proposalFactory);
       } else {
         this.completeJavaTypes(context, TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE, acceptor);

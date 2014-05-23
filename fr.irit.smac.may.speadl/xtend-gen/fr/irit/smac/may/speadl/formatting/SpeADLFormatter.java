@@ -40,9 +40,9 @@ public class SpeADLFormatter extends AbstractDeclarativeFormatter {
     FormattingConfig.LinewrapLocator _setLinewrap_2 = c.setLinewrap(0, 1, 1);
     TerminalRule _mL_COMMENTRule_1 = this._speADLGrammarAccess.getML_COMMENTRule();
     _setLinewrap_2.after(_mL_COMMENTRule_1);
-    List<Pair<Keyword,Keyword>> _findKeywordPairs = this._speADLGrammarAccess.findKeywordPairs("(", ")");
-    final Procedure1<Pair<Keyword,Keyword>> _function = new Procedure1<Pair<Keyword,Keyword>>() {
-      public void apply(final Pair<Keyword,Keyword> p) {
+    List<Pair<Keyword, Keyword>> _findKeywordPairs = this._speADLGrammarAccess.findKeywordPairs("(", ")");
+    final Procedure1<Pair<Keyword, Keyword>> _function = new Procedure1<Pair<Keyword, Keyword>>() {
+      public void apply(final Pair<Keyword, Keyword> p) {
         FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
         Keyword _first = p.getFirst();
         _setNoSpace.around(_first);
@@ -51,10 +51,10 @@ public class SpeADLFormatter extends AbstractDeclarativeFormatter {
         _setNoSpace_1.before(_second);
       }
     };
-    IterableExtensions.<Pair<Keyword,Keyword>>forEach(_findKeywordPairs, _function);
-    List<Pair<Keyword,Keyword>> _findKeywordPairs_1 = this._speADLGrammarAccess.findKeywordPairs("[", "]");
-    final Procedure1<Pair<Keyword,Keyword>> _function_1 = new Procedure1<Pair<Keyword,Keyword>>() {
-      public void apply(final Pair<Keyword,Keyword> p) {
+    IterableExtensions.<Pair<Keyword, Keyword>>forEach(_findKeywordPairs, _function);
+    List<Pair<Keyword, Keyword>> _findKeywordPairs_1 = this._speADLGrammarAccess.findKeywordPairs("[", "]");
+    final Procedure1<Pair<Keyword, Keyword>> _function_1 = new Procedure1<Pair<Keyword, Keyword>>() {
+      public void apply(final Pair<Keyword, Keyword> p) {
         FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
         Keyword _first = p.getFirst();
         _setNoSpace.around(_first);
@@ -63,10 +63,10 @@ public class SpeADLFormatter extends AbstractDeclarativeFormatter {
         _setNoSpace_1.before(_second);
       }
     };
-    IterableExtensions.<Pair<Keyword,Keyword>>forEach(_findKeywordPairs_1, _function_1);
-    List<Pair<Keyword,Keyword>> _findKeywordPairs_2 = this._speADLGrammarAccess.findKeywordPairs("{", "}");
-    final Procedure1<Pair<Keyword,Keyword>> _function_2 = new Procedure1<Pair<Keyword,Keyword>>() {
-      public void apply(final Pair<Keyword,Keyword> p) {
+    IterableExtensions.<Pair<Keyword, Keyword>>forEach(_findKeywordPairs_1, _function_1);
+    List<Pair<Keyword, Keyword>> _findKeywordPairs_2 = this._speADLGrammarAccess.findKeywordPairs("{", "}");
+    final Procedure1<Pair<Keyword, Keyword>> _function_2 = new Procedure1<Pair<Keyword, Keyword>>() {
+      public void apply(final Pair<Keyword, Keyword> p) {
         FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap();
         Keyword _first = p.getFirst();
         _setLinewrap.after(_first);
@@ -81,7 +81,7 @@ public class SpeADLFormatter extends AbstractDeclarativeFormatter {
         _setIndentationDecrement.before(_second_1);
       }
     };
-    IterableExtensions.<Pair<Keyword,Keyword>>forEach(_findKeywordPairs_2, _function_2);
+    IterableExtensions.<Pair<Keyword, Keyword>>forEach(_findKeywordPairs_2, _function_2);
     List<Keyword> _findKeywords = this._speADLGrammarAccess.findKeywords(",");
     final Procedure1<Keyword> _function_3 = new Procedure1<Keyword>() {
       public void apply(final Keyword k) {

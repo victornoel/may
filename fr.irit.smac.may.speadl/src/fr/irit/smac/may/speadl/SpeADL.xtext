@@ -50,9 +50,9 @@ Feature:
 
 // another element is introduced here because SpeADLProposalProvider
 // can't make the difference between specializes and implementedBy
-ImplementedBy:
-	"implementedBy" ref=JvmParameterizedTypeReference
-;
+//ImplementedBy:
+//	"implementedBy" ref=JvmParameterizedTypeReference
+//;
 
 Ecosystem:
 	"ecosystem" name=ValidID
@@ -110,7 +110,6 @@ SpeciesPart:
 Binding:
 	"bind" from=[RequiredPort] "to" to=PortRef;
 
-// TODO le point gene a chaque fois pour la completion !!
 PortRef :
 	(part=[Part|ValidID] ".")? port=[Port|ValidID];
 

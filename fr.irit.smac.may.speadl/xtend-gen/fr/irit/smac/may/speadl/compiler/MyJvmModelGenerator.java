@@ -22,7 +22,7 @@ public class MyJvmModelGenerator extends JvmModelGenerator {
   
   protected void _internalDoGenerate(final JvmDeclaredType type, final IFileSystemAccess fsa) {
     final Ecosystem eco = this._speADLUtils.associatedEcosystem(type);
-    final Function1<Issue,Boolean> _function = new Function1<Issue,Boolean>() {
+    final Function1<Issue, Boolean> _function = new Function1<Issue, Boolean>() {
       public Boolean apply(final Issue it) {
         CheckType _type = it.getType();
         return Boolean.valueOf(Objects.equal(_type, CheckType.NORMAL));

@@ -120,11 +120,6 @@ public class SpeadlAdapterFactory extends AdapterFactoryImpl
         return createFeatureAdapter();
       }
       @Override
-      public Adapter caseImplementedBy(ImplementedBy object)
-      {
-        return createImplementedByAdapter();
-      }
-      @Override
       public Adapter caseEcosystem(Ecosystem object)
       {
         return createEcosystemAdapter();
@@ -322,21 +317,6 @@ public class SpeadlAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createFeatureAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link fr.irit.smac.may.speadl.speadl.ImplementedBy <em>Implemented By</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see fr.irit.smac.may.speadl.speadl.ImplementedBy
-   * @generated
-   */
-  public Adapter createImplementedByAdapter()
   {
     return null;
   }

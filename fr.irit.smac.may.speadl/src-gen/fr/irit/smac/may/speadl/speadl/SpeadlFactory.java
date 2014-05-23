@@ -104,15 +104,6 @@ public interface SpeadlFactory extends EFactory
   Feature createFeature();
 
   /**
-   * Returns a new object of class '<em>Implemented By</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Implemented By</em>'.
-   * @generated
-   */
-  ImplementedBy createImplementedBy();
-
-  /**
    * Returns a new object of class '<em>Ecosystem</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

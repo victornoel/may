@@ -2,7 +2,6 @@ package fr.irit.smac.may.speadl;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import fr.irit.smac.may.speadl.speadl.AbstractComponent;
 import fr.irit.smac.may.speadl.speadl.Binding;
@@ -17,8 +16,8 @@ import fr.irit.smac.may.speadl.speadl.RequiredPort;
 import fr.irit.smac.may.speadl.speadl.Species;
 import fr.irit.smac.may.speadl.speadl.SpeciesPart;
 import fr.irit.smac.may.speadl.speadl.SpeciesReference;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +28,12 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmMember;
+import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.JvmVoid;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.validation.Issue;
@@ -45,6 +46,8 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.ListExtensions;
 import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner;
+import org.eclipse.xtext.xbase.typesystem.override.OverrideHelper;
+import org.eclipse.xtext.xbase.typesystem.override.ResolvedOperations;
 import org.eclipse.xtext.xbase.typesystem.references.ITypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightMergedBoundTypeArgument;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
@@ -66,6 +69,10 @@ public class SpeADLUtils {
   private TypeReferences _typeReferences;
   
   @Inject
+  @Extension
+  private OverrideHelper _overrideHelper;
+  
+  @Inject
   private IElementIssueProvider.Factory issueProviderFactory;
   
   @Inject
@@ -85,6 +92,22 @@ public class SpeADLUtils {
   public Ecosystem associatedEcosystem(final JvmType type) {
     EObject _primarySourceElement = this._iJvmModelAssociations.getPrimarySourceElement(type);
     return ((Ecosystem) _primarySourceElement);
+  }
+  
+  public JvmOperation associatedJvmOperation(final Port p) {
+    Set<EObject> _jvmElements = this._iJvmModelAssociations.getJvmElements(p);
+    EObject _head = IterableExtensions.<EObject>head(_jvmElements);
+    return ((JvmOperation) _head);
+  }
+  
+  public ProvidedPort associatedProvidedPort(final JvmOperation o) {
+    EObject _primarySourceElement = this._iJvmModelAssociations.getPrimarySourceElement(o);
+    return ((ProvidedPort) _primarySourceElement);
+  }
+  
+  public RequiredPort associatedRequiredPort(final JvmOperation o) {
+    EObject _primarySourceElement = this._iJvmModelAssociations.getPrimarySourceElement(o);
+    return ((RequiredPort) _primarySourceElement);
   }
   
   protected AbstractComponent _abstractComponent(final ComponentPart part) {
@@ -166,7 +189,7 @@ public class SpeADLUtils {
           _matched=true;
           EList<JvmMember> _members = ((JvmDeclaredType)in).getMembers();
           Iterable<JvmGenericType> _filter = Iterables.<JvmGenericType>filter(_members, JvmGenericType.class);
-          final Function1<JvmGenericType,Boolean> _function = new Function1<JvmGenericType,Boolean>() {
+          final Function1<JvmGenericType, Boolean> _function = new Function1<JvmGenericType, Boolean>() {
             public Boolean apply(final JvmGenericType t) {
               String _simpleName = t.getSimpleName();
               return Boolean.valueOf(Objects.equal(_simpleName, simpleName));
@@ -180,7 +203,50 @@ public class SpeADLUtils {
     return _xblockexpression;
   }
   
-  public JvmTypeReference substituteTypeParameters(final JvmTypeReference in, final List<JvmTypeParameter> from, final List<JvmTypeParameter> to, final Resource context) {
+  public JvmTypeReference rootSupertype(final JvmTypeReference in) {
+    JvmTypeReference _xblockexpression = null;
+    {
+      boolean _isUseless = this.isUseless(in);
+      if (_isUseless) {
+        return null;
+      }
+      JvmType _type = in.getType();
+      final Ecosystem comp = this.associatedEcosystem(_type);
+      JvmTypeReference _switchResult = null;
+      boolean _matched = false;
+      if (!_matched) {
+        if (in instanceof JvmParameterizedTypeReference) {
+          boolean _and = false;
+          boolean _notEquals = (!Objects.equal(comp, null));
+          if (!_notEquals) {
+            _and = false;
+          } else {
+            JvmParameterizedTypeReference _specializes = comp.getSpecializes();
+            boolean _isUseless_1 = this.isUseless(_specializes);
+            boolean _not = (!_isUseless_1);
+            _and = _not;
+          }
+          if (_and) {
+            _matched=true;
+            JvmParameterizedTypeReference _specializes_1 = comp.getSpecializes();
+            JvmType _type_1 = ((JvmParameterizedTypeReference)in).getType();
+            EList<JvmTypeParameter> _typeParameters = ((JvmGenericType) _type_1).getTypeParameters();
+            EList<JvmTypeReference> _arguments = ((JvmParameterizedTypeReference)in).getArguments();
+            Resource _eResource = comp.eResource();
+            JvmTypeReference _substituteTypeParameters = this.substituteTypeParameters(_specializes_1, _typeParameters, _arguments, _eResource);
+            _switchResult = this.rootSupertype(_substituteTypeParameters);
+          }
+        }
+      }
+      if (!_matched) {
+        _switchResult = in;
+      }
+      _xblockexpression = _switchResult;
+    }
+    return _xblockexpression;
+  }
+  
+  public JvmTypeReference substituteTypeParameters(final JvmTypeReference in, final List<JvmTypeParameter> from, final List<? extends JvmTypeReference> to, final Resource context) {
     JvmTypeReference _xblockexpression = null;
     {
       boolean _equals = Objects.equal(in, null);
@@ -212,25 +278,24 @@ public class SpeADLUtils {
     return _xblockexpression;
   }
   
-  public LightweightTypeReference substituteTypeParameters(final LightweightTypeReference in, final List<JvmTypeParameter> from, final List<JvmTypeParameter> to) {
+  public LightweightTypeReference substituteTypeParameters(final LightweightTypeReference in, final List<JvmTypeParameter> from, final List<? extends JvmTypeReference> to) {
     LightweightTypeReference _xblockexpression = null;
     {
       ITypeReferenceOwner _owner = in.getOwner();
       final OwnedConverter converter = new OwnedConverter(_owner, false);
-      final Function1<JvmTypeParameter,LightweightMergedBoundTypeArgument> _function = new Function1<JvmTypeParameter,LightweightMergedBoundTypeArgument>() {
+      final Function1<JvmTypeParameter, LightweightMergedBoundTypeArgument> _function = new Function1<JvmTypeParameter, LightweightMergedBoundTypeArgument>() {
         public LightweightMergedBoundTypeArgument apply(final JvmTypeParameter k) {
           LightweightMergedBoundTypeArgument _xblockexpression = null;
           {
             int _indexOf = from.indexOf(k);
-            JvmTypeParameter _get = to.get(_indexOf);
-            JvmParameterizedTypeReference _createTypeRef = SpeADLUtils.this._typeReferences.createTypeRef(_get);
-            final LightweightTypeReference r = converter.toLightweightReference(_createTypeRef);
+            JvmTypeReference _get = to.get(_indexOf);
+            final LightweightTypeReference r = converter.toLightweightReference(_get);
             _xblockexpression = new LightweightMergedBoundTypeArgument(r, VarianceInfo.INVARIANT);
           }
           return _xblockexpression;
         }
       };
-      final Map<JvmTypeParameter,LightweightMergedBoundTypeArgument> mapping = IterableExtensions.<JvmTypeParameter, LightweightMergedBoundTypeArgument>toInvertedMap(from, _function);
+      final Map<JvmTypeParameter, LightweightMergedBoundTypeArgument> mapping = IterableExtensions.<JvmTypeParameter, LightweightMergedBoundTypeArgument>toInvertedMap(from, _function);
       ITypeReferenceOwner _owner_1 = in.getOwner();
       StandardTypeParameterSubstitutor _standardTypeParameterSubstitutor = new StandardTypeParameterSubstitutor(mapping, _owner_1);
       final LightweightTypeReference res = _standardTypeParameterSubstitutor.substitute(in);
@@ -245,7 +310,7 @@ public class SpeADLUtils {
     if (_equals) {
       _xifexpression = null;
     } else {
-      final Function1<JvmTypeParameter,JvmParameterizedTypeReference> _function = new Function1<JvmTypeParameter,JvmParameterizedTypeReference>() {
+      final Function1<JvmTypeParameter, JvmParameterizedTypeReference> _function = new Function1<JvmTypeParameter, JvmParameterizedTypeReference>() {
         public JvmParameterizedTypeReference apply(final JvmTypeParameter it) {
           return SpeADLUtils.this._typeReferences.createTypeRef(it);
         }
@@ -279,25 +344,23 @@ public class SpeADLUtils {
     }
     processedSuperTypes.add(ecosystem);
     JvmParameterizedTypeReference _specializes = ecosystem.getSpecializes();
-    JvmType _type = null;
-    if (_specializes!=null) {
-      _type=_specializes.getType();
-    }
-    Ecosystem _associatedEcosystem = null;
-    if (_type!=null) {
-      _associatedEcosystem=this.associatedEcosystem(_type);
-    }
-    final Ecosystem superType = _associatedEcosystem;
-    boolean _and = false;
-    boolean _notEquals = (!Objects.equal(superType, null));
-    if (!_notEquals) {
-      _and = false;
-    } else {
-      boolean _hasCycleInHierarchy = this.hasCycleInHierarchy(superType, processedSuperTypes);
-      _and = _hasCycleInHierarchy;
-    }
-    if (_and) {
-      return true;
+    boolean _isUseless = this.isUseless(_specializes);
+    boolean _not = (!_isUseless);
+    if (_not) {
+      JvmParameterizedTypeReference _specializes_1 = ecosystem.getSpecializes();
+      JvmType _type = _specializes_1.getType();
+      final Ecosystem superType = this.associatedEcosystem(_type);
+      boolean _and = false;
+      boolean _notEquals = (!Objects.equal(superType, null));
+      if (!_notEquals) {
+        _and = false;
+      } else {
+        boolean _hasCycleInHierarchy = this.hasCycleInHierarchy(superType, processedSuperTypes);
+        _and = _hasCycleInHierarchy;
+      }
+      if (_and) {
+        return true;
+      }
     }
     processedSuperTypes.remove(ecosystem);
     return false;
@@ -307,124 +370,143 @@ public class SpeADLUtils {
    * these give the requires and the provides
    * the most specialized for a component and its hierarchy
    */
-  public Iterable<RequiredPort> getAllRequires(final AbstractComponent i) {
-    EList<RequiredPort> _requires = i.getRequires();
-    Iterable<RequiredPort> _switchResult = null;
-    boolean _matched = false;
-    if (!_matched) {
-      if (i instanceof Ecosystem) {
-        _matched=true;
-        Iterable<RequiredPort> _xblockexpression = null;
-        {
-          JvmParameterizedTypeReference _specializes = ((Ecosystem)i).getSpecializes();
-          JvmType _type = null;
-          if (_specializes!=null) {
-            _type=_specializes.getType();
-          }
-          Ecosystem _associatedEcosystem = null;
-          if (_type!=null) {
-            _associatedEcosystem=this.associatedEcosystem(_type);
-          }
-          final Ecosystem eco = _associatedEcosystem;
-          Iterable<RequiredPort> _xifexpression = null;
-          boolean _and = false;
-          boolean _notEquals = (!Objects.equal(eco, null));
-          if (!_notEquals) {
-            _and = false;
-          } else {
-            boolean _hasCycleInHierarchy = this.hasCycleInHierarchy(eco);
-            boolean _not = (!_hasCycleInHierarchy);
-            _and = _not;
-          }
-          if (_and) {
-            Iterable<RequiredPort> _allRequires = this.getAllRequires(eco);
-            final Function1<RequiredPort,Boolean> _function = new Function1<RequiredPort,Boolean>() {
-              public Boolean apply(final RequiredPort ar) {
-                EList<RequiredPort> _requires = ((Ecosystem)i).getRequires();
-                final Function1<RequiredPort,Boolean> _function = new Function1<RequiredPort,Boolean>() {
-                  public Boolean apply(final RequiredPort r) {
-                    String _name = r.getName();
-                    String _name_1 = ar.getName();
-                    return Boolean.valueOf(Objects.equal(_name, _name_1));
-                  }
-                };
-                boolean _exists = IterableExtensions.<RequiredPort>exists(_requires, _function);
-                return Boolean.valueOf((!_exists));
-              }
-            };
-            _xifexpression = IterableExtensions.<RequiredPort>filter(_allRequires, _function);
-          } else {
-            _xifexpression = Collections.<RequiredPort>unmodifiableList(Lists.<RequiredPort>newArrayList());
-          }
-          _xblockexpression = _xifexpression;
-        }
-        _switchResult = _xblockexpression;
+  protected Iterable<RequiredPort> _getAllRequires(final Ecosystem i) {
+    List<RequiredPort> _xifexpression = null;
+    boolean _hasCycleInHierarchy = this.hasCycleInHierarchy(i);
+    if (_hasCycleInHierarchy) {
+      _xifexpression = i.getRequires();
+    } else {
+      ArrayList<RequiredPort> _xblockexpression = null;
+      {
+        final ArrayList<RequiredPort> res = CollectionLiterals.<RequiredPort>newArrayList();
+        this.fillRequires(i, res);
+        _xblockexpression = res;
       }
+      _xifexpression = _xblockexpression;
     }
-    if (!_matched) {
-      _switchResult = Collections.<RequiredPort>unmodifiableList(Lists.<RequiredPort>newArrayList());
-    }
-    return Iterables.<RequiredPort>concat(_requires, _switchResult);
+    return _xifexpression;
   }
   
-  public Iterable<ProvidedPort> getAllProvides(final AbstractComponent i) {
-    EList<ProvidedPort> _provides = i.getProvides();
-    Iterable<ProvidedPort> _switchResult = null;
-    boolean _matched = false;
-    if (!_matched) {
-      if (i instanceof Ecosystem) {
-        _matched=true;
-        Iterable<ProvidedPort> _xblockexpression = null;
-        {
-          JvmParameterizedTypeReference _specializes = ((Ecosystem)i).getSpecializes();
-          JvmType _type = null;
-          if (_specializes!=null) {
-            _type=_specializes.getType();
+  protected Iterable<RequiredPort> _getAllRequires(final Species i) {
+    return i.getRequires();
+  }
+  
+  private void fillRequires(final Ecosystem i, final ArrayList<RequiredPort> ports) {
+    EList<RequiredPort> _requires = i.getRequires();
+    final Function1<RequiredPort, Boolean> _function = new Function1<RequiredPort, Boolean>() {
+      public Boolean apply(final RequiredPort ar) {
+        final Function1<RequiredPort, Boolean> _function = new Function1<RequiredPort, Boolean>() {
+          public Boolean apply(final RequiredPort r) {
+            String _name = r.getName();
+            String _name_1 = ar.getName();
+            return Boolean.valueOf(Objects.equal(_name, _name_1));
           }
-          Ecosystem _associatedEcosystem = null;
-          if (_type!=null) {
-            _associatedEcosystem=this.associatedEcosystem(_type);
-          }
-          final Ecosystem eco = _associatedEcosystem;
-          Iterable<ProvidedPort> _xifexpression = null;
-          boolean _and = false;
-          boolean _notEquals = (!Objects.equal(eco, null));
-          if (!_notEquals) {
-            _and = false;
-          } else {
-            boolean _hasCycleInHierarchy = this.hasCycleInHierarchy(eco);
-            boolean _not = (!_hasCycleInHierarchy);
-            _and = _not;
-          }
-          if (_and) {
-            Iterable<ProvidedPort> _allProvides = this.getAllProvides(eco);
-            final Function1<ProvidedPort,Boolean> _function = new Function1<ProvidedPort,Boolean>() {
-              public Boolean apply(final ProvidedPort ar) {
-                EList<ProvidedPort> _provides = ((Ecosystem)i).getProvides();
-                final Function1<ProvidedPort,Boolean> _function = new Function1<ProvidedPort,Boolean>() {
-                  public Boolean apply(final ProvidedPort r) {
-                    String _name = r.getName();
-                    String _name_1 = ar.getName();
-                    return Boolean.valueOf(Objects.equal(_name, _name_1));
-                  }
-                };
-                boolean _exists = IterableExtensions.<ProvidedPort>exists(_provides, _function);
-                return Boolean.valueOf((!_exists));
-              }
-            };
-            _xifexpression = IterableExtensions.<ProvidedPort>filter(_allProvides, _function);
-          } else {
-            _xifexpression = Collections.<ProvidedPort>unmodifiableList(Lists.<ProvidedPort>newArrayList());
-          }
-          _xblockexpression = _xifexpression;
-        }
-        _switchResult = _xblockexpression;
+        };
+        boolean _exists = IterableExtensions.<RequiredPort>exists(ports, _function);
+        return Boolean.valueOf((!_exists));
+      }
+    };
+    Iterable<RequiredPort> _filter = IterableExtensions.<RequiredPort>filter(_requires, _function);
+    Iterables.<RequiredPort>addAll(ports, _filter);
+    JvmParameterizedTypeReference _specializes = i.getSpecializes();
+    boolean _isUseless = this.isUseless(_specializes);
+    boolean _not = (!_isUseless);
+    if (_not) {
+      JvmParameterizedTypeReference _specializes_1 = i.getSpecializes();
+      JvmType _type = _specializes_1.getType();
+      final Ecosystem eco = this.associatedEcosystem(_type);
+      boolean _notEquals = (!Objects.equal(eco, null));
+      if (_notEquals) {
+        this.fillRequires(eco, ports);
       }
     }
-    if (!_matched) {
-      _switchResult = Collections.<ProvidedPort>unmodifiableList(Lists.<ProvidedPort>newArrayList());
+  }
+  
+  protected Iterable<ProvidedPort> _getAllProvides(final Ecosystem i) {
+    List<ProvidedPort> _xifexpression = null;
+    boolean _hasCycleInHierarchy = this.hasCycleInHierarchy(i);
+    if (_hasCycleInHierarchy) {
+      _xifexpression = i.getProvides();
+    } else {
+      ArrayList<ProvidedPort> _xblockexpression = null;
+      {
+        final ArrayList<ProvidedPort> res = CollectionLiterals.<ProvidedPort>newArrayList();
+        this.fillProvides(i, res);
+        _xblockexpression = res;
+      }
+      _xifexpression = _xblockexpression;
     }
-    return Iterables.<ProvidedPort>concat(_provides, _switchResult);
+    return _xifexpression;
+  }
+  
+  protected Iterable<ProvidedPort> _getAllProvides(final Species i) {
+    return i.getProvides();
+  }
+  
+  private void fillProvides(final Ecosystem i, final ArrayList<ProvidedPort> ports) {
+    EList<ProvidedPort> _provides = i.getProvides();
+    final Function1<ProvidedPort, Boolean> _function = new Function1<ProvidedPort, Boolean>() {
+      public Boolean apply(final ProvidedPort ar) {
+        final Function1<ProvidedPort, Boolean> _function = new Function1<ProvidedPort, Boolean>() {
+          public Boolean apply(final ProvidedPort r) {
+            String _name = r.getName();
+            String _name_1 = ar.getName();
+            return Boolean.valueOf(Objects.equal(_name, _name_1));
+          }
+        };
+        boolean _exists = IterableExtensions.<ProvidedPort>exists(ports, _function);
+        return Boolean.valueOf((!_exists));
+      }
+    };
+    Iterable<ProvidedPort> _filter = IterableExtensions.<ProvidedPort>filter(_provides, _function);
+    Iterables.<ProvidedPort>addAll(ports, _filter);
+    JvmParameterizedTypeReference _specializes = i.getSpecializes();
+    boolean _isUseless = this.isUseless(_specializes);
+    boolean _not = (!_isUseless);
+    if (_not) {
+      JvmParameterizedTypeReference _specializes_1 = i.getSpecializes();
+      JvmType _type = _specializes_1.getType();
+      final Ecosystem eco = this.associatedEcosystem(_type);
+      boolean _notEquals = (!Objects.equal(eco, null));
+      if (_notEquals) {
+        this.fillProvides(eco, ports);
+      }
+    }
+  }
+  
+  public ResolvedOperations myResolvedOperations(final JvmGenericType type, final Resource context) {
+    ResolvedOperations _xblockexpression = null;
+    {
+      final StandardTypeReferenceOwner owner = new StandardTypeReferenceOwner(this.services, context);
+      final ParameterizedTypeReference contextType = new ParameterizedTypeReference(owner, type);
+      EList<JvmTypeParameter> _typeParameters = type.getTypeParameters();
+      for (final JvmTypeParameter typeParameter : _typeParameters) {
+        ParameterizedTypeReference _parameterizedTypeReference = new ParameterizedTypeReference(owner, typeParameter);
+        contextType.addTypeArgument(_parameterizedTypeReference);
+      }
+      _xblockexpression = this._overrideHelper.getResolvedOperations(contextType);
+    }
+    return _xblockexpression;
+  }
+  
+  public boolean isUseless(final JvmTypeReference typeReference) {
+    boolean _or = false;
+    boolean _or_1 = false;
+    boolean _equals = Objects.equal(typeReference, null);
+    if (_equals) {
+      _or_1 = true;
+    } else {
+      JvmType _type = typeReference.getType();
+      boolean _equals_1 = Objects.equal(_type, null);
+      _or_1 = _equals_1;
+    }
+    if (_or_1) {
+      _or = true;
+    } else {
+      JvmType _type_1 = typeReference.getType();
+      _or = (_type_1 instanceof JvmVoid);
+    }
+    return _or;
   }
   
   public LightweightTypeReference toLightweightTypeReference(final JvmTypeReference typeRef, final Resource context) {
@@ -522,8 +604,9 @@ public class SpeADLUtils {
         _and = false;
       } else {
         JvmParameterizedTypeReference _specializes = ac.getSpecializes();
-        boolean _notEquals_1 = (!Objects.equal(_specializes, null));
-        _and = _notEquals_1;
+        boolean _isUseless = this.isUseless(_specializes);
+        boolean _not_1 = (!_isUseless);
+        _and = _not_1;
       }
       if (_and) {
         LightweightTypeReference _xblockexpression_1 = null;
@@ -551,7 +634,7 @@ public class SpeADLUtils {
     {
       ITypeReferenceOwner _owner = containerTypeRef.getOwner();
       ConstraintAwareTypeArgumentCollector _constraintAwareTypeArgumentCollector = new ConstraintAwareTypeArgumentCollector(_owner);
-      final Map<JvmTypeParameter,LightweightMergedBoundTypeArgument> mapping = _constraintAwareTypeArgumentCollector.getTypeParameterMapping(containerTypeRef);
+      final Map<JvmTypeParameter, LightweightMergedBoundTypeArgument> mapping = _constraintAwareTypeArgumentCollector.getTypeParameterMapping(containerTypeRef);
       ITypeReferenceOwner _owner_1 = containerTypeRef.getOwner();
       StandardTypeParameterSubstitutor _standardTypeParameterSubstitutor = new StandardTypeParameterSubstitutor(mapping, _owner_1);
       _xblockexpression = _standardTypeParameterSubstitutor.substitute(tr);
@@ -559,7 +642,7 @@ public class SpeADLUtils {
     return _xblockexpression;
   }
   
-  public boolean modelElementHasError(final EObject e, final boolean ignoreContent, final Function1<? super Issue,? extends Boolean> ignore, final boolean ignoreContentOfIgnored) {
+  public boolean modelElementHasError(final EObject e, final boolean ignoreContent, final Function1<? super Issue, ? extends Boolean> ignore, final boolean ignoreContentOfIgnored) {
     Resource _eResource = e.eResource();
     final IElementIssueProvider issueProvider = this.issueProviderFactory.get(_eResource);
     boolean ignored = false;
@@ -593,6 +676,10 @@ public class SpeADLUtils {
     return false;
   }
   
+  public <A extends Object> List<A> vary(final List<? extends A> l) {
+    return ((List<A>) l);
+  }
+  
   public AbstractComponent abstractComponent(final Part part) {
     if (part instanceof ComponentPart) {
       return _abstractComponent((ComponentPart)part);
@@ -623,6 +710,28 @@ public class SpeADLUtils {
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
         Arrays.<Object>asList(part).toString());
+    }
+  }
+  
+  public Iterable<RequiredPort> getAllRequires(final AbstractComponent i) {
+    if (i instanceof Ecosystem) {
+      return _getAllRequires((Ecosystem)i);
+    } else if (i instanceof Species) {
+      return _getAllRequires((Species)i);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(i).toString());
+    }
+  }
+  
+  public Iterable<ProvidedPort> getAllProvides(final AbstractComponent i) {
+    if (i instanceof Ecosystem) {
+      return _getAllProvides((Ecosystem)i);
+    } else if (i instanceof Species) {
+      return _getAllProvides((Species)i);
+    } else {
+      throw new IllegalArgumentException("Unhandled parameter types: " +
+        Arrays.<Object>asList(i).toString());
     }
   }
 }

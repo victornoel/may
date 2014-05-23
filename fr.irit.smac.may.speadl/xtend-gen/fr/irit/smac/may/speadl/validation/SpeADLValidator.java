@@ -9,7 +9,6 @@ import fr.irit.smac.may.speadl.speadl.ComponentPart;
 import fr.irit.smac.may.speadl.speadl.ContentElement;
 import fr.irit.smac.may.speadl.speadl.Ecosystem;
 import fr.irit.smac.may.speadl.speadl.Feature;
-import fr.irit.smac.may.speadl.speadl.ImplementedBy;
 import fr.irit.smac.may.speadl.speadl.Part;
 import fr.irit.smac.may.speadl.speadl.PortRef;
 import fr.irit.smac.may.speadl.speadl.ProvidedPort;
@@ -25,9 +24,6 @@ import java.util.Set;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.common.types.JvmConstructor;
-import org.eclipse.xtext.common.types.JvmFormalParameter;
-import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
@@ -35,14 +31,13 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmWildcardTypeReference;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.validation.Check;
-import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.validation.ComposedChecks;
 import org.eclipse.xtext.validation.NamesAreUniqueValidator;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.ListExtensions;
-import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
+import org.eclipse.xtext.xbase.typesystem.override.OverrideHelper;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 /**
@@ -56,6 +51,10 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 @ComposedChecks(validators = { SpeADLXtendXtextInspiredValidator.class, SpeADLJvmTypeReferenceValidator.class, NamesAreUniqueValidator.class })
 @SuppressWarnings("all")
 public class SpeADLValidator extends AbstractSpeADLValidator {
+  @Inject
+  @Extension
+  private OverrideHelper _overrideHelper;
+  
   @Inject
   @Extension
   private SpeADLUtils _speADLUtils;
@@ -84,9 +83,6 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
         Resource _eResource = pr.eResource();
         _switchResult = this._speADLUtils.toLightweightTypeReference(_typeReference, _eResource);
       }
-    }
-    if (!_matched) {
-      throw new RuntimeException("should not happen");
     }
     final LightweightTypeReference typeFrom = _switchResult;
     boolean _and = false;
@@ -148,7 +144,7 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
     Iterable<RequiredPort> _allRequires = this._speADLUtils.getAllRequires(_abstractComponent);
     final Set<RequiredPort> toBind = IterableExtensions.<RequiredPort>toSet(_allRequires);
     EList<Binding> _bindings = ci.getBindings();
-    final Function1<Binding,RequiredPort> _function = new Function1<Binding,RequiredPort>() {
+    final Function1<Binding, RequiredPort> _function = new Function1<Binding, RequiredPort>() {
       public RequiredPort apply(final Binding it) {
         return it.getFrom();
       }
@@ -179,7 +175,7 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
       String _plus_1 = (_plus + "(");
       Species _species_2 = reference.getSpecies();
       EList<Feature> _parameters_1 = _species_2.getParameters();
-      final Function1<Feature,String> _function = new Function1<Feature,String>() {
+      final Function1<Feature, String> _function = new Function1<Feature, String>() {
         public String apply(final Feature it) {
           return it.getName();
         }
@@ -191,7 +187,7 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
       String _plus_4 = (_plus_3 + "; it cannot be parameterized with arguments ");
       String _plus_5 = (_plus_4 + "(");
       EList<Feature> _arguments_1 = reference.getArguments();
-      final Function1<Feature,String> _function_1 = new Function1<Feature,String>() {
+      final Function1<Feature, String> _function_1 = new Function1<Feature, String>() {
         public String apply(final Feature it) {
           return it.getName();
         }
@@ -237,11 +233,18 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
     }
   }
   
+  /**
+   * TODO
+   *  - can add provide
+   *  - can't wrongly override
+   *  -
+   */
   @Check
   public void checkNoNewProvWhenImpl(final Ecosystem eco) {
     JvmParameterizedTypeReference _specializes = eco.getSpecializes();
-    boolean _notEquals = (!Objects.equal(_specializes, null));
-    if (_notEquals) {
+    boolean _isUseless = this._speADLUtils.isUseless(_specializes);
+    boolean _not = (!_isUseless);
+    if (_not) {
       int index = 0;
       EList<ProvidedPort> _provides = eco.getProvides();
       for (final ProvidedPort p : _provides) {
@@ -256,8 +259,9 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
   @Check
   public void checkNoNewReqWhenImpl(final Ecosystem eco) {
     JvmParameterizedTypeReference _specializes = eco.getSpecializes();
-    boolean _notEquals = (!Objects.equal(_specializes, null));
-    if (_notEquals) {
+    boolean _isUseless = this._speADLUtils.isUseless(_specializes);
+    boolean _not = (!_isUseless);
+    if (_not) {
       int index = 0;
       EList<RequiredPort> _requires = eco.getRequires();
       for (final RequiredPort p : _requires) {
@@ -272,18 +276,11 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
   @Check
   public void checkSpecializeReference(final Ecosystem ecosystem) {
     final JvmParameterizedTypeReference superTypeRef = ecosystem.getSpecializes();
-    boolean _and = false;
-    boolean _notEquals = (!Objects.equal(superTypeRef, null));
-    if (!_notEquals) {
-      _and = false;
-    } else {
+    boolean _isUseless = this._speADLUtils.isUseless(superTypeRef);
+    boolean _not = (!_isUseless);
+    if (_not) {
       JvmType _type = superTypeRef.getType();
-      boolean _notEquals_1 = (!Objects.equal(_type, null));
-      _and = _notEquals_1;
-    }
-    if (_and) {
-      JvmType _type_1 = superTypeRef.getType();
-      final Ecosystem superType = this._speADLUtils.associatedEcosystem(_type_1);
+      final Ecosystem superType = this._speADLUtils.associatedEcosystem(_type);
       boolean _equals = Objects.equal(superType, null);
       if (_equals) {
         JvmParameterizedTypeReference _specializes = ecosystem.getSpecializes();
@@ -294,8 +291,8 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
       } else {
         EList<Part> _parts = superType.getParts();
         boolean _isEmpty = _parts.isEmpty();
-        boolean _not = (!_isEmpty);
-        if (_not) {
+        boolean _not_1 = (!_isEmpty);
+        if (_not_1) {
           this.error("Can only implements components without subcomponents", SpeadlPackage.Literals.ABSTRACT_COMPONENT__SPECIALIZES);
         }
         boolean _hasCycleInHierarchy = this._speADLUtils.hasCycleInHierarchy(superType);
@@ -348,61 +345,6 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
       String _plus = (_simpleName + " cannot be resolved");
       JvmParameterizedTypeReference _componentReference_2 = p.getComponentReference();
       this.error(_plus, _componentReference_2, TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE);
-    }
-  }
-  
-  @Check(CheckType.NORMAL)
-  public void checkImplementedBy(final ImplementedBy ib) {
-    EObject _eContainer = ib.eContainer();
-    final Ecosystem eco = ((Ecosystem) _eContainer);
-    JvmGenericType _associatedJvmClass = this._speADLUtils.associatedJvmClass(eco);
-    JvmParameterizedTypeReference _typeRef = this._speADLUtils.getTypeRef(_associatedJvmClass);
-    Resource _eResource = ib.eResource();
-    final LightweightTypeReference shouldBe = this._speADLUtils.toLightweightTypeReference(_typeRef, _eResource);
-    JvmParameterizedTypeReference _ref = ib.getRef();
-    Resource _eResource_1 = ib.eResource();
-    final LightweightTypeReference is = this._speADLUtils.toLightweightTypeReference(_ref, _eResource_1);
-    final TypeConformanceComputationArgument argument = new TypeConformanceComputationArgument(true, false, true, true, false, true);
-    boolean _isAssignableFrom = shouldBe.isAssignableFrom(is, argument);
-    boolean _not = (!_isAssignableFrom);
-    if (_not) {
-      String _simpleName = is.getSimpleName();
-      String _plus = (_simpleName + " is not extending ");
-      String _simpleName_1 = shouldBe.getSimpleName();
-      String _plus_1 = (_plus + _simpleName_1);
-      this.error(_plus_1, SpeadlPackage.Literals.IMPLEMENTED_BY__REF);
-    } else {
-      JvmType _type = is.getType();
-      final JvmGenericType type = ((JvmGenericType) _type);
-      boolean _isAbstract = type.isAbstract();
-      if (_isAbstract) {
-        String _simpleName_2 = is.getSimpleName();
-        String _plus_2 = (_simpleName_2 + " can\'t be instantiated (abstract)");
-        this.error(_plus_2, SpeadlPackage.Literals.IMPLEMENTED_BY__REF);
-      } else {
-        boolean _or = false;
-        Iterable<JvmConstructor> _declaredConstructors = type.getDeclaredConstructors();
-        boolean _isEmpty = IterableExtensions.isEmpty(_declaredConstructors);
-        if (_isEmpty) {
-          _or = true;
-        } else {
-          Iterable<JvmConstructor> _declaredConstructors_1 = type.getDeclaredConstructors();
-          final Function1<JvmConstructor,Boolean> _function = new Function1<JvmConstructor,Boolean>() {
-            public Boolean apply(final JvmConstructor it) {
-              EList<JvmFormalParameter> _parameters = it.getParameters();
-              return Boolean.valueOf(_parameters.isEmpty());
-            }
-          };
-          boolean _exists = IterableExtensions.<JvmConstructor>exists(_declaredConstructors_1, _function);
-          _or = _exists;
-        }
-        final boolean hasOkConstructor = _or;
-        if ((!hasOkConstructor)) {
-          String _simpleName_3 = is.getSimpleName();
-          String _plus_3 = (_simpleName_3 + " does not have a parameter-less constructor");
-          this.error(_plus_3, SpeadlPackage.Literals.IMPLEMENTED_BY__REF);
-        }
-      }
     }
   }
   

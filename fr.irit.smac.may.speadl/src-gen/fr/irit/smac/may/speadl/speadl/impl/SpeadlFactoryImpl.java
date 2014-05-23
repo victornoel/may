@@ -73,7 +73,6 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
       case SpeadlPackage.CONTENT_ELEMENT: return createContentElement();
       case SpeadlPackage.PART: return createPart();
       case SpeadlPackage.FEATURE: return createFeature();
-      case SpeadlPackage.IMPLEMENTED_BY: return createImplementedBy();
       case SpeadlPackage.ECOSYSTEM: return createEcosystem();
       case SpeadlPackage.SPECIES: return createSpecies();
       case SpeadlPackage.PROVIDED_PORT: return createProvidedPort();
@@ -185,17 +184,6 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
   {
     FeatureImpl feature = new FeatureImpl();
     return feature;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public ImplementedBy createImplementedBy()
-  {
-    ImplementedByImpl implementedBy = new ImplementedByImpl();
-    return implementedBy;
   }
 
   /**

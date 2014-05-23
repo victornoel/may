@@ -1,5 +1,7 @@
 package fr.irit.smac.may.speadl.scoping;
 
+import java.util.ArrayList;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.xtext.EcoreUtil2;
@@ -8,6 +10,7 @@ import org.eclipse.xtext.scoping.Scopes;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
 import fr.irit.smac.may.speadl.SpeADLUtils;
@@ -15,8 +18,11 @@ import fr.irit.smac.may.speadl.speadl.AbstractComponent;
 import fr.irit.smac.may.speadl.speadl.Binding;
 import fr.irit.smac.may.speadl.speadl.ComponentPart;
 import fr.irit.smac.may.speadl.speadl.Ecosystem;
+import fr.irit.smac.may.speadl.speadl.Part;
+import fr.irit.smac.may.speadl.speadl.Port;
 import fr.irit.smac.may.speadl.speadl.PortRef;
 import fr.irit.smac.may.speadl.speadl.ProvidedPort;
+import fr.irit.smac.may.speadl.speadl.Species;
 import fr.irit.smac.may.speadl.speadl.SpeciesPart;
 import fr.irit.smac.may.speadl.speadl.SpeciesReference;
 import fr.irit.smac.may.speadl.speadl.util.SpeadlSwitch;
@@ -56,7 +62,18 @@ public class SpeADLDeclarativeScopeProvider extends AbstractDeclarativeScopeProv
 	// TO
 	
 	IScope scope_PortRef_part(AbstractComponent ctx, EReference ref) {
-		return Scopes.scopeFor(ctx.getParts());
+		// in a species part, 
+		// includes the containing species and containing ecosystem of a species!
+		// => that's ok, that's the only case of binding between inside a species
+		// and it's ecosystem: N-1 link
+		
+		final ArrayList<Part> res = Lists.newArrayList(ctx.getParts());
+		if (ctx instanceof Species) {
+			final Ecosystem e = (Ecosystem) ctx.eContainer();
+			res.addAll(e.getParts());
+		}
+		
+		return Scopes.scopeFor(res);
 	}
 	
 	IScope scope_PortRef_port(ProvidedPort ctx, EReference ref) {
@@ -84,8 +101,16 @@ public class SpeADLDeclarativeScopeProvider extends AbstractDeclarativeScopeProv
 				}
 			}.doSwitch(ctx.getPart());
 		} else {
-			AbstractComponent containingComponent = EcoreUtil2.getContainerOfType(ctx, AbstractComponent.class);
-			return Scopes.scopeFor(Iterables.concat(utils.getAllRequires(containingComponent), utils.getAllProvides(containingComponent)));
+			final AbstractComponent containingComponent = EcoreUtil2.getContainerOfType(ctx, AbstractComponent.class);
+			Iterable<Port> res = Iterables.concat(utils.getAllRequires(containingComponent), utils.getAllProvides(containingComponent));
+			if (containingComponent instanceof Species) {
+				final Ecosystem e = (Ecosystem) ctx.eContainer();
+				res = Iterables.concat(
+						res,
+						Iterables.concat(utils.getAllRequires(e), utils.getAllProvides(e))
+				);
+			}
+			return Scopes.scopeFor(res);
 		}
 	}
 }
