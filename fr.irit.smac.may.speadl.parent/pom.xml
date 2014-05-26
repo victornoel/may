@@ -62,7 +62,7 @@
 			</plugin>
 		</plugins>
 		<extensions>
-			<!-- For deployement of artefacts and update site -->
+			<!-- For deployement of artefacts -->
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-ftp</artifactId>

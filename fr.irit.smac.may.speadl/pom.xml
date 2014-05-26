@@ -12,6 +12,7 @@
 
 	<artifactId>fr.irit.smac.may.speadl</artifactId>
 	<packaging>eclipse-plugin</packaging>
+
 	<build>
 		<plugins>
 			<!-- Clean the src-gen folders of the ui and test project. The Xtext generator 
@@ -27,7 +28,7 @@
 						<!-- hack in order for the file not to be removed on clean but only 
 							prior to code generation from xtend-maven-plugin
 							and exec-maven-plugin -->
-						<phase>initialize</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>clean</goal>
 						</goals>
@@ -70,7 +71,7 @@
 					<includePluginDependencies>true</includePluginDependencies>
 					<mainClass>org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher</mainClass>
 					<arguments>
-						<argument>${project.basedir}/src/fr/irit/smac/may/speadl/GenerateSpeADL.mwe2</argument>
+						<argument>file://${project.basedir}/src/fr/irit/smac/may/speadl/GenerateSpeADL.mwe2</argument>
 						<argument>-p</argument>
 						<argument>runtimeProject=/${project.basedir}</argument>
 					</arguments>
@@ -85,6 +86,27 @@
 						<groupId>org.eclipse.xtext</groupId>
 						<artifactId>org.eclipse.xtext.xbase</artifactId>
 						<version>${xtext.version}</version>
+					</dependency>
+					<!-- common.types (dependency of xbase) needs asm5 which conflicts with the following
+						dependencies of maven-plugin-plugin, a dependency of exec-maven-plugin -->
+					<dependency>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-plugin-plugin</artifactId>
+						<version>3.2</version>
+						<exclusions>
+							<exclusion>
+								<groupId>asm</groupId>
+								<artifactId>asm</artifactId>
+							</exclusion>
+							<exclusion>
+								<groupId>asm</groupId>
+								<artifactId>asm-commons</artifactId>
+							</exclusion>
+							<exclusion>
+								<groupId>asm</groupId>
+								<artifactId>asm-tree</artifactId>
+							</exclusion>
+						</exclusions>
 					</dependency>
 				</dependencies>
 			</plugin>

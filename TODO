@@ -12,7 +12,7 @@
 
 - Gèrer le problème de la completion du binding sur un provide (après le =)
  - voir http://www.eclipse.org/forums/index.php/m/1016202 et http://www.eclipse.org/forums/index.php/m/1016189
- - pour le moment les erreurs qui suivent quand on a pas fini d'écrire après le = font que les autres part ne sont pas visibles...
+ - pour le moment les erreurs qui suivent quand on a pas fini d'écrire après le = font que les autres parts ne sont pas visibles...
  - ajouter un ; après le binding après le = réglerait le pb, mais c'est moche...
 
 - auto activer la completion une fois le point mis : http://christiandietrich.wordpress.com/2011/09/19/xtext-content-assist-auto-activation/
@@ -29,12 +29,9 @@
 - add multiple mode for outline (with and without inherited ports for e.g.)
 
 - check that one can refer to a port from a species to its ecosystem!
+ - introduce keyword?
 
-- specializes...
- - verify that allProvides works well
- - add checking for adding provides + override
-
-- add conflict with class name of specialise and type parameter name
+- add conflict with class name of specialise and type parameter name (???)
 
 - disable the behaviour of F3 in eclipse that redirect to the speadl: see http://www.eclipse.org/forums/index.php/m/1205133 but careful not to disable it for references IN speadl, or maybe the best is to disable it for eveything but the type itself?! that would make sense...
 
