@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
+ *   <li>{@link fr.irit.smac.may.speadl.speadl.PortRef#isEcosystem <em>Ecosystem</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.PortRef#getPart <em>Part</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.PortRef#getPort <em>Port</em>}</li>
  * </ul>
@@ -23,6 +24,32 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface PortRef extends EObject
 {
+  /**
+   * Returns the value of the '<em><b>Ecosystem</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Ecosystem</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Ecosystem</em>' attribute.
+   * @see #setEcosystem(boolean)
+   * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getPortRef_Ecosystem()
+   * @model
+   * @generated
+   */
+  boolean isEcosystem();
+
+  /**
+   * Sets the value of the '{@link fr.irit.smac.may.speadl.speadl.PortRef#isEcosystem <em>Ecosystem</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Ecosystem</em>' attribute.
+   * @see #isEcosystem()
+   * @generated
+   */
+  void setEcosystem(boolean value);
+
   /**
    * Returns the value of the '<em><b>Part</b></em>' reference.
    * <!-- begin-user-doc -->

@@ -629,9 +629,19 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getPortRef_Ecosystem()
+  {
+    return (EAttribute)portRefEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getPortRef_Part()
   {
-    return (EReference)portRefEClass.getEStructuralFeatures().get(0);
+    return (EReference)portRefEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -641,7 +651,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    */
   public EReference getPortRef_Port()
   {
-    return (EReference)portRefEClass.getEStructuralFeatures().get(1);
+    return (EReference)portRefEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -769,6 +779,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
     createEReference(bindingEClass, BINDING__TO);
 
     portRefEClass = createEClass(PORT_REF);
+    createEAttribute(portRefEClass, PORT_REF__ECOSYSTEM);
     createEReference(portRefEClass, PORT_REF__PART);
     createEReference(portRefEClass, PORT_REF__PORT);
 
@@ -879,6 +890,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
     initEReference(getBinding_To(), this.getPortRef(), null, "to", null, 0, 1, Binding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(portRefEClass, PortRef.class, "PortRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getPortRef_Ecosystem(), ecorePackage.getEBoolean(), "ecosystem", null, 0, 1, PortRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getPortRef_Part(), this.getPart(), null, "part", null, 0, 1, PortRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getPortRef_Port(), this.getPort(), null, "port", null, 0, 1, PortRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

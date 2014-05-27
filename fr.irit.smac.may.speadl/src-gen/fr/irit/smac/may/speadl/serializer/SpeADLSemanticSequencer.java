@@ -1462,7 +1462,7 @@ public class SpeADLSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (part=[Part|ValidID]? port=[Port|ValidID])
+	 *     (ecosystem?='eco'? part=[Part|ValidID]? port=[Port|ValidID])
 	 */
 	protected void sequence_PortRef(EObject context, PortRef semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

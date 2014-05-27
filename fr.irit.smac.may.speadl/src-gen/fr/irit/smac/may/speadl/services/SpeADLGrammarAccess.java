@@ -323,7 +323,6 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cBindingsAssignment = (Assignment)rule.eContents().get(1);
 		private final RuleCall cBindingsBindingParserRuleCall_0 = (RuleCall)cBindingsAssignment.eContents().get(0);
 		
-		//// TODO maybe we could add elementReference=ParameterizedReferenceElement
 		//FakePart returns Part:
 		//	bindings+=Binding;
 		public ParserRule getRule() { return rule; }
@@ -959,45 +958,55 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	public class PortRefElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "PortRef");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Group cGroup_0 = (Group)cGroup.eContents().get(0);
-		private final Assignment cPartAssignment_0_0 = (Assignment)cGroup_0.eContents().get(0);
-		private final CrossReference cPartPartCrossReference_0_0_0 = (CrossReference)cPartAssignment_0_0.eContents().get(0);
-		private final RuleCall cPartPartValidIDParserRuleCall_0_0_0_1 = (RuleCall)cPartPartCrossReference_0_0_0.eContents().get(1);
-		private final Keyword cFullStopKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
-		private final Assignment cPortAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final CrossReference cPortPortCrossReference_1_0 = (CrossReference)cPortAssignment_1.eContents().get(0);
-		private final RuleCall cPortPortValidIDParserRuleCall_1_0_1 = (RuleCall)cPortPortCrossReference_1_0.eContents().get(1);
+		private final Assignment cEcosystemAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final Keyword cEcosystemEcoKeyword_0_0 = (Keyword)cEcosystemAssignment_0.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Assignment cPartAssignment_1_0 = (Assignment)cGroup_1.eContents().get(0);
+		private final CrossReference cPartPartCrossReference_1_0_0 = (CrossReference)cPartAssignment_1_0.eContents().get(0);
+		private final RuleCall cPartPartValidIDParserRuleCall_1_0_0_1 = (RuleCall)cPartPartCrossReference_1_0_0.eContents().get(1);
+		private final Keyword cFullStopKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
+		private final Assignment cPortAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final CrossReference cPortPortCrossReference_2_0 = (CrossReference)cPortAssignment_2.eContents().get(0);
+		private final RuleCall cPortPortValidIDParserRuleCall_2_0_1 = (RuleCall)cPortPortCrossReference_2_0.eContents().get(1);
 		
 		//PortRef:
+		//	ecosystem?="eco"? // I don't know why but without ()?, eco seems to be mandatory...
 		//	(part=[Part|ValidID] ".")? port=[Port|ValidID];
 		public ParserRule getRule() { return rule; }
 
+		//ecosystem?="eco"? // I don't know why but without ()?, eco seems to be mandatory...
 		//(part=[Part|ValidID] ".")? port=[Port|ValidID]
 		public Group getGroup() { return cGroup; }
 
+		//ecosystem?="eco"?
+		public Assignment getEcosystemAssignment_0() { return cEcosystemAssignment_0; }
+
+		//"eco"
+		public Keyword getEcosystemEcoKeyword_0_0() { return cEcosystemEcoKeyword_0_0; }
+
 		//(part=[Part|ValidID] ".")?
-		public Group getGroup_0() { return cGroup_0; }
+		public Group getGroup_1() { return cGroup_1; }
 
 		//part=[Part|ValidID]
-		public Assignment getPartAssignment_0_0() { return cPartAssignment_0_0; }
+		public Assignment getPartAssignment_1_0() { return cPartAssignment_1_0; }
 
 		//[Part|ValidID]
-		public CrossReference getPartPartCrossReference_0_0_0() { return cPartPartCrossReference_0_0_0; }
+		public CrossReference getPartPartCrossReference_1_0_0() { return cPartPartCrossReference_1_0_0; }
 
 		//ValidID
-		public RuleCall getPartPartValidIDParserRuleCall_0_0_0_1() { return cPartPartValidIDParserRuleCall_0_0_0_1; }
+		public RuleCall getPartPartValidIDParserRuleCall_1_0_0_1() { return cPartPartValidIDParserRuleCall_1_0_0_1; }
 
 		//"."
-		public Keyword getFullStopKeyword_0_1() { return cFullStopKeyword_0_1; }
+		public Keyword getFullStopKeyword_1_1() { return cFullStopKeyword_1_1; }
 
 		//port=[Port|ValidID]
-		public Assignment getPortAssignment_1() { return cPortAssignment_1; }
+		public Assignment getPortAssignment_2() { return cPortAssignment_2; }
 
 		//[Port|ValidID]
-		public CrossReference getPortPortCrossReference_1_0() { return cPortPortCrossReference_1_0; }
+		public CrossReference getPortPortCrossReference_2_0() { return cPortPortCrossReference_2_0; }
 
 		//ValidID
-		public RuleCall getPortPortValidIDParserRuleCall_1_0_1() { return cPortPortValidIDParserRuleCall_1_0_1; }
+		public RuleCall getPortPortValidIDParserRuleCall_2_0_1() { return cPortPortValidIDParserRuleCall_2_0_1; }
 	}
 
 	public class SpeciesReferenceElements extends AbstractParserRuleElementFinder {
@@ -1342,7 +1351,6 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		return getPartAccess().getRule();
 	}
 
-	//// TODO maybe we could add elementReference=ParameterizedReferenceElement
 	//FakePart returns Part:
 	//	bindings+=Binding;
 	public FakePartElements getFakePartAccess() {
@@ -1454,6 +1462,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//PortRef:
+	//	ecosystem?="eco"? // I don't know why but without ()?, eco seems to be mandatory...
 	//	(part=[Part|ValidID] ".")? port=[Port|ValidID];
 	public PortRefElements getPortRefAccess() {
 		return (pPortRef != null) ? pPortRef : (pPortRef = new PortRefElements());

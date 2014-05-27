@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
+ *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.PortRefImpl#isEcosystem <em>Ecosystem</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.PortRefImpl#getPart <em>Part</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.PortRefImpl#getPort <em>Port</em>}</li>
  * </ul>
@@ -31,6 +32,26 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  */
 public class PortRefImpl extends MinimalEObjectImpl.Container implements PortRef
 {
+  /**
+   * The default value of the '{@link #isEcosystem() <em>Ecosystem</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isEcosystem()
+   * @generated
+   * @ordered
+   */
+  protected static final boolean ECOSYSTEM_EDEFAULT = false;
+
+  /**
+   * The cached value of the '{@link #isEcosystem() <em>Ecosystem</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isEcosystem()
+   * @generated
+   * @ordered
+   */
+  protected boolean ecosystem = ECOSYSTEM_EDEFAULT;
+
   /**
    * The cached value of the '{@link #getPart() <em>Part</em>}' reference.
    * <!-- begin-user-doc -->
@@ -70,6 +91,29 @@ public class PortRefImpl extends MinimalEObjectImpl.Container implements PortRef
   protected EClass eStaticClass()
   {
     return SpeadlPackage.Literals.PORT_REF;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public boolean isEcosystem()
+  {
+    return ecosystem;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setEcosystem(boolean newEcosystem)
+  {
+    boolean oldEcosystem = ecosystem;
+    ecosystem = newEcosystem;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, SpeadlPackage.PORT_REF__ECOSYSTEM, oldEcosystem, ecosystem));
   }
 
   /**
@@ -168,6 +212,8 @@ public class PortRefImpl extends MinimalEObjectImpl.Container implements PortRef
   {
     switch (featureID)
     {
+      case SpeadlPackage.PORT_REF__ECOSYSTEM:
+        return isEcosystem();
       case SpeadlPackage.PORT_REF__PART:
         if (resolve) return getPart();
         return basicGetPart();
@@ -188,6 +234,9 @@ public class PortRefImpl extends MinimalEObjectImpl.Container implements PortRef
   {
     switch (featureID)
     {
+      case SpeadlPackage.PORT_REF__ECOSYSTEM:
+        setEcosystem((Boolean)newValue);
+        return;
       case SpeadlPackage.PORT_REF__PART:
         setPart((Part)newValue);
         return;
@@ -208,6 +257,9 @@ public class PortRefImpl extends MinimalEObjectImpl.Container implements PortRef
   {
     switch (featureID)
     {
+      case SpeadlPackage.PORT_REF__ECOSYSTEM:
+        setEcosystem(ECOSYSTEM_EDEFAULT);
+        return;
       case SpeadlPackage.PORT_REF__PART:
         setPart((Part)null);
         return;
@@ -228,12 +280,31 @@ public class PortRefImpl extends MinimalEObjectImpl.Container implements PortRef
   {
     switch (featureID)
     {
+      case SpeadlPackage.PORT_REF__ECOSYSTEM:
+        return ecosystem != ECOSYSTEM_EDEFAULT;
       case SpeadlPackage.PORT_REF__PART:
         return part != null;
       case SpeadlPackage.PORT_REF__PORT:
         return port != null;
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (ecosystem: ");
+    result.append(ecosystem);
+    result.append(')');
+    return result.toString();
   }
 
 } //PortRefImpl

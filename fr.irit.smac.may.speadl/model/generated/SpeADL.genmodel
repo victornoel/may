@@ -57,6 +57,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SpeADL.ecore#//Binding/to"/>
     </genClasses>
     <genClasses ecoreClass="SpeADL.ecore#//PortRef">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SpeADL.ecore#//PortRef/ecosystem"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SpeADL.ecore#//PortRef/part"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SpeADL.ecore#//PortRef/port"/>
     </genClasses>

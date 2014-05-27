@@ -455,8 +455,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         JvmTypeReference _substituteWith = this._speADLUtils.substituteWith(_typeReference, substitutor);
         final Procedure1<JvmOperation> _function_6 = new Procedure1<JvmOperation>() {
           public void apply(final JvmOperation it) {
-            LightweightTypeReference _overridedProvidedPortTypeRef = SpeADLJvmModelInferrer.this._speADLUtils.getOverridedProvidedPortTypeRef(port);
-            boolean _notEquals = (!Objects.equal(_overridedProvidedPortTypeRef, null));
+            LightweightTypeReference _overridenPortTypeRef = SpeADLJvmModelInferrer.this._speADLUtils.getOverridenPortTypeRef(port);
+            boolean _notEquals = (!Objects.equal(_overridenPortTypeRef, null));
             if (_notEquals) {
               EList<JvmAnnotationReference> _annotations = it.getAnnotations();
               JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(compClass, Override.class);
@@ -1043,19 +1043,12 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     Resource _eResource = comp.eResource();
     final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(containerRef, _eResource);
     EList<JvmTypeParameter> _typeParameters_1 = requires.getTypeParameters();
-    final Function1<JvmTypeParameter, JvmParameterizedTypeReference> _function = new Function1<JvmTypeParameter, JvmParameterizedTypeReference>() {
-      public JvmParameterizedTypeReference apply(final JvmTypeParameter it) {
-        return SpeADLJvmModelInferrer.this._typeReferences.createTypeRef(it);
-      }
-    };
-    final List<JvmParameterizedTypeReference> myTypeParametersRefs = ListExtensions.<JvmTypeParameter, JvmParameterizedTypeReference>map(_typeParameters_1, _function);
-    EList<JvmTypeParameter> _typeParameters_2 = requires.getTypeParameters();
-    final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function_1 = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
+    final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
       public EList<JvmTypeConstraint> apply(final JvmTypeParameter it) {
         return it.getConstraints();
       }
     };
-    List<EList<JvmTypeConstraint>> _map = ListExtensions.<JvmTypeParameter, EList<JvmTypeConstraint>>map(_typeParameters_2, _function_1);
+    List<EList<JvmTypeConstraint>> _map = ListExtensions.<JvmTypeParameter, EList<JvmTypeConstraint>>map(_typeParameters_1, _function);
     Iterable<JvmTypeConstraint> _flatten = Iterables.<JvmTypeConstraint>concat(_map);
     for (final JvmTypeConstraint c : _flatten) {
       {
@@ -1070,7 +1063,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
       String _name = port.getName();
       JvmParameterizedTypeReference _typeReference = port.getTypeReference();
       JvmTypeReference _substituteWith = this._speADLUtils.substituteWith(_typeReference, substitutor);
-      final Procedure1<JvmOperation> _function_2 = new Procedure1<JvmOperation>() {
+      final Procedure1<JvmOperation> _function_1 = new Procedure1<JvmOperation>() {
         public void apply(final JvmOperation it) {
           StringConcatenation _builder = new StringConcatenation();
           _builder.append("This can be called by the implementation to access this required port.");
@@ -1078,7 +1071,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
         }
       };
-      JvmOperation _newMethod = this._speADLJvmTypesBuilder.newMethod(_name, _substituteWith, _function_2);
+      JvmOperation _newMethod = this._speADLJvmTypesBuilder.newMethod(_name, _substituteWith, _function_1);
       this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members, _newMethod);
     }
   }
@@ -1089,19 +1082,12 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     Resource _eResource = comp.eResource();
     final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(containerRef, _eResource);
     EList<JvmTypeParameter> _typeParameters_1 = provides.getTypeParameters();
-    final Function1<JvmTypeParameter, JvmParameterizedTypeReference> _function = new Function1<JvmTypeParameter, JvmParameterizedTypeReference>() {
-      public JvmParameterizedTypeReference apply(final JvmTypeParameter it) {
-        return SpeADLJvmModelInferrer.this._typeReferences.createTypeRef(it);
-      }
-    };
-    final List<JvmParameterizedTypeReference> myTypeParametersRefs = ListExtensions.<JvmTypeParameter, JvmParameterizedTypeReference>map(_typeParameters_1, _function);
-    EList<JvmTypeParameter> _typeParameters_2 = provides.getTypeParameters();
-    final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function_1 = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
+    final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
       public EList<JvmTypeConstraint> apply(final JvmTypeParameter it) {
         return it.getConstraints();
       }
     };
-    List<EList<JvmTypeConstraint>> _map = ListExtensions.<JvmTypeParameter, EList<JvmTypeConstraint>>map(_typeParameters_2, _function_1);
+    List<EList<JvmTypeConstraint>> _map = ListExtensions.<JvmTypeParameter, EList<JvmTypeConstraint>>map(_typeParameters_1, _function);
     Iterable<JvmTypeConstraint> _flatten = Iterables.<JvmTypeConstraint>concat(_map);
     for (final JvmTypeConstraint c : _flatten) {
       {
@@ -1126,7 +1112,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
       String _name = port.getName();
       JvmParameterizedTypeReference _typeReference = port.getTypeReference();
       JvmTypeReference _substituteWith = this._speADLUtils.substituteWith(_typeReference, substitutor);
-      final Procedure1<JvmOperation> _function_2 = new Procedure1<JvmOperation>() {
+      final Procedure1<JvmOperation> _function_1 = new Procedure1<JvmOperation>() {
         public void apply(final JvmOperation it) {
           StringConcatenation _builder = new StringConcatenation();
           _builder.append("This can be called to access the provided port.");
@@ -1134,7 +1120,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
         }
       };
-      JvmOperation _newMethod = this._speADLJvmTypesBuilder.newMethod(_name, _substituteWith, _function_2);
+      JvmOperation _newMethod = this._speADLJvmTypesBuilder.newMethod(_name, _substituteWith, _function_1);
       this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members, _newMethod);
     }
   }
@@ -1145,19 +1131,12 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     Resource _eResource = comp.eResource();
     final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(containerRef, _eResource);
     EList<JvmTypeParameter> _typeParameters_1 = parts.getTypeParameters();
-    final Function1<JvmTypeParameter, JvmParameterizedTypeReference> _function = new Function1<JvmTypeParameter, JvmParameterizedTypeReference>() {
-      public JvmParameterizedTypeReference apply(final JvmTypeParameter it) {
-        return SpeADLJvmModelInferrer.this._typeReferences.createTypeRef(it);
-      }
-    };
-    final List<JvmParameterizedTypeReference> myTypeParametersRefs = ListExtensions.<JvmTypeParameter, JvmParameterizedTypeReference>map(_typeParameters_1, _function);
-    EList<JvmTypeParameter> _typeParameters_2 = parts.getTypeParameters();
-    final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function_1 = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
+    final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
       public EList<JvmTypeConstraint> apply(final JvmTypeParameter it) {
         return it.getConstraints();
       }
     };
-    List<EList<JvmTypeConstraint>> _map = ListExtensions.<JvmTypeParameter, EList<JvmTypeConstraint>>map(_typeParameters_2, _function_1);
+    List<EList<JvmTypeConstraint>> _map = ListExtensions.<JvmTypeParameter, EList<JvmTypeConstraint>>map(_typeParameters_1, _function);
     Iterable<JvmTypeConstraint> _flatten = Iterables.<JvmTypeConstraint>concat(_map);
     for (final JvmTypeConstraint c : _flatten) {
       {
@@ -1184,7 +1163,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         EList<JvmMember> _members = parts.getMembers();
         String _name = part.getName();
         JvmParameterizedTypeReference _innerTypeReference_1 = this._speADLUtils.getInnerTypeReference(nptr, SpeADLJvmModelInferrer.COMPONENT_INTERFACE);
-        final Procedure1<JvmOperation> _function_2 = new Procedure1<JvmOperation>() {
+        final Procedure1<JvmOperation> _function_1 = new Procedure1<JvmOperation>() {
           public void apply(final JvmOperation it) {
             StringConcatenation _builder = new StringConcatenation();
             _builder.append("This can be called by the implementation to access the part and its provided ports.");
@@ -1194,7 +1173,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
           }
         };
-        JvmOperation _newMethod = this._speADLJvmTypesBuilder.newMethod(_name, _innerTypeReference_1, _function_2);
+        JvmOperation _newMethod = this._speADLJvmTypesBuilder.newMethod(_name, _innerTypeReference_1, _function_1);
         this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members, _newMethod);
       }
     }
@@ -1208,19 +1187,12 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
       Resource _eResource = comp.eResource();
       final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(containerRef, _eResource);
       EList<JvmTypeParameter> _typeParameters_1 = componentIf.getTypeParameters();
-      final Function1<JvmTypeParameter, JvmParameterizedTypeReference> _function = new Function1<JvmTypeParameter, JvmParameterizedTypeReference>() {
-        public JvmParameterizedTypeReference apply(final JvmTypeParameter it) {
-          return SpeADLJvmModelInferrer.this._typeReferences.createTypeRef(it);
-        }
-      };
-      final List<JvmParameterizedTypeReference> myTypeParametersRef = ListExtensions.<JvmTypeParameter, JvmParameterizedTypeReference>map(_typeParameters_1, _function);
-      EList<JvmTypeParameter> _typeParameters_2 = componentIf.getTypeParameters();
-      final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function_1 = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
+      final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
         public EList<JvmTypeConstraint> apply(final JvmTypeParameter it) {
           return it.getConstraints();
         }
       };
-      List<EList<JvmTypeConstraint>> _map = ListExtensions.<JvmTypeParameter, EList<JvmTypeConstraint>>map(_typeParameters_2, _function_1);
+      List<EList<JvmTypeConstraint>> _map = ListExtensions.<JvmTypeParameter, EList<JvmTypeConstraint>>map(_typeParameters_1, _function);
       Iterable<JvmTypeConstraint> _flatten = Iterables.<JvmTypeConstraint>concat(_map);
       for (final JvmTypeConstraint c : _flatten) {
         {
@@ -1240,8 +1212,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         this._speADLJvmTypesBuilder.<JvmParameterizedTypeReference>operator_add(_superTypes, _innerTypeReference);
       }
       EList<JvmTypeReference> _superTypes_1 = componentIf.getSuperTypes();
-      EList<JvmTypeParameter> _typeParameters_3 = componentIf.getTypeParameters();
-      JvmParameterizedTypeReference _parameterizedTypeRefWith = this._speADLUtils.getParameterizedTypeRefWith(provides, _typeParameters_3);
+      EList<JvmTypeParameter> _typeParameters_2 = componentIf.getTypeParameters();
+      JvmParameterizedTypeReference _parameterizedTypeRefWith = this._speADLUtils.getParameterizedTypeRefWith(provides, _typeParameters_2);
       _xblockexpression = this._speADLJvmTypesBuilder.<JvmParameterizedTypeReference>operator_add(_superTypes_1, _parameterizedTypeRefWith);
     }
     return _xblockexpression;
@@ -1348,9 +1320,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             EList<Part> _parts = comp.getParts();
             for (final Part part : _parts) {
               {
-                final JvmParameterizedTypeReference tr = SpeADLJvmModelInferrer.this._speADLUtils.typeReference(part);
-                final JvmTypeReference nptr = SpeADLJvmModelInferrer.this._speADLUtils.substituteWith(tr, substitutor);
-                final JvmParameterizedTypeReference ctr = SpeADLJvmModelInferrer.this._speADLUtils.getInnerTypeReference(nptr, SpeADLJvmModelInferrer.COMPONENT_CLASS);
+                JvmParameterizedTypeReference _typeReference = SpeADLJvmModelInferrer.this._speADLUtils.typeReference(part);
+                JvmTypeReference _substituteWith = SpeADLJvmModelInferrer.this._speADLUtils.substituteWith(_typeReference, substitutor);
+                final JvmParameterizedTypeReference ctr = SpeADLJvmModelInferrer.this._speADLUtils.getInnerTypeReference(_substituteWith, SpeADLJvmModelInferrer.COMPONENT_CLASS);
                 StringConcatenation _builder_1 = new StringConcatenation();
                 _builder_1.append("assert this.");
                 String _name = part.getName();
@@ -1541,8 +1513,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                   if (!_equals) {
                     _and = false;
                   } else {
-                    LightweightTypeReference _overridedProvidedPortTypeRef = SpeADLJvmModelInferrer.this._speADLUtils.getOverridedProvidedPortTypeRef(it);
-                    boolean _equals_1 = Objects.equal(_overridedProvidedPortTypeRef, null);
+                    LightweightTypeReference _overridenPortTypeRef = SpeADLJvmModelInferrer.this._speADLUtils.getOverridenPortTypeRef(it);
+                    boolean _equals_1 = Objects.equal(_overridenPortTypeRef, null);
                     _and = _equals_1;
                   }
                   return Boolean.valueOf(_and);
@@ -1654,8 +1626,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         final PortRef bound = port.getBound();
         JvmParameterizedTypeReference _typeReference = port.getTypeReference();
         final JvmTypeReference ptr = this._speADLUtils.substituteWith(_typeReference, substitutor);
-        LightweightTypeReference _overridedProvidedPortTypeRef = this._speADLUtils.getOverridedProvidedPortTypeRef(port);
-        final boolean isOverride = (!Objects.equal(_overridedProvidedPortTypeRef, null));
+        LightweightTypeReference _overridenPortTypeRef = this._speADLUtils.getOverridenPortTypeRef(port);
+        final boolean isOverride = (!Objects.equal(_overridenPortTypeRef, null));
         boolean _and = false;
         boolean _equals = Objects.equal(bound, null);
         if (!_equals) {

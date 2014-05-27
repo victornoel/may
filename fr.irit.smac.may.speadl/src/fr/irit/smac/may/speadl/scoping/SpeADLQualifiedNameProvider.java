@@ -8,7 +8,7 @@ import org.eclipse.xtext.xbase.scoping.XbaseQualifiedNameProvider;
 public class SpeADLQualifiedNameProvider extends XbaseQualifiedNameProvider {
 	
 	/* avoid to show JvmTypeParameter in completion
-	 * because they are shown as global and appears everywhere (see TODO list)
+	 * because they are shown as global and appears everywhere (see TODOList)
 	 */
 	@Override
 	public QualifiedName getFullyQualifiedName(EObject obj) {

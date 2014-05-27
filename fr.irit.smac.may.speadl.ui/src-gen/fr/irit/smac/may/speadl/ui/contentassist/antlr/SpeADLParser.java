@@ -109,7 +109,7 @@ public class SpeADLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getSpeciesPartAccess().getGroup_4(), "rule__SpeciesPart__Group_4__0");
 					put(grammarAccess.getBindingAccess().getGroup(), "rule__Binding__Group__0");
 					put(grammarAccess.getPortRefAccess().getGroup(), "rule__PortRef__Group__0");
-					put(grammarAccess.getPortRefAccess().getGroup_0(), "rule__PortRef__Group_0__0");
+					put(grammarAccess.getPortRefAccess().getGroup_1(), "rule__PortRef__Group_1__0");
 					put(grammarAccess.getSpeciesReferenceAccess().getGroup(), "rule__SpeciesReference__Group__0");
 					put(grammarAccess.getSpeciesReferenceAccess().getGroup_3(), "rule__SpeciesReference__Group_3__0");
 					put(grammarAccess.getSpeciesReferenceAccess().getGroup_3_1(), "rule__SpeciesReference__Group_3_1__0");
@@ -333,8 +333,9 @@ public class SpeADLParser extends AbstractContentAssistParser {
 					put(grammarAccess.getSpeciesPartAccess().getBindingsAssignment_4_1(), "rule__SpeciesPart__BindingsAssignment_4_1");
 					put(grammarAccess.getBindingAccess().getFromAssignment_1(), "rule__Binding__FromAssignment_1");
 					put(grammarAccess.getBindingAccess().getToAssignment_3(), "rule__Binding__ToAssignment_3");
-					put(grammarAccess.getPortRefAccess().getPartAssignment_0_0(), "rule__PortRef__PartAssignment_0_0");
-					put(grammarAccess.getPortRefAccess().getPortAssignment_1(), "rule__PortRef__PortAssignment_1");
+					put(grammarAccess.getPortRefAccess().getEcosystemAssignment_0(), "rule__PortRef__EcosystemAssignment_0");
+					put(grammarAccess.getPortRefAccess().getPartAssignment_1_0(), "rule__PortRef__PartAssignment_1_0");
+					put(grammarAccess.getPortRefAccess().getPortAssignment_2(), "rule__PortRef__PortAssignment_2");
 					put(grammarAccess.getSpeciesReferenceAccess().getPartAssignment_0(), "rule__SpeciesReference__PartAssignment_0");
 					put(grammarAccess.getSpeciesReferenceAccess().getSpeciesAssignment_2(), "rule__SpeciesReference__SpeciesAssignment_2");
 					put(grammarAccess.getSpeciesReferenceAccess().getArgumentsAssignment_3_1_0(), "rule__SpeciesReference__ArgumentsAssignment_3_1_0");

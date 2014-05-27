@@ -10,6 +10,7 @@ import fr.irit.smac.may.speadl.speadl.ContentElement;
 import fr.irit.smac.may.speadl.speadl.Ecosystem;
 import fr.irit.smac.may.speadl.speadl.Feature;
 import fr.irit.smac.may.speadl.speadl.Part;
+import fr.irit.smac.may.speadl.speadl.Port;
 import fr.irit.smac.may.speadl.speadl.PortRef;
 import fr.irit.smac.may.speadl.speadl.ProvidedPort;
 import fr.irit.smac.may.speadl.speadl.RequiredPort;
@@ -24,6 +25,7 @@ import java.util.Set;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
@@ -37,7 +39,6 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.ListExtensions;
-import org.eclipse.xtext.xbase.typesystem.override.OverrideHelper;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 /**
@@ -53,10 +54,6 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 public class SpeADLValidator extends AbstractSpeADLValidator {
   @Inject
   @Extension
-  private OverrideHelper _overrideHelper;
-  
-  @Inject
-  @Extension
   private SpeADLUtils _speADLUtils;
   
   /**
@@ -65,6 +62,32 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
    */
   @Check
   public void checkPortRef(final PortRef pr) {
+    boolean _or = false;
+    Port _port = pr.getPort();
+    boolean _equals = Objects.equal(_port, null);
+    if (_equals) {
+      _or = true;
+    } else {
+      Port _port_1 = pr.getPort();
+      boolean _eIsProxy = _port_1.eIsProxy();
+      _or = _eIsProxy;
+    }
+    if (_or) {
+      return;
+    }
+    boolean _and = false;
+    Part _part = pr.getPart();
+    boolean _notEquals = (!Objects.equal(_part, null));
+    if (!_notEquals) {
+      _and = false;
+    } else {
+      Part _part_1 = pr.getPart();
+      boolean _eIsProxy_1 = _part_1.eIsProxy();
+      _and = _eIsProxy_1;
+    }
+    if (_and) {
+      return;
+    }
     final LightweightTypeReference typeTo = this._speADLUtils.resolveType(pr);
     LightweightTypeReference _switchResult = null;
     EObject _eContainer = pr.eContainer();
@@ -85,20 +108,35 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
       }
     }
     final LightweightTypeReference typeFrom = _switchResult;
-    boolean _and = false;
-    boolean _notEquals = (!Objects.equal(typeFrom, null));
-    if (!_notEquals) {
-      _and = false;
+    boolean _and_1 = false;
+    boolean _notEquals_1 = (!Objects.equal(typeFrom, null));
+    if (!_notEquals_1) {
+      _and_1 = false;
     } else {
-      boolean _notEquals_1 = (!Objects.equal(typeTo, null));
-      _and = _notEquals_1;
+      boolean _notEquals_2 = (!Objects.equal(typeTo, null));
+      _and_1 = _notEquals_2;
     }
-    if (_and) {
+    if (_and_1) {
       boolean _isAssignableFrom = typeFrom.isAssignableFrom(typeTo);
       boolean _not = (!_isAssignableFrom);
       if (_not) {
         this.error(((("Incompatible types: " + typeFrom) + " is not the same or a supertype of ") + typeTo), SpeadlPackage.Literals.PORT_REF__PORT);
       }
+    }
+  }
+  
+  @Check
+  public void checkPortRefEco(final PortRef pr) {
+    final AbstractComponent comp = EcoreUtil2.<AbstractComponent>getContainerOfType(pr, AbstractComponent.class);
+    boolean _and = false;
+    boolean _isEcosystem = pr.isEcosystem();
+    if (!_isEcosystem) {
+      _and = false;
+    } else {
+      _and = (!(comp instanceof Species));
+    }
+    if (_and) {
+      this.warning("The keyword eco is meant to be used from inside a Species", SpeadlPackage.Literals.PORT_REF__ECOSYSTEM);
     }
   }
   
@@ -220,7 +258,7 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
           final LightweightTypeReference typeFrom = this._speADLUtils.resolveType(_get, part);
           EList<Feature> _arguments_1 = reference.getArguments();
           Feature _get_1 = _arguments_1.get(i);
-          final LightweightTypeReference typeTo = this._speADLUtils.resolveType(_get_1);
+          final LightweightTypeReference typeTo = this._speADLUtils.getTypeRef(_get_1);
           boolean _isAssignableFrom = typeFrom.isAssignableFrom(typeTo);
           boolean _not = (!_isAssignableFrom);
           if (_not) {
@@ -234,11 +272,11 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
   }
   
   @Check
-  public void providesOverrideAreOk(final ProvidedPort p) {
+  public void checkProvidesOverrideAreOk(final ProvidedPort p) {
     JvmParameterizedTypeReference _typeReference = p.getTypeReference();
     Resource _eResource = p.eResource();
     final LightweightTypeReference typeTo = this._speADLUtils.toLightweightTypeReference(_typeReference, _eResource);
-    final LightweightTypeReference typeFrom = this._speADLUtils.getOverridedProvidedPortTypeRef(p);
+    final LightweightTypeReference typeFrom = this._speADLUtils.getOverridenPortTypeRef(p);
     boolean _and = false;
     boolean _notEquals = (!Objects.equal(typeFrom, null));
     if (!_notEquals) {

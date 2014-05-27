@@ -803,13 +803,22 @@ public interface SpeadlPackage extends EPackage
   int PORT_REF = 16;
 
   /**
+   * The feature id for the '<em><b>Ecosystem</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PORT_REF__ECOSYSTEM = 0;
+
+  /**
    * The feature id for the '<em><b>Part</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int PORT_REF__PART = 0;
+  int PORT_REF__PART = 1;
 
   /**
    * The feature id for the '<em><b>Port</b></em>' reference.
@@ -818,7 +827,7 @@ public interface SpeadlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PORT_REF__PORT = 1;
+  int PORT_REF__PORT = 2;
 
   /**
    * The number of structural features of the '<em>Port Ref</em>' class.
@@ -827,7 +836,7 @@ public interface SpeadlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PORT_REF_FEATURE_COUNT = 2;
+  int PORT_REF_FEATURE_COUNT = 3;
 
   /**
    * The meta object id for the '{@link fr.irit.smac.may.speadl.speadl.impl.SpeciesReferenceImpl <em>Species Reference</em>}' class.
@@ -1289,6 +1298,17 @@ public interface SpeadlPackage extends EPackage
   EClass getPortRef();
 
   /**
+   * Returns the meta object for the attribute '{@link fr.irit.smac.may.speadl.speadl.PortRef#isEcosystem <em>Ecosystem</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Ecosystem</em>'.
+   * @see fr.irit.smac.may.speadl.speadl.PortRef#isEcosystem()
+   * @see #getPortRef()
+   * @generated
+   */
+  EAttribute getPortRef_Ecosystem();
+
+  /**
    * Returns the meta object for the reference '{@link fr.irit.smac.may.speadl.speadl.PortRef#getPart <em>Part</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1721,6 +1741,14 @@ public interface SpeadlPackage extends EPackage
      * @generated
      */
     EClass PORT_REF = eINSTANCE.getPortRef();
+
+    /**
+     * The meta object literal for the '<em><b>Ecosystem</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute PORT_REF__ECOSYSTEM = eINSTANCE.getPortRef_Ecosystem();
 
     /**
      * The meta object literal for the '<em><b>Part</b></em>' reference feature.

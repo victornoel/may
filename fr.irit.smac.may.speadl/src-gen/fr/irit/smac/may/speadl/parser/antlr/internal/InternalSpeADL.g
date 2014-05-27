@@ -1358,7 +1358,22 @@ rulePortRef returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(((
+((
+(
+		lv_ecosystem_0_0=	'eco' 
+    {
+        newLeafNode(lv_ecosystem_0_0, grammarAccess.getPortRefAccess().getEcosystemEcoKeyword_0_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getPortRefRule());
+	        }
+       		setWithLastConsumed($current, "ecosystem", true, "eco");
+	    }
+
+)
+)?((
 (
 		{
 			if ($current==null) {
@@ -1366,16 +1381,16 @@ rulePortRef returns [EObject current=null]
 	        }
         }
 		{ 
-	        newCompositeNode(grammarAccess.getPortRefAccess().getPartPartCrossReference_0_0_0()); 
+	        newCompositeNode(grammarAccess.getPortRefAccess().getPartPartCrossReference_1_0_0()); 
 	    }
 		ruleValidID		{ 
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)	otherlv_1='.' 
+)	otherlv_2='.' 
     {
-    	newLeafNode(otherlv_1, grammarAccess.getPortRefAccess().getFullStopKeyword_0_1());
+    	newLeafNode(otherlv_2, grammarAccess.getPortRefAccess().getFullStopKeyword_1_1());
     }
 )?(
 (
@@ -1385,7 +1400,7 @@ rulePortRef returns [EObject current=null]
 	        }
         }
 		{ 
-	        newCompositeNode(grammarAccess.getPortRefAccess().getPortPortCrossReference_1_0()); 
+	        newCompositeNode(grammarAccess.getPortRefAccess().getPortPortCrossReference_2_0()); 
 	    }
 		ruleValidID		{ 
 	        afterParserOrEnumRuleCall();

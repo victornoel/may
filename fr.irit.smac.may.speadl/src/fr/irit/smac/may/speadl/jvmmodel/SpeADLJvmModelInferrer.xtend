@@ -120,16 +120,15 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 
 		val myTypeParameters = compClass.typeParameters
 		
-		val containerRef = parametersHolder.getParameterizedTypeRefWith(myTypeParameters)
-		val substitutor = containerRef.getSubstitutor(comp.eResource)
-		
 		// this will be used in two cases:
 		// replace parameters for the inferred class of the species
 		// replace parameters for the inferred subclasses
-		// -> there is a useless replacement in the current method
+		// -> there is a useless replacement in the present method
 		// for ecosystems (since in that case referencedTypeParameters == myTypeParameters)
 		// TODO use a lambda for substituting and avoid useless substitution => does not work well…
 		// TODO see if there is something that can take care of the constraints…
+		val containerRef = parametersHolder.getParameterizedTypeRefWith(myTypeParameters)
+		val substitutor = containerRef.getSubstitutor(comp.eResource)
 		
 		for(co: myTypeParameters.map[constraints].flatten) {
 			val tr = co.typeReference.substituteWith(substitutor)
@@ -152,7 +151,6 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		initComponentImpl(comp, parametersHolder, componentClass, compClass)
 		
 		// they must be cloned before being directly assigned to an element of an EObject!
-		// TODO do they??
 		val componentClassRef = componentClass.getParameterizedTypeRefWith(myTypeParameters)
 		val componentIfRef = componentIf.getParameterizedTypeRefWith(myTypeParameters)
 		val providesRef = provides.getParameterizedTypeRefWith(myTypeParameters)
@@ -228,7 +226,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				compClass.members += newMethod("make_" + port.name,
 					port.typeReference.substituteWith(substitutor)
 				) [
-					if (port.overridedProvidedPortTypeRef != null) {
+					if (port.overridenPortTypeRef != null) {
 						annotations += compClass.toAnnotation(Override)
 					}
 					abstract = true
@@ -466,8 +464,6 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		val containerRef = parametersHolder.getParameterizedTypeRefWith(requires.typeParameters)
 		val substitutor = containerRef.getSubstitutor(comp.eResource)
 		
-		val myTypeParametersRefs = requires.typeParameters.map[createTypeRef]
-		
 		for(c: requires.typeParameters.map[constraints].flatten) {
 			val tr = c.typeReference.substituteWith(substitutor)
 			c.setTypeReference(tr)
@@ -486,8 +482,6 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		
 		val containerRef = parametersHolder.getParameterizedTypeRefWith(provides.typeParameters)
 		val substitutor = containerRef.getSubstitutor(comp.eResource)
-		
-		val myTypeParametersRefs = provides.typeParameters.map[createTypeRef]
 		
 		for(c: provides.typeParameters.map[constraints].flatten) {
 			val tr = c.typeReference.substituteWith(substitutor)
@@ -512,8 +506,6 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		
 		val containerRef = parametersHolder.getParameterizedTypeRefWith(parts.typeParameters)
 		val substitutor = containerRef.getSubstitutor(comp.eResource)
-		
-		val myTypeParametersRefs = parts.typeParameters.map[createTypeRef]
 		
 		for(c: parts.typeParameters.map[constraints].flatten) {
 			val tr = c.typeReference.substituteWith(substitutor)
@@ -540,8 +532,6 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		
 		val containerRef = parametersHolder.getParameterizedTypeRefWith(componentIf.typeParameters)
 		val substitutor = containerRef.getSubstitutor(comp.eResource)
-		
-		val myTypeParametersRef = componentIf.typeParameters.map[createTypeRef]
 		
 		for(c: componentIf.typeParameters.map[constraints].flatten) {
 			val tr = c.typeReference.substituteWith(substitutor)
@@ -606,9 +596,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				«ENDIF»
 				''')
 				for (part : comp.parts) {
-					val tr = part.typeReference
-					val nptr = tr.substituteWith(substitutor)
-					val ctr = nptr.getInnerTypeReference(COMPONENT_CLASS)
+					val ctr = part.typeReference.substituteWith(substitutor).getInnerTypeReference(COMPONENT_CLASS)
 					append('''
 					assert this.«part.name» != null: "This is a bug.";
 					((''');
@@ -640,7 +628,6 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 					''')
 					switch part {
 						ComponentPart: {
-							// TODO maybe use serialize instead of writing the class name directly
 							append('''
 								assert this.implem_«part.name» == null: "This is a bug.";
 								this.implem_«part.name» = this.implementation.make_«part.name»();
@@ -651,7 +638,6 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 							''')
 						}
 						SpeciesPart: {
-							// TODO maybe use serialize instead of writing the class name directly
 							append('''
 								assert this.implementation.use_«part.name» != null: "This is a bug.";
 								this.«part.name» = this.implementation.use_«part.name»._newComponent(new «REQUIRES_CLASS_PREFIX»_«part.speciesReference.part.name»_«part.name»(), false);
@@ -672,7 +658,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				«IF !comp.specializes.useless»
 				super.initProvidedPorts();
 				«ENDIF»
-				«FOR port : comp.provides.filter[bound == null && overridedProvidedPortTypeRef == null]»
+				«FOR port : comp.provides.filter[bound == null && overridenPortTypeRef == null]»
 				assert this.«port.name» == null: "This is a bug.";
 				this.«port.name» = this.implementation.make_«port.name»();
 				if (this.«port.name» == null) {
@@ -714,7 +700,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			
 			val ptr = port.typeReference.substituteWith(substitutor)
 			
-			val isOverride = port.overridedProvidedPortTypeRef != null
+			val isOverride = port.overridenPortTypeRef != null
 			
 			if (bound == null && !isOverride) {
 				componentClass.members += newField(port.name, ptr) []

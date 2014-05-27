@@ -21,7 +21,8 @@ import org.eclipse.xtext.common.types.TypesPackage
 import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.ComposedChecks
 import org.eclipse.xtext.validation.NamesAreUniqueValidator
-import org.eclipse.xtext.xbase.typesystem.^override.OverrideHelper
+import org.eclipse.xtext.EcoreUtil2
+import fr.irit.smac.may.speadl.speadl.Species
 
 /**
  * Custom validation rules. 
@@ -34,7 +35,6 @@ import org.eclipse.xtext.xbase.typesystem.^override.OverrideHelper
 @ComposedChecks(validators=#[SpeADLXtendXtextInspiredValidator, SpeADLJvmTypeReferenceValidator, NamesAreUniqueValidator])
 class SpeADLValidator extends AbstractSpeADLValidator {
 	
-	@Inject extension OverrideHelper
 	@Inject extension SpeADLUtils
 	
 //	@Check
@@ -61,6 +61,11 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 	
 	@Check
 	def checkPortRef(PortRef pr) {
+		// port can't be null nor a proxy: no need to check
+		if (pr.port == null || pr.port.eIsProxy) return;
+		// part can be null, but can't be a proxy: no need to check
+		if (pr.part != null && pr.part.eIsProxy) return;
+		
 		val typeTo = pr.resolveType
 		
 		val typeFrom = switch cont: pr.eContainer {
@@ -72,6 +77,14 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 			if(!typeFrom.isAssignableFrom(typeTo)) {
 				error("Incompatible types: " +typeFrom +" is not the same or a supertype of "+typeTo, SpeadlPackage.Literals.PORT_REF__PORT)
 			}
+		}
+	}
+	
+	@Check
+	def checkPortRefEco(PortRef pr) {
+		val comp = EcoreUtil2.getContainerOfType(pr, AbstractComponent)
+		if (pr.ecosystem && !(comp instanceof Species)) {
+			warning("The keyword eco is meant to be used from inside a Species", SpeadlPackage.Literals.PORT_REF__ECOSYSTEM)
 		}
 	}
 	
@@ -132,7 +145,7 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 			val part = reference.part
 			while(i < argSize) {
 				val typeFrom = reference.species.parameters.get(i).resolveType(part)
-				val typeTo = reference.arguments.get(i).resolveType
+				val typeTo = reference.arguments.get(i).getTypeRef
 				
 				if(!typeFrom.isAssignableFrom(typeTo)) {
 					error("Incompatible types: " +typeFrom +" is not the same or a supertype of "+typeTo, SpeadlPackage.Literals.SPECIES_REFERENCE__ARGUMENTS, i)
@@ -143,9 +156,9 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 	}
 		 
 	@Check
-	def providesOverrideAreOk(ProvidedPort p) {
+	def checkProvidesOverrideAreOk(ProvidedPort p) {
 		val typeTo = p.typeReference.toLightweightTypeReference(p.eResource)
-		val typeFrom = p.overridedProvidedPortTypeRef
+		val typeFrom = p.overridenPortTypeRef
 		
 		if(typeFrom != null && typeTo != null) {
 			if(!typeFrom.isAssignableFrom(typeTo)) {

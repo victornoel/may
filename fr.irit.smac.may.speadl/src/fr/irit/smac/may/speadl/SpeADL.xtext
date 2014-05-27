@@ -42,7 +42,7 @@ FakeContentElement returns ContentElement:
 Part:
 	ComponentPart | SpeciesPart;
 FakePart returns Part:
-	bindings+=Binding; // TODO maybe we could add elementReference=ParameterizedReferenceElement
+	bindings+=Binding;
 
 
 Feature:
@@ -111,7 +111,8 @@ Binding:
 	"bind" from=[RequiredPort] "to" to=PortRef;
 
 PortRef :
-	(part=[Part|ValidID] ".")? port=[Port|ValidID];
+	// I don't know why but without ()?, eco seems to be mandatory...
+	(ecosystem?="eco")? (part=[Part|ValidID] ".")? port=[Port|ValidID];
 
 
 SpeciesReference:
