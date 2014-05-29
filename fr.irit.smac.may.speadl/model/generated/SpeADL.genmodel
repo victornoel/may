@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/fr.irit.smac.may.speadl/src-gen" editDirectory="/fr.irit.smac.may.speadl.edit/src"
-    editorDirectory="/fr.irit.smac.may.speadl.editor/src" modelPluginID="fr.irit.smac.may.speadl"
-    forceOverwrite="true" modelName="SpeADL" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/fr.irit.smac.may.speadl/src-gen" editDirectory="//home/victor/fac/dev/may/xtext2.6/may/fr.irit.smac.may.speadl.edit/src"
+    editorDirectory="//home/victor/fac/dev/may/xtext2.6/may/fr.irit.smac.may.speadl.editor/src"
+    modelPluginID="fr.irit.smac.may.speadl" forceOverwrite="true" modelName="SpeADL"
+    updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     complianceLevel="5.0" copyrightFields="false" editPluginID="fr.irit.smac.may.speadl.edit"
-    editorPluginID="fr.irit.smac.may.speadl.editor" runtimeVersion="2.9" usedGenPackages="platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xtype">
+    editorPluginID="fr.irit.smac.may.speadl.edit" runtimeVersion="2.10" usedGenPackages="platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xtype">
   <genPackages prefix="Speadl" basePackage="fr.irit.smac.may.speadl" disposableProviderFactory="true"
       fileExtensions="speadl" ecorePackage="SpeADL.ecore#/">
     <genClasses ecoreClass="SpeADL.ecore#//Model">
