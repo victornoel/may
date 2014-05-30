@@ -105,7 +105,7 @@ public class SpeADLUtils {
     return ((Ecosystem) _eContainer);
   }
   
-  public JvmGenericType associatedJvmClass(final Ecosystem e) {
+  public JvmGenericType associatedJvmClass(final AbstractComponent e) {
     Set<EObject> _jvmElements = this._iJvmModelAssociations.getJvmElements(e);
     Iterable<JvmGenericType> _filter = Iterables.<JvmGenericType>filter(_jvmElements, JvmGenericType.class);
     final Function1<JvmGenericType, Boolean> _function = new Function1<JvmGenericType, Boolean>() {

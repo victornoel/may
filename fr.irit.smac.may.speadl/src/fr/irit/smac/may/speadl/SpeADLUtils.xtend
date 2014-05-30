@@ -40,9 +40,8 @@ class SpeADLUtils {
 
 	@Inject extension IJvmModelAssociations
 	@Inject extension TypeReferences
-
 	@Inject CommonTypeComputationServices services
-
+	
 	// Methods for exploring the model
 	// and the inferred model
 	
@@ -56,7 +55,7 @@ class SpeADLUtils {
 		s.eContainer as Ecosystem
 	}
 
-	def associatedJvmClass(Ecosystem e) {
+	def associatedJvmClass(AbstractComponent e) {
 		e.jvmElements.filter(JvmGenericType).findFirst[t|t.simpleName == e.name]
 	}
 
@@ -229,7 +228,6 @@ class SpeADLUtils {
 
 	def resolveType(Port port, Part part) {
 		val partTypeRef = part.parameterizedEcosystemTypeRef
-		// associatedEcosystem will be null if the part refers to a species
 		val otr = switch c: part.typeReference.type.associatedAbstractComponent {
 			Ecosystem: c.getOverridenPortTypeRef(port)
 			default: null

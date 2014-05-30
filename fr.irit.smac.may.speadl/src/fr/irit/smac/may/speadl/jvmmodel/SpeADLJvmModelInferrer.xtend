@@ -51,29 +51,20 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 	
 	def dispatch void infer(Ecosystem ecosystem, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		acceptor.accept(
+			// - toClass makes that the type parameters are those seen
+			// and referred to in the speadl file inside the ecosystem
 			ecosystem.toClass(ecosystem.fullyQualifiedName) [c|
-				c.abstract = !ecosystem.notAbstract
-				// - c.typeParameters are those seen and referred to 
-				// in the speadl file inside the ecosystem
-				// - cloneWithProxies associate them to the ecosystem.typeParameters
-				// which are the one visible in the ecosystem declaration
-				c.typeParameters += ecosystem.typeParameters.map[cloneWithProxies]
-				c.initNowAbstractComponent(ecosystem, ecosystem)
+				ecosystem.initNowAbstractComponent(c, ecosystem)
 				
 				for(species: ecosystem.species) {
 					// - .toClass makes that s.typeParameters will be
 					// seen and referred to in the speadl file inside the species
 					// TODO NOT TRUE SpeADLImportSection hides them because
 					// for now there is a problem with the type ref of eco components
-					// referenced into the species (for use and also eco bindings)
-					// - cloneWithProxies associate them to the ecosystem.typeParameters
-					// which are the one visible in the ecosystem declaration
-					//c.members += species.toClass(species.name) [s|
+					// referenced into the species (for use)
 					c.members += species.toClass(species.name) [s|
-						s.abstract = !species.notAbstract
 						s.static = true
-						s.typeParameters += ecosystem.typeParameters.map[cloneWithProxies]
-						s.initNowAbstractComponent(species, ecosystem)
+						species.initNowAbstractComponent(s, ecosystem)
 					]
 				}
 			]
@@ -92,10 +83,14 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 	
-	def void initNowAbstractComponent(JvmGenericType clazz, AbstractComponent comp, Ecosystem sourceParametersHolder) {
+	def void initNowAbstractComponent(AbstractComponent comp, JvmGenericType clazz, Ecosystem sourceParametersHolder) {
 		
 		// here we declare everything that will need to be completely declared 
 		// for future cross-reference is the second pass
+				
+		// - cloneWithProxies associate them to the ecosystem.typeParameters
+		// which are the one visible in the ecosystem declaration
+		clazz.typeParameters += sourceParametersHolder.typeParameters.map[cloneWithProxies]
 		
 		if (comp.specializes == null) {
 			val requires = comp.toInterface(REQUIRES_INTERFACE) [
@@ -153,6 +148,8 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			val superType = comp.specializes.substituteWith(substitutor)
 			compClass.superTypes += superType
 		}
+		
+		compClass.abstract = !comp.notAbstract
 		
 		val parts = compClass.getInnerType(PARTS_INTERFACE)
 		val componentClass = compClass.getInnerType(COMPONENT_CLASS)
