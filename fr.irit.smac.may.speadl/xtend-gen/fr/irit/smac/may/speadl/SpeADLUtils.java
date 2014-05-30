@@ -30,7 +30,6 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmMember;
-import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
@@ -68,6 +67,39 @@ public class SpeADLUtils {
   @Inject
   private CommonTypeComputationServices services;
   
+  public boolean notAbstract(final AbstractComponent c) {
+    boolean _and = false;
+    boolean _and_1 = false;
+    EList<Part> _parts = c.getParts();
+    boolean _isEmpty = _parts.isEmpty();
+    if (!_isEmpty) {
+      _and_1 = false;
+    } else {
+      EList<ProvidedPort> _provides = c.getProvides();
+      final Function1<ProvidedPort, Boolean> _function = new Function1<ProvidedPort, Boolean>() {
+        public Boolean apply(final ProvidedPort it) {
+          PortRef _bound = it.getBound();
+          return Boolean.valueOf((!Objects.equal(_bound, null)));
+        }
+      };
+      boolean _forall = IterableExtensions.<ProvidedPort>forall(_provides, _function);
+      _and_1 = _forall;
+    }
+    if (!_and_1) {
+      _and = false;
+    } else {
+      EList<Species> _species = c.getSpecies();
+      final Function1<Species, Boolean> _function_1 = new Function1<Species, Boolean>() {
+        public Boolean apply(final Species it) {
+          return Boolean.valueOf(SpeADLUtils.this.notAbstract(it));
+        }
+      };
+      boolean _forall_1 = IterableExtensions.<Species>forall(_species, _function_1);
+      _and = _forall_1;
+    }
+    return _and;
+  }
+  
   public Ecosystem parentEcosystem(final Species s) {
     EObject _eContainer = s.eContainer();
     return ((Ecosystem) _eContainer);
@@ -75,8 +107,15 @@ public class SpeADLUtils {
   
   public JvmGenericType associatedJvmClass(final Ecosystem e) {
     Set<EObject> _jvmElements = this._iJvmModelAssociations.getJvmElements(e);
-    EObject _head = IterableExtensions.<EObject>head(_jvmElements);
-    return ((JvmGenericType) _head);
+    Iterable<JvmGenericType> _filter = Iterables.<JvmGenericType>filter(_jvmElements, JvmGenericType.class);
+    final Function1<JvmGenericType, Boolean> _function = new Function1<JvmGenericType, Boolean>() {
+      public Boolean apply(final JvmGenericType t) {
+        String _simpleName = t.getSimpleName();
+        String _name = e.getName();
+        return Boolean.valueOf(Objects.equal(_simpleName, _name));
+      }
+    };
+    return IterableExtensions.<JvmGenericType>findFirst(_filter, _function);
   }
   
   public Ecosystem associatedEcosystem(final JvmType type) {
@@ -92,22 +131,6 @@ public class SpeADLUtils {
   public AbstractComponent associatedAbstractComponent(final JvmType type) {
     EObject _primarySourceElement = this._iJvmModelAssociations.getPrimarySourceElement(type);
     return ((AbstractComponent) _primarySourceElement);
-  }
-  
-  public JvmOperation associatedJvmOperation(final Port p) {
-    Set<EObject> _jvmElements = this._iJvmModelAssociations.getJvmElements(p);
-    EObject _head = IterableExtensions.<EObject>head(_jvmElements);
-    return ((JvmOperation) _head);
-  }
-  
-  public ProvidedPort associatedProvidedPort(final JvmOperation o) {
-    EObject _primarySourceElement = this._iJvmModelAssociations.getPrimarySourceElement(o);
-    return ((ProvidedPort) _primarySourceElement);
-  }
-  
-  public RequiredPort associatedRequiredPort(final JvmOperation o) {
-    EObject _primarySourceElement = this._iJvmModelAssociations.getPrimarySourceElement(o);
-    return ((RequiredPort) _primarySourceElement);
   }
   
   protected AbstractComponent _abstractComponent(final ComponentPart part) {

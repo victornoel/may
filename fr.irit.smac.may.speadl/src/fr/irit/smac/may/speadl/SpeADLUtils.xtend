@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmGenericType
-import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
 import org.eclipse.xtext.common.types.JvmType
 import org.eclipse.xtext.common.types.JvmTypeParameter
@@ -47,12 +46,18 @@ class SpeADLUtils {
 	// Methods for exploring the model
 	// and the inferred model
 	
+	def boolean notAbstract(AbstractComponent c) {
+		c.parts.empty
+		&& c.provides.forall[bound != null]
+		&& c.species.forall[notAbstract]
+	}
+	
 	def parentEcosystem(Species s) {
 		s.eContainer as Ecosystem
 	}
 
 	def associatedJvmClass(Ecosystem e) {
-		e.jvmElements.head as JvmGenericType
+		e.jvmElements.filter(JvmGenericType).findFirst[t|t.simpleName == e.name]
 	}
 
 	def associatedEcosystem(JvmType type) {
@@ -65,18 +70,6 @@ class SpeADLUtils {
 	
 	def associatedAbstractComponent(JvmType type) {
 		type.primarySourceElement as AbstractComponent
-	}
-
-	def associatedJvmOperation(Port p) {
-		p.jvmElements.head as JvmOperation
-	}
-
-	def associatedProvidedPort(JvmOperation o) {
-		o.primarySourceElement as ProvidedPort
-	}
-
-	def associatedRequiredPort(JvmOperation o) {
-		o.primarySourceElement as RequiredPort
 	}
 
 	def dispatch abstractComponent(ComponentPart part) {
