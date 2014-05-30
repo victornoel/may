@@ -19,9 +19,10 @@ public class SpeADLOutputConfigurationProvider extends OutputConfigurationProvid
         it.setOutputDirectory("speadl-gen");
         it.setOverrideExistingResources(true);
         it.setCreateOutputDirectory(true);
-        it.setCanClearOutputDirectory(false);
+        it.setCanClearOutputDirectory(true);
         it.setCleanUpDerivedResources(true);
         it.setKeepLocalHistory(Boolean.valueOf(false));
+        it.setSetDerivedProperty(true);
       }
     };
     OutputConfiguration _doubleArrow = ObjectExtensions.<OutputConfiguration>operator_doubleArrow(_outputConfiguration, _function);

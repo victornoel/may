@@ -247,9 +247,15 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 //		}
 //	}
 	
-	// copied from XtendJavaValidator
 	@Check
 	def checkTypeParameterForwardReferences(AbstractComponent c) {
 		doCheckTypeParameterForwardReference(c.getTypeParameters())
 	}
+	
+	@Check
+	override checkTypeParameterNotUsedInStaticContext(JvmTypeReference ref) {
+		// do nothing because this conflicts with our JvmModelInferrer and
+		// we don't have such cases in our language
+	}
+	
 }

@@ -21,9 +21,7 @@ import org.eclipse.xtext.common.types.JvmWildcardTypeReference;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.common.types.access.impl.ClassURIHelper;
-import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.util.Pair;
-import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
@@ -34,24 +32,6 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 	@Inject
 	private TypesFactory typesFactory;
 	
-	public JvmGenericType newClass(QualifiedName name, Procedure1<? super JvmGenericType> initializer) {
-		return newClass(name != null ? name.toString() : null, initializer);
-	}
-	
-	/**
-	 * Creates a public class declaration, associated to the given sourceElement. It sets the given name, which might be
-	 * fully qualified using the standard Java notation.
-	 * 
-	 * @param sourceElement
-	 *            the sourceElement the resulting element is associated with.
-	 * @param name
-	 *            the qualified name of the resulting class.
-	 * @param initializer
-	 *            the initializer to apply on the created class element. If <code>null</code>, the class won't be initialized.
-	 * 
-	 * @return a {@link JvmGenericType} representing a Java class of the given name, <code>null</code> 
-	 *            if sourceElement or name are <code>null</code>.
-	 */
 	public JvmGenericType newClass(String name, Procedure1<? super JvmGenericType> initializer) {
 		final JvmGenericType result = createJvmGenericType(name);
 		if (result == null)
@@ -59,21 +39,6 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 		return initializeSafely(result, initializer);
 	}
 	
-	
-	/**
-	 * Creates a public interface declaration, associated to the given sourceElement. It sets the given name, which might be
-	 * fully qualified using the standard Java notation.
-	 * 
-	 * @param sourceElement
-	 *            the sourceElement the resulting element is associated with.
-	 * @param name
-	 *            the qualified name of the resulting class.
-	 * @param initializer
-	 *            the initializer to apply on the created interface element. If <code>null</code>, the interface won't be initialized.
-	 * 
-	 * @return a {@link JvmGenericType} representing a Java class of the given name, <code>null</code> 
-	 *            if sourceElement or name are <code>null</code>.
-	 */ 
 	public JvmGenericType newInterface(String name, Procedure1<? super JvmGenericType> initializer) {
 		final JvmGenericType result = createJvmGenericType(name);
 		if (result == null)
@@ -93,13 +58,7 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 		result.setVisibility(JvmVisibility.PUBLIC);
 		return result;
 	}
-	
-	/**
-	 * Creates and returns a formal parameter for the given name and type, which is associated to the given source
-	 * element.
-	 * 
-	 * @return a Java parameter given name, <code>null</code> if sourceElement or name are <code>null</code>.
-	 */
+
 	public JvmFormalParameter newParameter(String name, JvmTypeReference typeRef) {
 		if(name == null)
 			return null;
@@ -109,38 +68,12 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 		return result;
 	}
 	
-	/**
-	 * Creates and returns a constructor with the given simple name associated to the given source element. By default
-	 * the constructor will have an empty body and no arguments, hence the Java default constructor.
-	 *
-	 * @param sourceElement 
-	 * 		      the sourceElement the constructor should be associated with.
-	 * @param initializer
-	 *            the initializer to apply on the created constructor. If <code>null</code>, the method won't be initialized.
-	 * 
-	 * @return a result representing a Java constructor with the given name, <code>null</code> if sourceElement is <code>null</code>.
-	 */
 	public JvmConstructor newConstructor(Procedure1<? super JvmConstructor> initializer) {
 		JvmConstructor constructor = typesFactory.createJvmConstructor();
 		constructor.setVisibility(JvmVisibility.PUBLIC);
 		return initializeSafely(constructor, initializer);
 	}
 	
-	/**
-	 * Creates a public method with the given name and the given return type and associates it with the given
-	 * sourceElement.
-	 * 
-	 * @param sourceElement 
-	 * 		the sourceElement the method should be associated with.
-	 * @param name
-	 * 		the simple name of the method to be created.
-	 * @param returnType
-	 * 		the return type of the created method.
-	 * @param initializer
-	 *            the initializer to apply on the created method. If <code>null</code>, the method won't be initialized.
-	 * 
-	 * @return a result representing a Java method with the given name, <code>null</code> if sourceElement or name are <code>null</code>.
-	 */
 	public JvmOperation newMethod(String name, JvmTypeReference returnType,
 			Procedure1<? super JvmOperation> initializer) {
 		if(name == null) 
@@ -161,9 +94,6 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 		return initializeSafely(result, initializer);
 	}
 	
-	/**
-	 * Same as {@link #toField(EObject, String, JvmTypeReference)} but with an initializer passed as the last argument.
-	 */
 	public JvmField newField(String name, JvmTypeReference typeRef, 
 			Procedure1<? super JvmField> initializer) {
 		if(name == null) 
@@ -175,13 +105,6 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 		return initializeSafely(result, initializer);
 	}
 	
-	/**
-	 * Creates a deep copy of the given object and associates each copied instance with the
-	 * clone. Does not resolve any proxies.
-	 *	
-	 * @param original the root element to be cloned.
-	 * @return a clone of tree rooted in original associated with the original, <code>null</code> if original is <code>null</code>. 
-	 */
 	protected <T extends EObject> T cloneEObject(T original) {
 		EcoreUtil.Copier copier = new EcoreUtil.Copier(false);
 		@SuppressWarnings("unchecked")
@@ -190,13 +113,6 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 		return copy;
 	}
 	
-	/**
-	 * Creates a deep copy of the given object and associates each copied instance with the
-	 * clone. Does not resolve any proxies.
-	 *	
-	 * @param original the root element to be cloned.
-	 * @return a clone of tree rooted in original associated with the original, <code>null</code> if original is <code>null</code>. 
-	 */
 	protected <T extends JvmTypeReference> T cloneEObject(T original) {
 		EcoreUtil.Copier copier = new EcoreUtil.Copier(false) {
 			private static final long serialVersionUID = 1L;
@@ -238,28 +154,11 @@ public class SpeADLJvmTypesBuilder extends JvmTypesBuilder {
 		return result;
 	}
 	
-	/**
-	 * Creates a clone of the given {@link JvmIdentifiableElement} without resolving any proxies.
-	 * The clone will be associated with the original element by means of {@link JvmModelAssociator associations}.
-	 * 
- 	 * @param original the element to be cloned.
-	 * @return a clone of original associated with the original, <code>null</code> if original is <code>null</code>. 
-	 */
-	
 	public <T extends JvmIdentifiableElement> T cloneEObjectWithProxies(T original) {
 		if(original == null)
 			return null;
 		return cloneEObject(original);
 	}
-	
-	/**
-	 * Creates a clone of the given {@link JvmTypeReference} without resolving any proxies.
-	 * The clone will be associated with the original element by means of {@link JvmModelAssociator associations}.
-	 * 
-	 * @param typeRef the type reference to be cloned.
-	 * @return a clone of typeRef, <code>null</code> if typeRef is <code>null</code> or a {@link JvmUnknownTypeReference} 
-	 *     if there is a problem with the typeRef. 
-	 */
 	
 	public JvmTypeReference cloneEObjectWithProxies(JvmTypeReference typeRef) {
 		if(typeRef == null)

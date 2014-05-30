@@ -53,15 +53,24 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		acceptor.accept(
 			ecosystem.toClass(ecosystem.fullyQualifiedName) [c|
 				c.abstract = true
+				// c.typeParameters are those seen and referred to 
+				// in the speadl file inside the ecosystem
+				// cloneWithProxies associate them to the ecosystem.typeParameters
+				// which are the one visible in the ecosystem declaration
 				c.typeParameters += ecosystem.typeParameters.map[cloneWithProxies]
-				c.initNowAbstractComponent(ecosystem)
+				c.initNowAbstractComponent(ecosystem, ecosystem)
 				
 				for(species: ecosystem.species) {
+					// .toClass makes that s.typeParameters will be
+					// seen and referred to in the speadl file inside the species
+					// cloneWithProxies associate them to the ecosystem.typeParameters
+					// which are the one visible in the ecosystem declaration
+					//c.members += species.toClass(species.name) [s|
 					c.members += newClass(species.name) [s|
 						s.abstract = true
 						s.static = true
-						s.typeParameters += c.typeParameters.map[cloneEObjectWithProxies]
-						s.initNowAbstractComponent(species)
+						s.typeParameters += ecosystem.typeParameters.map[cloneWithProxies]
+						s.initNowAbstractComponent(species, ecosystem)
 					]
 				}
 			]
@@ -80,33 +89,33 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		]
 	}
 	
-	def void initNowAbstractComponent(JvmGenericType clazz, AbstractComponent comp) {
+	def void initNowAbstractComponent(JvmGenericType clazz, AbstractComponent comp, Ecosystem parametersHolder) {
 		
 		// here we declare everything that will need to be completely declared 
 		// for future cross-reference is the second pass
 		
 		if (comp.specializes == null) {
 			val requires = newInterface(REQUIRES_INTERFACE) [
-				typeParameters += clazz.typeParameters.map[cloneEObjectWithProxies]
+				typeParameters += parametersHolder.typeParameters.map[cloneWithProxies]
 			]
 			
 			clazz.members += requires
 		}
 		
 		val componentClass = newClass(COMPONENT_CLASS) [
-			typeParameters += clazz.typeParameters.map[cloneEObjectWithProxies]
+			typeParameters += parametersHolder.typeParameters.map[cloneWithProxies]
 		]
 			
 		val parts = newInterface(PARTS_INTERFACE) [
-			typeParameters += clazz.typeParameters.map[cloneEObjectWithProxies]
+			typeParameters += parametersHolder.typeParameters.map[cloneWithProxies]
 		]
 
 		val provides = newInterface(PROVIDES_INTERFACE) [
-			typeParameters += clazz.typeParameters.map[cloneEObjectWithProxies]
+			typeParameters += parametersHolder.typeParameters.map[cloneWithProxies]
 		]
 		
 		val componentIf = newInterface(COMPONENT_INTERFACE) [
-			typeParameters += clazz.typeParameters.map[cloneEObjectWithProxies]
+			typeParameters += parametersHolder.typeParameters.map[cloneWithProxies]
 		]
 		
 		clazz.members += parts
@@ -118,6 +127,9 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 	
 	def void initLaterAbstractComponent(AbstractComponent comp, JvmGenericType compClass, JvmGenericType parametersHolder) {
 
+		// it is the type parameters in the generated class
+		// and the one we want to use everywhere in the generated
+		// java code
 		val myTypeParameters = compClass.typeParameters
 		
 		// this will be used in two cases:
@@ -127,8 +139,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		// for ecosystems (since in that case referencedTypeParameters == myTypeParameters)
 		// TODO use a lambda for substituting and avoid useless substitution => does not work well…
 		// TODO see if there is something that can take care of the constraints…
-		val containerRef = parametersHolder.getParameterizedTypeRefWith(myTypeParameters)
-		val substitutor = containerRef.getSubstitutor(comp.eResource)
+		val substitutor = parametersHolder.getSubstitutor(compClass, comp.eResource)
 		
 		for(co: myTypeParameters.map[constraints].flatten) {
 			val tr = co.typeReference.substituteWith(substitutor)
@@ -151,6 +162,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		initComponentImpl(comp, parametersHolder, componentClass, compClass)
 		
 		// they must be cloned before being directly assigned to an element of an EObject!
+		// do they??
 		val componentClassRef = componentClass.getParameterizedTypeRefWith(myTypeParameters)
 		val componentIfRef = componentIf.getParameterizedTypeRefWith(myTypeParameters)
 		val providesRef = provides.getParameterizedTypeRefWith(myTypeParameters)
@@ -222,10 +234,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		
 		for (port : comp.provides) {
 			if (port.bound == null) {
-				
-				compClass.members += newMethod("make_" + port.name,
-					port.typeReference.substituteWith(substitutor)
-				) [
+				compClass.members += newMethod("make_" + port.name, port.typeReference.substituteWith(substitutor)) [
 					if (port.overridenPortTypeRef != null) {
 						annotations += compClass.toAnnotation(Override)
 					}
@@ -461,8 +470,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 	
 	def initRequires(AbstractComponent comp, JvmGenericType parametersHolder, JvmGenericType requires) {
 		
-		val containerRef = parametersHolder.getParameterizedTypeRefWith(requires.typeParameters)
-		val substitutor = containerRef.getSubstitutor(comp.eResource)
+		val substitutor = parametersHolder.getSubstitutor(requires, comp.eResource)
 		
 		for(c: requires.typeParameters.map[constraints].flatten) {
 			val tr = c.typeReference.substituteWith(substitutor)
@@ -480,8 +488,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 	
 	def initProvides(AbstractComponent comp, JvmGenericType parametersHolder, JvmGenericType provides) {
 		
-		val containerRef = parametersHolder.getParameterizedTypeRefWith(provides.typeParameters)
-		val substitutor = containerRef.getSubstitutor(comp.eResource)
+		val substitutor = parametersHolder.getSubstitutor(provides, comp.eResource)
 		
 		for(c: provides.typeParameters.map[constraints].flatten) {
 			val tr = c.typeReference.substituteWith(substitutor)
@@ -504,8 +511,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 	
 	def initParts(AbstractComponent comp, JvmGenericType parametersHolder, JvmGenericType parts) {
 		
-		val containerRef = parametersHolder.getParameterizedTypeRefWith(parts.typeParameters)
-		val substitutor = containerRef.getSubstitutor(comp.eResource)
+		val substitutor = parametersHolder.getSubstitutor(parts, comp.eResource)
 		
 		for(c: parts.typeParameters.map[constraints].flatten) {
 			val tr = c.typeReference.substituteWith(substitutor)
@@ -530,8 +536,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 	
 	def initComponent(AbstractComponent comp, JvmGenericType parametersHolder, JvmGenericType componentIf, JvmGenericType provides) {
 		
-		val containerRef = parametersHolder.getParameterizedTypeRefWith(componentIf.typeParameters)
-		val substitutor = containerRef.getSubstitutor(comp.eResource)
+		val substitutor = parametersHolder.getSubstitutor(componentIf, comp.eResource)
 		
 		for(c: componentIf.typeParameters.map[constraints].flatten) {
 			val tr = c.typeReference.substituteWith(substitutor)
@@ -548,10 +553,8 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 	
 	def initComponentImpl(AbstractComponent comp, JvmGenericType parametersHolder, JvmGenericType componentClass, JvmGenericType implem) {
 		
-		val containerRef = parametersHolder.getParameterizedTypeRefWith(componentClass.typeParameters)
 		val implemRef = implem.getParameterizedTypeRefWith(componentClass.typeParameters)
-		
-		val substitutor = containerRef.getSubstitutor(comp.eResource)
+		val substitutor = parametersHolder.getSubstitutor(componentClass, comp.eResource)
 		
 		for(c: componentClass.typeParameters.map[constraints].flatten) {
 			val tr = c.typeReference.substituteWith(substitutor)
@@ -559,7 +562,6 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		}
 		
 		componentClass.static = true
-		
 		
 		if (!comp.specializes.useless) {
 			val nstr = comp.specializes.substituteWith(substitutor)
@@ -706,7 +708,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				componentClass.members += newField(port.name, ptr) []
 			}
 			
-			componentClass.members += newMethod(port.name, ptr) [
+			componentClass.members += port.toMethod(port.name, ptr) [
 				if (isOverride) {
 					annotations += componentClass.toAnnotation(Override)
 					body = [
@@ -757,7 +759,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				for(binding: part.bindings) {
 					val bound = binding.to
 					val rt = binding.resolveTypeFrom.substituteWith(substitutor).toJavaCompliantTypeReference
-					members += newMethod(binding.from.name, rt) [
+					members += binding.toMethod(binding.from.name, rt) [
 						final = true
 						body = [
 							append("return ")
@@ -770,7 +772,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				}
 			]
 			
-			componentClass.members += newMethod(part.name, ctr) [
+			componentClass.members += part.toMethod(part.name, ctr) [
 				final = true
 				body = [append('''return this.«part.name»;''')]
 			]
@@ -782,7 +784,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			if (inSpecies && bound.part.eContainer instanceof Ecosystem) {
 				append('''implementation.ecosystemComponent.''')
 			}
-			append('''«bound.part.name».''')
+			append('''«bound.part.name»().''')
 		} else {
 			if (inSpecies && bound.port.eContainer instanceof Ecosystem) {
 				append('''implementation.ecosystemComponent.''')

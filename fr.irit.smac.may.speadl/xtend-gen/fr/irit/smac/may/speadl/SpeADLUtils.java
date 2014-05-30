@@ -34,6 +34,7 @@ import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
+import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVoid;
 import org.eclipse.xtext.common.types.util.TypeReferences;
@@ -81,6 +82,16 @@ public class SpeADLUtils {
   public Ecosystem associatedEcosystem(final JvmType type) {
     EObject _primarySourceElement = this._iJvmModelAssociations.getPrimarySourceElement(type);
     return ((Ecosystem) _primarySourceElement);
+  }
+  
+  public Species associatedSpecies(final JvmType type) {
+    EObject _primarySourceElement = this._iJvmModelAssociations.getPrimarySourceElement(type);
+    return ((Species) _primarySourceElement);
+  }
+  
+  public AbstractComponent associatedAbstractComponent(final JvmType type) {
+    EObject _primarySourceElement = this._iJvmModelAssociations.getPrimarySourceElement(type);
+    return ((AbstractComponent) _primarySourceElement);
   }
   
   public JvmOperation associatedJvmOperation(final Port p) {
@@ -436,14 +447,22 @@ public class SpeADLUtils {
     LightweightTypeReference _xblockexpression = null;
     {
       final LightweightTypeReference partTypeRef = this.getParameterizedEcosystemTypeRef(part);
+      LightweightTypeReference _switchResult = null;
       JvmParameterizedTypeReference _typeReference = this.typeReference(part);
       JvmType _type = _typeReference.getType();
-      Ecosystem _associatedEcosystem = this.associatedEcosystem(_type);
-      LightweightTypeReference _overridenPortTypeRef = null;
-      if (_associatedEcosystem!=null) {
-        _overridenPortTypeRef=this.getOverridenPortTypeRef(_associatedEcosystem, port);
+      AbstractComponent _associatedAbstractComponent = this.associatedAbstractComponent(_type);
+      final AbstractComponent c = _associatedAbstractComponent;
+      boolean _matched = false;
+      if (!_matched) {
+        if (c instanceof Ecosystem) {
+          _matched=true;
+          _switchResult = this.getOverridenPortTypeRef(c, port);
+        }
       }
-      final LightweightTypeReference otr = _overridenPortTypeRef;
+      if (!_matched) {
+        _switchResult = null;
+      }
+      final LightweightTypeReference otr = _switchResult;
       LightweightTypeReference _xifexpression = null;
       boolean _equals = Objects.equal(otr, null);
       if (_equals) {
@@ -490,33 +509,45 @@ public class SpeADLUtils {
       if (_isUseless) {
         return null;
       }
-      JvmType _type = in.getType();
-      final Ecosystem comp = this.associatedEcosystem(_type);
       JvmTypeReference _switchResult = null;
+      JvmType _type = in.getType();
+      AbstractComponent _associatedAbstractComponent = this.associatedAbstractComponent(_type);
+      final AbstractComponent comp = _associatedAbstractComponent;
       boolean _matched = false;
       if (!_matched) {
-        if (in instanceof JvmParameterizedTypeReference) {
-          boolean _and = false;
-          boolean _notEquals = (!Objects.equal(comp, null));
-          if (!_notEquals) {
-            _and = false;
-          } else {
-            JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-            boolean _isUseless_1 = this.isUseless(_specializes);
-            boolean _not = (!_isUseless_1);
-            _and = _not;
-          }
-          if (_and) {
-            _matched=true;
-            JvmTypeReference _xblockexpression_1 = null;
-            {
-              Resource _eResource = comp.eResource();
-              final StandardTypeParameterSubstitutor substitutor = this.getSubstitutor(in, _eResource);
-              JvmParameterizedTypeReference _specializes_1 = comp.getSpecializes();
-              _xblockexpression_1 = this.substituteWith(_specializes_1, substitutor);
+        if (comp instanceof Ecosystem) {
+          _matched=true;
+          JvmTypeReference _switchResult_1 = null;
+          boolean _matched_1 = false;
+          if (!_matched_1) {
+            if (in instanceof JvmParameterizedTypeReference) {
+              boolean _and = false;
+              boolean _notEquals = (!Objects.equal(comp, null));
+              if (!_notEquals) {
+                _and = false;
+              } else {
+                JvmParameterizedTypeReference _specializes = ((Ecosystem)comp).getSpecializes();
+                boolean _isUseless_1 = this.isUseless(_specializes);
+                boolean _not = (!_isUseless_1);
+                _and = _not;
+              }
+              if (_and) {
+                _matched_1=true;
+                JvmTypeReference _xblockexpression_1 = null;
+                {
+                  Resource _eResource = ((Ecosystem)comp).eResource();
+                  final StandardTypeParameterSubstitutor substitutor = this.getSubstitutor(in, _eResource);
+                  JvmParameterizedTypeReference _specializes_1 = ((Ecosystem)comp).getSpecializes();
+                  _xblockexpression_1 = this.substituteWith(_specializes_1, substitutor);
+                }
+                _switchResult_1 = _xblockexpression_1;
+              }
             }
-            _switchResult = _xblockexpression_1;
           }
+          if (!_matched_1) {
+            _switchResult_1 = in;
+          }
+          _switchResult = _switchResult_1;
         }
       }
       if (!_matched) {
@@ -591,6 +622,16 @@ public class SpeADLUtils {
           this.toLightweightTypeReference(ov.getTypeReference(), ov.eResource()), substitutor);
       }
       _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
+  }
+  
+  public StandardTypeParameterSubstitutor getSubstitutor(final JvmGenericType parametersHolder, final JvmTypeParameterDeclarator to, final Resource context) {
+    StandardTypeParameterSubstitutor _xblockexpression = null;
+    {
+      EList<JvmTypeParameter> _typeParameters = to.getTypeParameters();
+      final JvmParameterizedTypeReference containerRef = this.getParameterizedTypeRefWith(parametersHolder, _typeParameters);
+      _xblockexpression = this.getSubstitutor(containerRef, context);
     }
     return _xblockexpression;
   }

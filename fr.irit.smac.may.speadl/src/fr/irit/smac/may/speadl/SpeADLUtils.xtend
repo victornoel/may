@@ -24,6 +24,7 @@ import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
 import org.eclipse.xtext.common.types.JvmType
 import org.eclipse.xtext.common.types.JvmTypeParameter
+import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.JvmVoid
 import org.eclipse.xtext.common.types.util.TypeReferences
@@ -56,6 +57,14 @@ class SpeADLUtils {
 
 	def associatedEcosystem(JvmType type) {
 		type.primarySourceElement as Ecosystem
+	}
+	
+	def associatedSpecies(JvmType type) {
+		type.primarySourceElement as Species
+	}
+	
+	def associatedAbstractComponent(JvmType type) {
+		type.primarySourceElement as AbstractComponent
 	}
 
 	def associatedJvmOperation(Port p) {
@@ -228,7 +237,10 @@ class SpeADLUtils {
 	def resolveType(Port port, Part part) {
 		val partTypeRef = part.parameterizedEcosystemTypeRef
 		// associatedEcosystem will be null if the part refers to a species
-		val otr = part.typeReference.type.associatedEcosystem?.getOverridenPortTypeRef(port)
+		val otr = switch c: part.typeReference.type.associatedAbstractComponent {
+			Ecosystem: c.getOverridenPortTypeRef(port)
+			default: null
+		}
 		val tr = if (otr == null) port.typeRef else otr
 		partTypeRef.substitutor.substitute(tr)
 	}
@@ -252,14 +264,16 @@ class SpeADLUtils {
 	
 	def JvmTypeReference rootSupertype(JvmTypeReference in) {
 		if(in.useless) return null
-		val comp = in.type.associatedEcosystem
-		switch in {
-			JvmParameterizedTypeReference case comp != null && !comp.specializes.useless: {
-				val substitutor = in.getSubstitutor(comp.eResource)
-				comp.specializes.substituteWith(substitutor)
+		switch comp: in.type.associatedAbstractComponent {
+			Ecosystem: switch in {
+				JvmParameterizedTypeReference case comp != null && !comp.specializes.useless: {
+					val substitutor = in.getSubstitutor(comp.eResource)
+					comp.specializes.substituteWith(substitutor)
+				}
+				default:
+					in
 			}
-			default:
-				in
+			default: in
 		}
 	}
 	
@@ -295,6 +309,11 @@ class SpeADLUtils {
 		}.substituteWith(substitutor)
 	}
 
+	def getSubstitutor(JvmGenericType parametersHolder, JvmTypeParameterDeclarator to, Resource context) {
+		val containerRef = parametersHolder.getParameterizedTypeRefWith(to.typeParameters)
+		containerRef.getSubstitutor(context)
+	}
+	
 	def getSubstitutor(JvmTypeReference containerRef, Resource context) {
 		containerRef.toLightweightTypeReference(context).substitutor
 	}

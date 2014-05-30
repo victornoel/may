@@ -14,9 +14,10 @@ class SpeADLOutputConfigurationProvider extends OutputConfigurationProvider {
 				outputDirectory = "speadl-gen"
 				overrideExistingResources = true
 				createOutputDirectory = true
-				canClearOutputDirectory = false
+				canClearOutputDirectory = true
 				cleanUpDerivedResources = true
 				keepLocalHistory = false
+				setDerivedProperty = true
 			]
 		}
 	}

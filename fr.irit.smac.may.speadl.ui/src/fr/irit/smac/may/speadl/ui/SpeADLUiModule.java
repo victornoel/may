@@ -17,6 +17,7 @@ import fr.irit.smac.may.speadl.ui.contentassist.SpeADLReferenceProposalCreator;
 import fr.irit.smac.may.speadl.ui.editor.SpeADLEditorInputRedirector;
 import fr.irit.smac.may.speadl.ui.editor.SpeADLNatureAddingEditorCallback;
 import fr.irit.smac.may.speadl.ui.editor.SpeADLStacktraceBasedEditorDecider;
+import fr.irit.smac.may.speadl.ui.hover.SpeADLHoverDocumentationProvider;
 
 /**
  * Use this class to register components to be used within the IDE.
@@ -66,5 +67,10 @@ public class SpeADLUiModule extends	fr.irit.smac.may.speadl.ui.AbstractSpeADLUiM
 	
 	public Class<? extends StacktraceBasedEditorDecider> bindStacktraceBasedEditorDecider() {
 		return SpeADLStacktraceBasedEditorDecider.class;
+	}
+	
+	@Override
+	public Class<? extends org.eclipse.xtext.ui.editor.hover.html.IEObjectHoverDocumentationProvider> bindIEObjectHoverDocumentationProvider() {
+		return SpeADLHoverDocumentationProvider.class;
 	}
 }

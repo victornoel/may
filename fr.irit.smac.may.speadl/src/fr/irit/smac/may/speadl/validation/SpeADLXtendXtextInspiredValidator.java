@@ -19,7 +19,7 @@ public class SpeADLXtendXtextInspiredValidator extends AbstractDeclarativeValida
 		// this prevents the validator to be registered and executed automatically
 		// it is only activated as part of the ComposedChecks of the SpeADLValidator
 	}
-		
+	
 	/**
 	 * Inspired from org.eclipse.xtend.core.validation.XtendJavaValidator
 	 * 

@@ -391,4 +391,8 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
     EList<JvmTypeParameter> _typeParameters = c.getTypeParameters();
     this.doCheckTypeParameterForwardReference(_typeParameters);
   }
+  
+  @Check
+  public void checkTypeParameterNotUsedInStaticContext(final JvmTypeReference ref) {
+  }
 }

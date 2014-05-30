@@ -19,9 +19,8 @@ public class SpeADLJvmTypeReferenceValidator extends JvmTypeReferencesValidator 
 	
 	@Override
 	public void register(EValidatorRegistrar registrar) {
-		// do not register, and load it from the main SpeADLValidator
-		// see http://www.eclipse.org/forums/index.php/m/1141058
-		// explaining why it is needed to do so
+		// this prevents the validator to be registered and executed automatically
+		// it is only activated as part of the ComposedChecks of the SpeADLValidator
 	}
 	
 	@Check
