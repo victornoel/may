@@ -32,14 +32,12 @@ public class SpeADLUiModule extends	fr.irit.smac.may.speadl.ui.AbstractSpeADLUiM
 	public Class<? extends IXtextBuilderParticipant> bindIXtextBuilderParticipant() {
 		return SpeADLBuilderParticipant.class;
 	}
-
-	// so that the xtext nature is added when opening a speadl file
+	
 	@Override
 	public Class<? extends IXtextEditorCallback> bindIXtextEditorCallback() {
 		return SpeADLNatureAddingEditorCallback.class;
 	}
-
-	// so that a '.' is automatically added after auto-completion in PortRef
+	
 	@Override
 	public Class<? extends ReferenceProposalCreator> bindAbstractJavaBasedContentProposalProvider$ReferenceProposalCreator() {
 		return SpeADLReferenceProposalCreator.class;

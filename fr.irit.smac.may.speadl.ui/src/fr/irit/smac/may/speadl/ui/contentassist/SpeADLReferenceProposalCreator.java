@@ -17,11 +17,15 @@ import fr.irit.smac.may.speadl.speadl.SpeadlPackage;
  */
 public class SpeADLReferenceProposalCreator extends XbaseReferenceProposalCreator {
 	
+	// so that a '.' is automatically added after auto-completing the part of in PortRef
+	// and the part of SpeciesReference
+	
 	@Override
 	protected Function<IEObjectDescription, ICompletionProposal> getWrappedFactory(EObject model, EReference reference, 
 			final Function<IEObjectDescription, ICompletionProposal> proposalFactory) {
 		
-		if(reference.equals(SpeadlPackage.Literals.PORT_REF__PART)) {
+		if(reference.equals(SpeadlPackage.Literals.PORT_REF__PART)
+			|| reference.equals(SpeadlPackage.Literals.SPECIES_REFERENCE__PART)) {
 			return new Function<IEObjectDescription, ICompletionProposal>() {
 				public ICompletionProposal apply(IEObjectDescription from) {
 					ConfigurableCompletionProposal result = (ConfigurableCompletionProposal) proposalFactory.apply(from);
