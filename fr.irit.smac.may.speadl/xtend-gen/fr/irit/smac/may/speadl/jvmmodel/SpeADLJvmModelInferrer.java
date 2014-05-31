@@ -99,42 +99,25 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
   private TypeReferenceSerializer _typeReferenceSerializer;
   
   protected void _infer(final Ecosystem ecosystem, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
-    QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(ecosystem);
-    final Procedure1<JvmGenericType> _function = new Procedure1<JvmGenericType>() {
-      public void apply(final JvmGenericType c) {
-        SpeADLJvmModelInferrer.this.initNowAbstractComponent(ecosystem, c, ecosystem);
-        EList<Species> _species = ecosystem.getSpecies();
-        for (final Species species : _species) {
-          EList<JvmMember> _members = c.getMembers();
-          String _name = species.getName();
-          final Procedure1<JvmGenericType> _function = new Procedure1<JvmGenericType>() {
-            public void apply(final JvmGenericType s) {
-              s.setStatic(true);
-              SpeADLJvmModelInferrer.this.initNowAbstractComponent(species, s, ecosystem);
-            }
-          };
-          JvmGenericType _class = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toClass(species, _name, _function);
-          SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmGenericType>operator_add(_members, _class);
-        }
+    try {
+      QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(ecosystem);
+      final JvmGenericType clazz = this._speADLJvmTypesBuilder.toClass(ecosystem, _fullyQualifiedName);
+      this.initNowAbstractComponent(ecosystem, clazz, acceptor);
+    } catch (final Throwable _t) {
+      if (_t instanceof Exception) {
+        final Exception e = (Exception)_t;
+        SpeADLJvmModelInferrer.LOG.error("Error initializing JvmElement", e);
+      } else {
+        throw Exceptions.sneakyThrow(_t);
       }
-    };
-    JvmGenericType _class = this._speADLJvmTypesBuilder.toClass(ecosystem, _fullyQualifiedName, _function);
-    IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept = acceptor.<JvmGenericType>accept(_class);
-    final Procedure1<JvmGenericType> _function_1 = new Procedure1<JvmGenericType>() {
-      public void apply(final JvmGenericType c) {
+    }
+  }
+  
+  public <T extends JvmGenericType> Procedure1<? super T> trycatch(final Procedure1<? super T> i) {
+    final Procedure1<T> _function = new Procedure1<T>() {
+      public void apply(final T it) {
         try {
-          SpeADLJvmModelInferrer.this.initLaterAbstractComponent(ecosystem, c, c);
-          EList<Species> _species = ecosystem.getSpecies();
-          for (final Species species : _species) {
-            {
-              String _name = species.getName();
-              final JvmGenericType sc = SpeADLJvmModelInferrer.this._speADLUtils.getInnerType(c, _name);
-              boolean _notEquals = (!Objects.equal(sc, null));
-              if (_notEquals) {
-                SpeADLJvmModelInferrer.this.initLaterAbstractComponent(species, sc, c);
-              }
-            }
-          }
+          i.apply(it);
         } catch (final Throwable _t) {
           if (_t instanceof Exception) {
             final Exception e = (Exception)_t;
@@ -145,10 +128,25 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         }
       }
     };
-    _accept.initializeLater(_function_1);
+    return _function;
   }
   
-  public void initNowAbstractComponent(final AbstractComponent comp, final JvmGenericType clazz, final Ecosystem sourceParametersHolder) {
+  public void initNowAbstractComponent(final AbstractComponent comp, final JvmGenericType clazz, final IJvmDeclaredTypeAcceptor acceptor) {
+    Ecosystem _switchResult = null;
+    boolean _matched = false;
+    if (!_matched) {
+      if (comp instanceof Ecosystem) {
+        _matched=true;
+        _switchResult = ((Ecosystem)comp);
+      }
+    }
+    if (!_matched) {
+      if (comp instanceof Species) {
+        _matched=true;
+        _switchResult = this._speADLUtils.parentEcosystem(((Species)comp));
+      }
+    }
+    final Ecosystem sourceParametersHolder = _switchResult;
     EList<JvmTypeParameter> _typeParameters = clazz.getTypeParameters();
     EList<JvmTypeParameter> _typeParameters_1 = sourceParametersHolder.getTypeParameters();
     final Function1<JvmTypeParameter, JvmTypeParameter> _function = new Function1<JvmTypeParameter, JvmTypeParameter>() {
@@ -177,21 +175,15 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
       final JvmGenericType requires = this._speADLJvmTypesBuilder.toInterface(comp, SpeADLJvmModelInferrer.REQUIRES_INTERFACE, _function_1);
       EList<JvmMember> _members = clazz.getMembers();
       this._speADLJvmTypesBuilder.<JvmGenericType>operator_add(_members, requires);
+      IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept = acceptor.<JvmGenericType>accept(requires);
+      final Procedure1<JvmGenericType> _function_2 = new Procedure1<JvmGenericType>() {
+        public void apply(final JvmGenericType it) {
+          SpeADLJvmModelInferrer.this.initLaterRequires(comp, clazz, requires);
+        }
+      };
+      Procedure1<? super JvmGenericType> _trycatch = this.<JvmGenericType>trycatch(_function_2);
+      _accept.initializeLater(_trycatch);
     }
-    final Procedure1<JvmGenericType> _function_2 = new Procedure1<JvmGenericType>() {
-      public void apply(final JvmGenericType it) {
-        EList<JvmTypeParameter> _typeParameters = it.getTypeParameters();
-        EList<JvmTypeParameter> _typeParameters_1 = sourceParametersHolder.getTypeParameters();
-        final Function1<JvmTypeParameter, JvmTypeParameter> _function = new Function1<JvmTypeParameter, JvmTypeParameter>() {
-          public JvmTypeParameter apply(final JvmTypeParameter it) {
-            return SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmTypeParameter>cloneWithProxies(it);
-          }
-        };
-        List<JvmTypeParameter> _map = ListExtensions.<JvmTypeParameter, JvmTypeParameter>map(_typeParameters_1, _function);
-        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmTypeParameter>operator_add(_typeParameters, _map);
-      }
-    };
-    final JvmGenericType componentClass = this._speADLJvmTypesBuilder.toClass(comp, SpeADLJvmModelInferrer.COMPONENT_CLASS, _function_2);
     final Procedure1<JvmGenericType> _function_3 = new Procedure1<JvmGenericType>() {
       public void apply(final JvmGenericType it) {
         EList<JvmTypeParameter> _typeParameters = it.getTypeParameters();
@@ -205,7 +197,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmTypeParameter>operator_add(_typeParameters, _map);
       }
     };
-    final JvmGenericType parts = this._speADLJvmTypesBuilder.toInterface(comp, SpeADLJvmModelInferrer.PARTS_INTERFACE, _function_3);
+    final JvmGenericType componentClass = this._speADLJvmTypesBuilder.toClass(comp, SpeADLJvmModelInferrer.COMPONENT_CLASS, _function_3);
     final Procedure1<JvmGenericType> _function_4 = new Procedure1<JvmGenericType>() {
       public void apply(final JvmGenericType it) {
         EList<JvmTypeParameter> _typeParameters = it.getTypeParameters();
@@ -219,7 +211,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmTypeParameter>operator_add(_typeParameters, _map);
       }
     };
-    final JvmGenericType provides = this._speADLJvmTypesBuilder.toInterface(comp, SpeADLJvmModelInferrer.PROVIDES_INTERFACE, _function_4);
+    final JvmGenericType parts = this._speADLJvmTypesBuilder.toInterface(comp, SpeADLJvmModelInferrer.PARTS_INTERFACE, _function_4);
     final Procedure1<JvmGenericType> _function_5 = new Procedure1<JvmGenericType>() {
       public void apply(final JvmGenericType it) {
         EList<JvmTypeParameter> _typeParameters = it.getTypeParameters();
@@ -233,21 +225,87 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmTypeParameter>operator_add(_typeParameters, _map);
       }
     };
-    final JvmGenericType componentIf = this._speADLJvmTypesBuilder.toInterface(comp, SpeADLJvmModelInferrer.COMPONENT_INTERFACE, _function_5);
+    final JvmGenericType provides = this._speADLJvmTypesBuilder.toInterface(comp, SpeADLJvmModelInferrer.PROVIDES_INTERFACE, _function_5);
+    final Procedure1<JvmGenericType> _function_6 = new Procedure1<JvmGenericType>() {
+      public void apply(final JvmGenericType it) {
+        EList<JvmTypeParameter> _typeParameters = it.getTypeParameters();
+        EList<JvmTypeParameter> _typeParameters_1 = sourceParametersHolder.getTypeParameters();
+        final Function1<JvmTypeParameter, JvmTypeParameter> _function = new Function1<JvmTypeParameter, JvmTypeParameter>() {
+          public JvmTypeParameter apply(final JvmTypeParameter it) {
+            return SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmTypeParameter>cloneWithProxies(it);
+          }
+        };
+        List<JvmTypeParameter> _map = ListExtensions.<JvmTypeParameter, JvmTypeParameter>map(_typeParameters_1, _function);
+        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmTypeParameter>operator_add(_typeParameters, _map);
+      }
+    };
+    final JvmGenericType componentIf = this._speADLJvmTypesBuilder.toInterface(comp, SpeADLJvmModelInferrer.COMPONENT_INTERFACE, _function_6);
     EList<JvmMember> _members_1 = clazz.getMembers();
-    this._speADLJvmTypesBuilder.<JvmGenericType>operator_add(_members_1, parts);
+    this._speADLJvmTypesBuilder.<JvmGenericType>operator_add(_members_1, componentIf);
     EList<JvmMember> _members_2 = clazz.getMembers();
-    this._speADLJvmTypesBuilder.<JvmGenericType>operator_add(_members_2, componentClass);
+    this._speADLJvmTypesBuilder.<JvmGenericType>operator_add(_members_2, provides);
     EList<JvmMember> _members_3 = clazz.getMembers();
-    this._speADLJvmTypesBuilder.<JvmGenericType>operator_add(_members_3, provides);
+    this._speADLJvmTypesBuilder.<JvmGenericType>operator_add(_members_3, parts);
     EList<JvmMember> _members_4 = clazz.getMembers();
-    this._speADLJvmTypesBuilder.<JvmGenericType>operator_add(_members_4, componentIf);
+    this._speADLJvmTypesBuilder.<JvmGenericType>operator_add(_members_4, componentClass);
+    IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept_1 = acceptor.<JvmGenericType>accept(provides);
+    final Procedure1<JvmGenericType> _function_7 = new Procedure1<JvmGenericType>() {
+      public void apply(final JvmGenericType it) {
+        SpeADLJvmModelInferrer.this.initLaterProvides(comp, clazz, provides);
+      }
+    };
+    Procedure1<? super JvmGenericType> _trycatch_1 = this.<JvmGenericType>trycatch(_function_7);
+    _accept_1.initializeLater(_trycatch_1);
+    IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept_2 = acceptor.<JvmGenericType>accept(componentIf);
+    final Procedure1<JvmGenericType> _function_8 = new Procedure1<JvmGenericType>() {
+      public void apply(final JvmGenericType it) {
+        SpeADLJvmModelInferrer.this.initLaterComponent(comp, clazz, componentIf, provides);
+      }
+    };
+    Procedure1<? super JvmGenericType> _trycatch_2 = this.<JvmGenericType>trycatch(_function_8);
+    _accept_2.initializeLater(_trycatch_2);
+    IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept_3 = acceptor.<JvmGenericType>accept(parts);
+    final Procedure1<JvmGenericType> _function_9 = new Procedure1<JvmGenericType>() {
+      public void apply(final JvmGenericType it) {
+        SpeADLJvmModelInferrer.this.initLaterParts(comp, clazz, parts);
+      }
+    };
+    Procedure1<? super JvmGenericType> _trycatch_3 = this.<JvmGenericType>trycatch(_function_9);
+    _accept_3.initializeLater(_trycatch_3);
+    IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept_4 = acceptor.<JvmGenericType>accept(componentClass);
+    final Procedure1<JvmGenericType> _function_10 = new Procedure1<JvmGenericType>() {
+      public void apply(final JvmGenericType it) {
+        SpeADLJvmModelInferrer.this.initLaterComponentImpl(comp, clazz, componentClass);
+      }
+    };
+    Procedure1<? super JvmGenericType> _trycatch_4 = this.<JvmGenericType>trycatch(_function_10);
+    _accept_4.initializeLater(_trycatch_4);
+    IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept_5 = acceptor.<JvmGenericType>accept(clazz);
+    final Procedure1<JvmGenericType> _function_11 = new Procedure1<JvmGenericType>() {
+      public void apply(final JvmGenericType it) {
+        SpeADLJvmModelInferrer.this.initLaterAbstractComponent(comp, clazz);
+      }
+    };
+    Procedure1<? super JvmGenericType> _trycatch_5 = this.<JvmGenericType>trycatch(_function_11);
+    _accept_5.initializeLater(_trycatch_5);
+    if ((comp instanceof Ecosystem)) {
+      EList<Species> _species = ((Ecosystem)comp).getSpecies();
+      for (final Species species : _species) {
+        {
+          String _name = species.getName();
+          final JvmGenericType sClazz = this._speADLJvmTypesBuilder.toClass(species, _name);
+          EList<JvmMember> _members_5 = clazz.getMembers();
+          this._speADLJvmTypesBuilder.<JvmGenericType>operator_add(_members_5, sClazz);
+          this.initNowAbstractComponent(species, sClazz, acceptor);
+        }
+      }
+    }
   }
   
-  public void initLaterAbstractComponent(final AbstractComponent comp, final JvmGenericType compClass, final JvmGenericType parametersHolder) {
-    final EList<JvmTypeParameter> myTypeParameters = compClass.getTypeParameters();
+  public void initLaterAbstractComponent(final AbstractComponent comp, final JvmGenericType clazz) {
+    final EList<JvmTypeParameter> myTypeParameters = clazz.getTypeParameters();
     Resource _eResource = comp.eResource();
-    final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(parametersHolder, compClass, _eResource);
+    final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(comp, clazz, _eResource);
     final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
       public EList<JvmTypeConstraint> apply(final JvmTypeParameter it) {
         return it.getConstraints();
@@ -268,49 +326,34 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     if (_not) {
       JvmParameterizedTypeReference _specializes_1 = comp.getSpecializes();
       final JvmTypeReference superType = this._speADLUtils.substituteWith(_specializes_1, substitutor);
-      EList<JvmTypeReference> _superTypes = compClass.getSuperTypes();
+      EList<JvmTypeReference> _superTypes = clazz.getSuperTypes();
       this._speADLJvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, superType);
     }
     boolean _notAbstract = this._speADLUtils.notAbstract(comp);
     boolean _not_1 = (!_notAbstract);
-    compClass.setAbstract(_not_1);
-    final JvmGenericType parts = this._speADLUtils.getInnerType(compClass, SpeADLJvmModelInferrer.PARTS_INTERFACE);
-    final JvmGenericType componentClass = this._speADLUtils.getInnerType(compClass, SpeADLJvmModelInferrer.COMPONENT_CLASS);
-    final JvmGenericType provides = this._speADLUtils.getInnerType(compClass, SpeADLJvmModelInferrer.PROVIDES_INTERFACE);
-    final JvmGenericType componentIf = this._speADLUtils.getInnerType(compClass, SpeADLJvmModelInferrer.COMPONENT_INTERFACE);
-    this.initProvides(comp, parametersHolder, provides);
-    this.initComponent(comp, parametersHolder, componentIf, provides);
-    this.initParts(comp, parametersHolder, parts);
-    this.initComponentImpl(comp, parametersHolder, componentClass, compClass);
-    final JvmParameterizedTypeReference componentClassRef = this._speADLUtils.getParameterizedTypeRefWith(componentClass, myTypeParameters);
-    final JvmParameterizedTypeReference componentIfRef = this._speADLUtils.getParameterizedTypeRefWith(componentIf, myTypeParameters);
-    final JvmParameterizedTypeReference providesRef = this._speADLUtils.getParameterizedTypeRefWith(provides, myTypeParameters);
-    final JvmParameterizedTypeReference partsRef = this._speADLUtils.getParameterizedTypeRefWith(parts, myTypeParameters);
-    JvmParameterizedTypeReference _xifexpression = null;
+    clazz.setAbstract(_not_1);
+    if ((comp instanceof Species)) {
+      clazz.setStatic(true);
+    }
+    final JvmParameterizedTypeReference clazzRef = this._speADLUtils.getParameterizedTypeRefWith(clazz, myTypeParameters);
+    final JvmParameterizedTypeReference componentClassRef = this._speADLUtils.getInnerTypeReference(clazzRef, SpeADLJvmModelInferrer.COMPONENT_CLASS);
+    final JvmParameterizedTypeReference componentIfRef = this._speADLUtils.getInnerTypeReference(clazzRef, SpeADLJvmModelInferrer.COMPONENT_INTERFACE);
+    final JvmParameterizedTypeReference providesRef = this._speADLUtils.getInnerTypeReference(clazzRef, SpeADLJvmModelInferrer.PROVIDES_INTERFACE);
+    final JvmParameterizedTypeReference partsRef = this._speADLUtils.getInnerTypeReference(clazzRef, SpeADLJvmModelInferrer.PARTS_INTERFACE);
+    JvmTypeReference _xifexpression = null;
     JvmParameterizedTypeReference _specializes_2 = comp.getSpecializes();
     boolean _isUseless_1 = this._speADLUtils.isUseless(_specializes_2);
     boolean _not_2 = (!_isUseless_1);
     if (_not_2) {
-      JvmParameterizedTypeReference _xblockexpression = null;
-      {
-        JvmParameterizedTypeReference _specializes_3 = comp.getSpecializes();
-        final JvmTypeReference superType_1 = this._speADLUtils.substituteWith(_specializes_3, substitutor);
-        JvmTypeReference _rootSupertype = this._speADLUtils.rootSupertype(superType_1);
-        _xblockexpression = this._speADLUtils.getInnerTypeReference(_rootSupertype, SpeADLJvmModelInferrer.REQUIRES_INTERFACE);
-      }
-      _xifexpression = _xblockexpression;
+      JvmParameterizedTypeReference _specializes_3 = comp.getSpecializes();
+      JvmTypeReference _substituteWith = this._speADLUtils.substituteWith(_specializes_3, substitutor);
+      _xifexpression = this._speADLUtils.rootSupertype(_substituteWith);
     } else {
-      JvmParameterizedTypeReference _xblockexpression_1 = null;
-      {
-        final JvmGenericType requires = this._speADLUtils.getInnerType(compClass, SpeADLJvmModelInferrer.REQUIRES_INTERFACE);
-        this.initRequires(comp, parametersHolder, requires);
-        _xblockexpression_1 = this._speADLUtils.getParameterizedTypeRefWith(requires, myTypeParameters);
-      }
-      _xifexpression = _xblockexpression_1;
+      _xifexpression = clazzRef;
     }
-    final JvmParameterizedTypeReference requiresRef = _xifexpression;
-    EList<JvmMember> _members = compClass.getMembers();
-    JvmTypeReference _typeForName = this._typeReferences.getTypeForName(Boolean.TYPE, compClass);
+    final JvmParameterizedTypeReference requiresRef = this._speADLUtils.getInnerTypeReference(_xifexpression, SpeADLJvmModelInferrer.REQUIRES_INTERFACE);
+    EList<JvmMember> _members = clazz.getMembers();
+    JvmTypeReference _typeForName = this._typeReferences.getTypeForName(Boolean.TYPE, clazz);
     final Procedure1<JvmField> _function_1 = new Procedure1<JvmField>() {
       public void apply(final JvmField it) {
         final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
@@ -334,8 +377,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     };
     JvmField _newField = this._speADLJvmTypesBuilder.newField("init", _typeForName, _function_1);
     this._speADLJvmTypesBuilder.<JvmField>operator_add(_members, _newField);
-    EList<JvmMember> _members_1 = compClass.getMembers();
-    JvmTypeReference _typeForName_1 = this._typeReferences.getTypeForName(Boolean.TYPE, compClass);
+    EList<JvmMember> _members_1 = clazz.getMembers();
+    JvmTypeReference _typeForName_1 = this._typeReferences.getTypeForName(Boolean.TYPE, clazz);
     final Procedure1<JvmField> _function_2 = new Procedure1<JvmField>() {
       public void apply(final JvmField it) {
         final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
@@ -352,15 +395,15 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     };
     JvmField _newField_1 = this._speADLJvmTypesBuilder.newField("started", _typeForName_1, _function_2);
     this._speADLJvmTypesBuilder.<JvmField>operator_add(_members_1, _newField_1);
-    EList<JvmMember> _members_2 = compClass.getMembers();
+    EList<JvmMember> _members_2 = clazz.getMembers();
     final Procedure1<JvmField> _function_3 = new Procedure1<JvmField>() {
       public void apply(final JvmField it) {
       }
     };
     JvmField _newField_2 = this._speADLJvmTypesBuilder.newField("selfComponent", componentClassRef, _function_3);
     this._speADLJvmTypesBuilder.<JvmField>operator_add(_members_2, _newField_2);
-    EList<JvmMember> _members_3 = compClass.getMembers();
-    JvmTypeReference _typeForName_2 = this._typeReferences.getTypeForName(Void.TYPE, compClass);
+    EList<JvmMember> _members_3 = clazz.getMembers();
+    JvmTypeReference _typeForName_2 = this._typeReferences.getTypeForName(Void.TYPE, clazz);
     final Procedure1<JvmOperation> _function_4 = new Procedure1<JvmOperation>() {
       public void apply(final JvmOperation it) {
         JvmParameterizedTypeReference _specializes = comp.getSpecializes();
@@ -368,7 +411,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         boolean _not = (!_isUseless);
         if (_not) {
           EList<JvmAnnotationReference> _annotations = it.getAnnotations();
-          JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(compClass, Override.class);
+          JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(clazz, Override.class);
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
         }
         it.setVisibility(JvmVisibility.PROTECTED);
@@ -396,7 +439,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     };
     JvmOperation _method = this._speADLJvmTypesBuilder.toMethod(comp, "start", _typeForName_2, _function_4);
     this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_3, _method);
-    EList<JvmMember> _members_4 = compClass.getMembers();
+    EList<JvmMember> _members_4 = clazz.getMembers();
     final Procedure1<JvmOperation> _function_5 = new Procedure1<JvmOperation>() {
       public void apply(final JvmOperation it) {
         JvmParameterizedTypeReference _specializes = comp.getSpecializes();
@@ -404,7 +447,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         boolean _not = (!_isUseless);
         if (_not) {
           EList<JvmAnnotationReference> _annotations = it.getAnnotations();
-          JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(compClass, Override.class);
+          JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(clazz, Override.class);
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
         }
         it.setVisibility(JvmVisibility.PROTECTED);
@@ -439,20 +482,13 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
       PortRef _bound = port.getBound();
       boolean _equals = Objects.equal(_bound, null);
       if (_equals) {
-        EList<JvmMember> _members_5 = compClass.getMembers();
+        EList<JvmMember> _members_5 = clazz.getMembers();
         String _name = port.getName();
         String _plus = ("make_" + _name);
         JvmParameterizedTypeReference _typeReference = port.getTypeReference();
-        JvmTypeReference _substituteWith = this._speADLUtils.substituteWith(_typeReference, substitutor);
+        JvmTypeReference _substituteWith_1 = this._speADLUtils.substituteWith(_typeReference, substitutor);
         final Procedure1<JvmOperation> _function_6 = new Procedure1<JvmOperation>() {
           public void apply(final JvmOperation it) {
-            LightweightTypeReference _overridenPortTypeRef = SpeADLJvmModelInferrer.this._speADLUtils.getOverridenPortTypeRef(port);
-            boolean _notEquals = (!Objects.equal(_overridenPortTypeRef, null));
-            if (_notEquals) {
-              EList<JvmAnnotationReference> _annotations = it.getAnnotations();
-              JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(compClass, Override.class);
-              SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
-            }
             it.setAbstract(true);
             it.setVisibility(JvmVisibility.PROTECTED);
             StringConcatenation _builder = new StringConcatenation();
@@ -463,11 +499,11 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
           }
         };
-        JvmOperation _method_2 = this._speADLJvmTypesBuilder.toMethod(port, _plus, _substituteWith, _function_6);
+        JvmOperation _method_2 = this._speADLJvmTypesBuilder.toMethod(port, _plus, _substituteWith_1, _function_6);
         this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_5, _method_2);
       }
     }
-    EList<JvmMember> _members_6 = compClass.getMembers();
+    EList<JvmMember> _members_6 = clazz.getMembers();
     final Procedure1<JvmOperation> _function_7 = new Procedure1<JvmOperation>() {
       public void apply(final JvmOperation it) {
         JvmParameterizedTypeReference _specializes = comp.getSpecializes();
@@ -475,7 +511,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         boolean _not = (!_isUseless);
         if (_not) {
           EList<JvmAnnotationReference> _annotations = it.getAnnotations();
-          JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(compClass, Override.class);
+          JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(clazz, Override.class);
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
         }
         it.setVisibility(JvmVisibility.PROTECTED);
@@ -505,7 +541,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     };
     JvmOperation _method_3 = this._speADLJvmTypesBuilder.toMethod(comp, "requires", requiresRef, _function_7);
     this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_6, _method_3);
-    EList<JvmMember> _members_7 = compClass.getMembers();
+    EList<JvmMember> _members_7 = clazz.getMembers();
     final Procedure1<JvmOperation> _function_8 = new Procedure1<JvmOperation>() {
       public void apply(final JvmOperation it) {
         JvmParameterizedTypeReference _specializes = comp.getSpecializes();
@@ -513,7 +549,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         boolean _not = (!_isUseless);
         if (_not) {
           EList<JvmAnnotationReference> _annotations = it.getAnnotations();
-          JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(compClass, Override.class);
+          JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(clazz, Override.class);
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
         }
         it.setVisibility(JvmVisibility.PROTECTED);
@@ -552,7 +588,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         if (!_matched) {
           if (part instanceof ComponentPart) {
             _matched=true;
-            EList<JvmMember> _members_8 = compClass.getMembers();
+            EList<JvmMember> _members_8 = clazz.getMembers();
             String _name_1 = ((ComponentPart)part).getName();
             String _plus_1 = ("make_" + _name_1);
             final Procedure1<JvmOperation> _function_9 = new Procedure1<JvmOperation>() {
@@ -574,7 +610,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         if (!_matched) {
           if (part instanceof SpeciesPart) {
             _matched=true;
-            EList<JvmMember> _members_8 = compClass.getMembers();
+            EList<JvmMember> _members_8 = clazz.getMembers();
             String _name_1 = ((SpeciesPart)part).getName();
             String _plus_1 = ("use_" + _name_1);
             final Procedure1<JvmField> _function_9 = new Procedure1<JvmField>() {
@@ -587,7 +623,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         }
       }
     }
-    EList<JvmMember> _members_8 = compClass.getMembers();
+    EList<JvmMember> _members_8 = clazz.getMembers();
     final Procedure1<JvmOperation> _function_9 = new Procedure1<JvmOperation>() {
       public void apply(final JvmOperation it) {
         JvmParameterizedTypeReference _specializes = comp.getSpecializes();
@@ -595,14 +631,14 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         boolean _not = (!_isUseless);
         if (_not) {
           EList<JvmAnnotationReference> _annotations = it.getAnnotations();
-          JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(compClass, Override.class);
+          JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(clazz, Override.class);
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
         }
         EList<JvmFormalParameter> _parameters = it.getParameters();
         JvmFormalParameter _newParameter = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.newParameter("b", requiresRef);
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _newParameter);
         EList<JvmFormalParameter> _parameters_1 = it.getParameters();
-        JvmTypeReference _typeForName = SpeADLJvmModelInferrer.this._typeReferences.getTypeForName(Boolean.TYPE, compClass);
+        JvmTypeReference _typeForName = SpeADLJvmModelInferrer.this._typeReferences.getTypeForName(Boolean.TYPE, clazz);
         JvmFormalParameter _newParameter_1 = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.newParameter("start", _typeForName);
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters_1, _newParameter_1);
         it.setSynchronized(true);
@@ -618,7 +654,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             _builder.newLine();
             _builder.append("\t");
             _builder.append("throw new RuntimeException(\"This instance of ");
-            String _simpleName = compClass.getSimpleName();
+            String _simpleName = clazz.getSimpleName();
             _builder.append(_simpleName, "\t");
             _builder.append(" has already been used to create a component, use another one.\");");
             _builder.newLineIfNotEmpty();
@@ -627,14 +663,14 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             _builder.append("this.init = true;");
             _builder.newLine();
             it.append(_builder);
-            SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(componentClassRef, compClass, it);
+            SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(componentClassRef, clazz, it);
             StringConcatenation _builder_1 = new StringConcatenation();
             _builder_1.append(" ");
             String _declareSyntheticVariable = it.declareSyntheticVariable(m, "comp");
             _builder_1.append(_declareSyntheticVariable, " ");
             _builder_1.append(" = new ");
             it.append(_builder_1);
-            SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(componentClassRef, compClass, it);
+            SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(componentClassRef, clazz, it);
             StringConcatenation _builder_2 = new StringConcatenation();
             _builder_2.append("(this, b, true);");
             _builder_2.newLine();
@@ -667,11 +703,11 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         for (final Species species : _species) {
           {
             String _name_1 = species.getName();
-            JvmGenericType _innerType = this._speADLUtils.getInnerType(compClass, _name_1);
+            JvmGenericType _innerType = this._speADLUtils.getInnerType(clazz, _name_1);
             final JvmParameterizedTypeReference str = this._speADLUtils.getParameterizedTypeRefWith(_innerType, myTypeParameters);
             boolean _notAbstract_1 = this._speADLUtils.notAbstract(species);
             final boolean isAbstract = (!_notAbstract_1);
-            EList<JvmMember> _members_9 = compClass.getMembers();
+            EList<JvmMember> _members_9 = clazz.getMembers();
             String _name_2 = species.getName();
             String _plus_1 = ("make_" + _name_2);
             final Procedure1<JvmOperation> _function_10 = new Procedure1<JvmOperation>() {
@@ -699,7 +735,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                       StringConcatenation _builder = new StringConcatenation();
                       _builder.append("return new ");
                       it.append(_builder);
-                      SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(str, compClass, it);
+                      SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(str, clazz, it);
                       StringConcatenation _builder_1 = new StringConcatenation();
                       _builder_1.append("(");
                       EList<Feature> _parameters = species.getParameters();
@@ -721,7 +757,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             };
             JvmOperation _method_6 = this._speADLJvmTypesBuilder.toMethod(species, _plus_1, str, _function_10);
             this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_9, _method_6);
-            EList<JvmMember> _members_10 = compClass.getMembers();
+            EList<JvmMember> _members_10 = clazz.getMembers();
             String _name_3 = species.getName();
             String _plus_2 = ("_createImplementationOf" + _name_3);
             final Procedure1<JvmOperation> _function_11 = new Procedure1<JvmOperation>() {
@@ -744,7 +780,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                 final JvmOperation m = it;
                 final Procedure1<ITreeAppendable> _function_1 = new Procedure1<ITreeAppendable>() {
                   public void apply(final ITreeAppendable it) {
-                    SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(str, compClass, it);
+                    SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(str, clazz, it);
                     StringConcatenation _builder = new StringConcatenation();
                     _builder.append(" ");
                     String _declareSyntheticVariable = it.declareSyntheticVariable(m, "implem");
@@ -776,7 +812,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                     String _name_2 = species.getName();
                     _builder_1.append(_name_2, "\t");
                     _builder_1.append("() in ");
-                    String _qualifiedName = compClass.getQualifiedName();
+                    String _qualifiedName = clazz.getQualifiedName();
                     _builder_1.append(_qualifiedName, "\t");
                     _builder_1.append(" should not return null.\");");
                     _builder_1.newLineIfNotEmpty();
@@ -859,7 +895,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             Iterable<RequiredPort> _allRequires = this._speADLUtils.getAllRequires(species);
             boolean _isEmpty = IterableExtensions.isEmpty(_allRequires);
             if (_isEmpty) {
-              EList<JvmMember> _members_11 = compClass.getMembers();
+              EList<JvmMember> _members_11 = clazz.getMembers();
               String _name_4 = species.getName();
               String _plus_3 = ("new" + _name_4);
               JvmParameterizedTypeReference _innerTypeReference = this._speADLUtils.getInnerTypeReference(str, SpeADLJvmModelInferrer.COMPONENT_INTERFACE);
@@ -884,7 +920,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                   final JvmOperation m = it;
                   final Procedure1<ITreeAppendable> _function_1 = new Procedure1<ITreeAppendable>() {
                     public void apply(final ITreeAppendable it) {
-                      SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(str, compClass, it);
+                      SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(str, clazz, it);
                       StringConcatenation _builder = new StringConcatenation();
                       _builder.append(" ");
                       String _declareSyntheticVariable = it.declareSyntheticVariable(m, "implem");
@@ -912,7 +948,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                       _builder_1.append("._newComponent(new ");
                       it.append(_builder_1);
                       final JvmParameterizedTypeReference i = SpeADLJvmModelInferrer.this._speADLUtils.getInnerTypeReference(str, SpeADLJvmModelInferrer.REQUIRES_INTERFACE);
-                      SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(i, compClass, it);
+                      SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(i, clazz, it);
                       StringConcatenation _builder_2 = new StringConcatenation();
                       _builder_2.append("() {},true);");
                       it.append(_builder_2);
@@ -929,7 +965,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         Iterable<RequiredPort> _allRequires = this._speADLUtils.getAllRequires(comp);
         boolean _isEmpty = IterableExtensions.isEmpty(_allRequires);
         if (_isEmpty) {
-          EList<JvmMember> _members_9 = compClass.getMembers();
+          EList<JvmMember> _members_9 = clazz.getMembers();
           final Procedure1<JvmOperation> _function_10 = new Procedure1<JvmOperation>() {
             public void apply(final JvmOperation it) {
               JvmParameterizedTypeReference _specializes = ((Ecosystem)comp).getSpecializes();
@@ -937,7 +973,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
               boolean _not = (!_isUseless);
               if (_not) {
                 EList<JvmAnnotationReference> _annotations = it.getAnnotations();
-                JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(compClass, Override.class);
+                JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(clazz, Override.class);
                 SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
               }
               StringConcatenation _builder = new StringConcatenation();
@@ -949,7 +985,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                   StringConcatenation _builder = new StringConcatenation();
                   _builder.append("return this._newComponent(new ");
                   it.append(_builder);
-                  SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(requiresRef, compClass, it);
+                  SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(requiresRef, clazz, it);
                   StringConcatenation _builder_1 = new StringConcatenation();
                   _builder_1.append("() {}, true);");
                   it.append(_builder_1);
@@ -969,7 +1005,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         final Ecosystem parentEco = this._speADLUtils.parentEcosystem(((Species)comp));
         JvmGenericType _associatedJvmClass = this._speADLUtils.associatedJvmClass(parentEco);
         final JvmParameterizedTypeReference parentRef = this._speADLUtils.getParameterizedTypeRefWith(_associatedJvmClass, myTypeParameters);
-        EList<JvmMember> _members_9 = compClass.getMembers();
+        EList<JvmMember> _members_9 = clazz.getMembers();
         JvmParameterizedTypeReference _innerTypeReference = this._speADLUtils.getInnerTypeReference(parentRef, SpeADLJvmModelInferrer.COMPONENT_CLASS);
         final Procedure1<JvmField> _function_10 = new Procedure1<JvmField>() {
           public void apply(final JvmField it) {
@@ -977,7 +1013,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         };
         JvmField _newField_3 = this._speADLJvmTypesBuilder.newField("ecosystemComponent", _innerTypeReference, _function_10);
         this._speADLJvmTypesBuilder.<JvmField>operator_add(_members_9, _newField_3);
-        EList<JvmMember> _members_10 = compClass.getMembers();
+        EList<JvmMember> _members_10 = clazz.getMembers();
         JvmParameterizedTypeReference _innerTypeReference_1 = this._speADLUtils.getInnerTypeReference(parentRef, SpeADLJvmModelInferrer.PROVIDES_INTERFACE);
         final Procedure1<JvmOperation> _function_11 = new Procedure1<JvmOperation>() {
           public void apply(final JvmOperation it) {
@@ -1001,7 +1037,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         };
         JvmOperation _method_6 = this._speADLJvmTypesBuilder.toMethod(parentEco, "eco_provides", _innerTypeReference_1, _function_11);
         this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_10, _method_6);
-        EList<JvmMember> _members_11 = compClass.getMembers();
+        EList<JvmMember> _members_11 = clazz.getMembers();
         JvmTypeReference _rootSupertype = this._speADLUtils.rootSupertype(parentRef);
         JvmParameterizedTypeReference _innerTypeReference_2 = this._speADLUtils.getInnerTypeReference(_rootSupertype, SpeADLJvmModelInferrer.REQUIRES_INTERFACE);
         final Procedure1<JvmOperation> _function_12 = new Procedure1<JvmOperation>() {
@@ -1026,7 +1062,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         };
         JvmOperation _method_7 = this._speADLJvmTypesBuilder.toMethod(parentEco, "eco_requires", _innerTypeReference_2, _function_12);
         this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_11, _method_7);
-        EList<JvmMember> _members_12 = compClass.getMembers();
+        EList<JvmMember> _members_12 = clazz.getMembers();
         JvmParameterizedTypeReference _innerTypeReference_3 = this._speADLUtils.getInnerTypeReference(parentRef, SpeADLJvmModelInferrer.PARTS_INTERFACE);
         final Procedure1<JvmOperation> _function_13 = new Procedure1<JvmOperation>() {
           public void apply(final JvmOperation it) {
@@ -1054,9 +1090,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     }
   }
   
-  public void initRequires(final AbstractComponent comp, final JvmGenericType parametersHolder, final JvmGenericType requires) {
+  public void initLaterRequires(final AbstractComponent comp, final JvmGenericType clazz, final JvmGenericType requires) {
     Resource _eResource = comp.eResource();
-    final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(parametersHolder, requires, _eResource);
+    final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(comp, requires, _eResource);
     EList<JvmTypeParameter> _typeParameters = requires.getTypeParameters();
     final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
       public EList<JvmTypeConstraint> apply(final JvmTypeParameter it) {
@@ -1091,9 +1127,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     }
   }
   
-  public void initProvides(final AbstractComponent comp, final JvmGenericType parametersHolder, final JvmGenericType provides) {
+  public void initLaterProvides(final AbstractComponent comp, final JvmGenericType clazz, final JvmGenericType provides) {
     Resource _eResource = comp.eResource();
-    final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(parametersHolder, provides, _eResource);
+    final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(comp, provides, _eResource);
     EList<JvmTypeParameter> _typeParameters = provides.getTypeParameters();
     final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
       public EList<JvmTypeConstraint> apply(final JvmTypeParameter it) {
@@ -1138,9 +1174,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     }
   }
   
-  public void initParts(final AbstractComponent comp, final JvmGenericType parametersHolder, final JvmGenericType parts) {
+  public void initLaterParts(final AbstractComponent comp, final JvmGenericType clazz, final JvmGenericType parts) {
     Resource _eResource = comp.eResource();
-    final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(parametersHolder, parts, _eResource);
+    final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(comp, parts, _eResource);
     EList<JvmTypeParameter> _typeParameters = parts.getTypeParameters();
     final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
       public EList<JvmTypeConstraint> apply(final JvmTypeParameter it) {
@@ -1190,11 +1226,11 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     }
   }
   
-  public boolean initComponent(final AbstractComponent comp, final JvmGenericType parametersHolder, final JvmGenericType componentIf, final JvmGenericType provides) {
+  public boolean initLaterComponent(final AbstractComponent comp, final JvmGenericType clazz, final JvmGenericType componentIf, final JvmGenericType provides) {
     boolean _xblockexpression = false;
     {
       Resource _eResource = comp.eResource();
-      final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(parametersHolder, componentIf, _eResource);
+      final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(comp, componentIf, _eResource);
       EList<JvmTypeParameter> _typeParameters = componentIf.getTypeParameters();
       final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
         public EList<JvmTypeConstraint> apply(final JvmTypeParameter it) {
@@ -1228,11 +1264,11 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     return _xblockexpression;
   }
   
-  public void initComponentImpl(final AbstractComponent comp, final JvmGenericType parametersHolder, final JvmGenericType componentClass, final JvmGenericType implem) {
+  public void initLaterComponentImpl(final AbstractComponent comp, final JvmGenericType clazz, final JvmGenericType componentClass) {
     EList<JvmTypeParameter> _typeParameters = componentClass.getTypeParameters();
-    final JvmParameterizedTypeReference implemRef = this._speADLUtils.getParameterizedTypeRefWith(implem, _typeParameters);
+    final JvmParameterizedTypeReference clazzRef = this._speADLUtils.getParameterizedTypeRefWith(clazz, _typeParameters);
     Resource _eResource = comp.eResource();
-    final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(parametersHolder, componentClass, _eResource);
+    final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(comp, componentClass, _eResource);
     EList<JvmTypeParameter> _typeParameters_1 = componentClass.getTypeParameters();
     final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
       public EList<JvmTypeConstraint> apply(final JvmTypeParameter it) {
@@ -1260,28 +1296,23 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
       this._speADLJvmTypesBuilder.<JvmParameterizedTypeReference>operator_add(_superTypes, _innerTypeReference);
     }
     EList<JvmTypeReference> _superTypes_1 = componentClass.getSuperTypes();
-    JvmParameterizedTypeReference _innerTypeReference_1 = this._speADLUtils.getInnerTypeReference(implemRef, SpeADLJvmModelInferrer.COMPONENT_INTERFACE);
+    JvmParameterizedTypeReference _innerTypeReference_1 = this._speADLUtils.getInnerTypeReference(clazzRef, SpeADLJvmModelInferrer.COMPONENT_INTERFACE);
     this._speADLJvmTypesBuilder.<JvmParameterizedTypeReference>operator_add(_superTypes_1, _innerTypeReference_1);
     EList<JvmTypeReference> _superTypes_2 = componentClass.getSuperTypes();
-    JvmParameterizedTypeReference _innerTypeReference_2 = this._speADLUtils.getInnerTypeReference(implemRef, SpeADLJvmModelInferrer.PARTS_INTERFACE);
+    JvmParameterizedTypeReference _innerTypeReference_2 = this._speADLUtils.getInnerTypeReference(clazzRef, SpeADLJvmModelInferrer.PARTS_INTERFACE);
     this._speADLJvmTypesBuilder.<JvmParameterizedTypeReference>operator_add(_superTypes_2, _innerTypeReference_2);
-    JvmParameterizedTypeReference _xifexpression = null;
+    JvmTypeReference _xifexpression = null;
     JvmParameterizedTypeReference _specializes_2 = comp.getSpecializes();
     boolean _isUseless_1 = this._speADLUtils.isUseless(_specializes_2);
     boolean _not_1 = (!_isUseless_1);
     if (_not_1) {
-      JvmParameterizedTypeReference _xblockexpression = null;
-      {
-        JvmParameterizedTypeReference _specializes_3 = comp.getSpecializes();
-        final JvmTypeReference nstr_1 = this._speADLUtils.substituteWith(_specializes_3, substitutor);
-        JvmTypeReference _rootSupertype = this._speADLUtils.rootSupertype(nstr_1);
-        _xblockexpression = this._speADLUtils.getInnerTypeReference(_rootSupertype, SpeADLJvmModelInferrer.REQUIRES_INTERFACE);
-      }
-      _xifexpression = _xblockexpression;
+      JvmParameterizedTypeReference _specializes_3 = comp.getSpecializes();
+      JvmTypeReference _substituteWith = this._speADLUtils.substituteWith(_specializes_3, substitutor);
+      _xifexpression = this._speADLUtils.rootSupertype(_substituteWith);
     } else {
-      _xifexpression = this._speADLUtils.getInnerTypeReference(implemRef, SpeADLJvmModelInferrer.REQUIRES_INTERFACE);
+      _xifexpression = clazzRef;
     }
-    final JvmParameterizedTypeReference requiresRef = _xifexpression;
+    final JvmParameterizedTypeReference requiresRef = this._speADLUtils.getInnerTypeReference(_xifexpression, SpeADLJvmModelInferrer.REQUIRES_INTERFACE);
     EList<JvmMember> _members = componentClass.getMembers();
     final Procedure1<JvmField> _function_1 = new Procedure1<JvmField>() {
       public void apply(final JvmField it) {
@@ -1296,7 +1327,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         it.setFinal(true);
       }
     };
-    JvmField _newField_1 = this._speADLJvmTypesBuilder.newField("implementation", implemRef, _function_2);
+    JvmField _newField_1 = this._speADLJvmTypesBuilder.newField("implementation", clazzRef, _function_2);
     this._speADLJvmTypesBuilder.<JvmField>operator_add(_members_1, _newField_1);
     EList<JvmMember> _members_2 = componentClass.getMembers();
     JvmTypeReference _typeForName = this._typeReferences.getTypeForName(Void.TYPE, componentClass);
@@ -1407,7 +1438,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                   String _name_5 = ((ComponentPart)part).getName();
                   _builder_1.append(_name_5, "\t");
                   _builder_1.append("() in ");
-                  String _qualifiedName = implem.getQualifiedName();
+                  String _qualifiedName = clazzRef.getQualifiedName();
                   _builder_1.append(_qualifiedName, "\t");
                   _builder_1.append(" should not return null.\");");
                   _builder_1.newLineIfNotEmpty();
@@ -1561,7 +1592,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
               String _name_4 = port.getName();
               _builder.append(_name_4, "\t");
               _builder.append("() in ");
-              String _qualifiedName = implem.getQualifiedName();
+              String _qualifiedName = clazzRef.getQualifiedName();
               _builder.append(_qualifiedName, "\t");
               _builder.append(" should not return null.\");");
               _builder.newLineIfNotEmpty();
@@ -1621,7 +1652,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     final Procedure1<JvmConstructor> _function_9 = new Procedure1<JvmConstructor>() {
       public void apply(final JvmConstructor it) {
         EList<JvmFormalParameter> _parameters = it.getParameters();
-        JvmFormalParameter _newParameter = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.newParameter("implem", implemRef);
+        JvmFormalParameter _newParameter = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.newParameter("implem", clazzRef);
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _newParameter);
         EList<JvmFormalParameter> _parameters_1 = it.getParameters();
         JvmFormalParameter _newParameter_1 = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.newParameter("b", requiresRef);

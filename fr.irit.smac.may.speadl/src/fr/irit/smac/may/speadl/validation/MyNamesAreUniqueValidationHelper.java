@@ -15,7 +15,7 @@ import fr.irit.smac.may.speadl.speadl.SpeadlPackage;
 public class MyNamesAreUniqueValidationHelper extends
 		NamesAreUniqueValidationHelper {
 
-	private ImmutableSet<EClass> clusterTypes = ImmutableSet.of(SpeadlPackage.Literals.ABSTRACT_COMPONENT, SpeadlPackage.Literals.CONTENT_ELEMENT);
+	private ImmutableSet<EClass> clusterTypes = ImmutableSet.of(SpeadlPackage.Literals.ABSTRACT_COMPONENT);
 	
 	@Override
 	protected ImmutableSet<EClass> getClusterTypes() {

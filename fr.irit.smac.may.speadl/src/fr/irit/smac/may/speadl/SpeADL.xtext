@@ -2,7 +2,6 @@ grammar fr.irit.smac.may.speadl.SpeADL with org.eclipse.xtext.xbase.Xbase
 
 generate speadl "http://www.irit.fr/smac/may/speadl/SpeADL"
 
-// these warning are ok, it is because the mwe2 file has been updated to work with maven
 import 'http://www.eclipse.org/xtext/xbase/Xbase'
 import 'http://www.eclipse.org/xtext/xbase/Xtype'
 import 'http://www.eclipse.org/xtext/common/JavaVMTypes'
@@ -33,7 +32,7 @@ Port:
 FakeAbstractPort returns Port:
 	typeReference=JvmParameterizedTypeReference;
 
-// Used to check for name duplicate!
+// Used to check for name duplicate in SpeADLValidator
 ContentElement:
 	Port | Part;
 FakeContentElement returns ContentElement:
@@ -48,17 +47,10 @@ FakePart returns Part:
 Feature:
 	name=ValidID ":" parameterType=JvmTypeReference;
 
-// another element is introduced here because SpeADLProposalProvider
-// can't make the difference between specializes and implementedBy
-//ImplementedBy:
-//	"implementedBy" ref=JvmParameterizedTypeReference
-//;
-
 Ecosystem:
 	"ecosystem" name=ValidID
 	("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
 	("specializes" specializes=JvmParameterizedTypeReference)?
-	//implementedBy=ImplementedBy?
 	"{"
 		(	provides+=ProvidedPort
 		|	requires+=RequiredPort
@@ -71,7 +63,6 @@ Component returns Ecosystem:
 	"component" name=ValidID
 	("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
 	("specializes" specializes=JvmParameterizedTypeReference)?
-	//implementedBy=ImplementedBy?
 	"{"
 		(	provides+=ProvidedPort
 		|	requires+=RequiredPort

@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import fr.irit.smac.may.speadl.speadl.AbstractComponent
 import fr.irit.smac.may.speadl.speadl.Binding
 import fr.irit.smac.may.speadl.speadl.ComponentPart
+import fr.irit.smac.may.speadl.speadl.ContentElement
 import fr.irit.smac.may.speadl.speadl.Ecosystem
 import fr.irit.smac.may.speadl.speadl.Feature
 import fr.irit.smac.may.speadl.speadl.Part
@@ -25,7 +26,6 @@ import org.eclipse.xtext.common.types.JvmType
 import org.eclipse.xtext.common.types.JvmTypeParameter
 import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator
 import org.eclipse.xtext.common.types.JvmTypeReference
-import org.eclipse.xtext.common.types.JvmVoid
 import org.eclipse.xtext.common.types.util.TypeReferences
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations
 import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner
@@ -49,6 +49,10 @@ class SpeADLUtils {
 		c.parts.empty
 		&& c.provides.forall[bound != null]
 		&& c.species.forall[notAbstract]
+	}
+	
+	def containingAbstractComponent(ContentElement p) {
+		p.eContainer as AbstractComponent
 	}
 	
 	def parentEcosystem(Species s) {
@@ -108,11 +112,14 @@ class SpeADLUtils {
 	// methods for creating references
 
 	def getParameterizedTypeRefWith(JvmType type, List<JvmTypeParameter> typeParameters) {
-		if(type == null) null else type.createTypeRef(typeParameters.map[createTypeRef])
-	}
-
-	def getTypeRef(JvmType type) {
-		if(type == null) null else type.createTypeRef
+		if(type == null) null else {
+			val tr = type.createTypeRef(typeParameters.map[createTypeRef])
+			// disabled for now, it is usefull for calling toLightweightTypeReference
+			// without passing a Resource, but I'm wondering what are the drawback of
+			// adding all these temporary type refs to the resource...
+			//type.eResource.contents += tr
+			tr
+		}
 	}
 	
 	// methods for AbstractComponents
@@ -138,16 +145,18 @@ class SpeADLUtils {
 	}
 
 	/**
-	 * these give the requires the most specialized
+	 * these give the most specialized requires
 	 * for a component and its hierarchy
+	 * (WITHOUT substituting parameters)
 	 */
 	def Iterable<RequiredPort> getAllRequires(AbstractComponent i) {
 		i.getAllPorts([requires])
 	}
 	
 	/**
-	 * these give the provides the most specialized
+	 * these give the most specialized provides
 	 * for a component and its hierarchy
+	 * (WITHOUT substituting parameters)
 	 */
 	def Iterable<ProvidedPort> getAllProvides(AbstractComponent i) {
 		i.getAllPorts([provides])
@@ -176,7 +185,7 @@ class SpeADLUtils {
 	}
 
 	def isUseless(JvmTypeReference typeReference) {
-		typeReference == null || typeReference.type == null || typeReference.type instanceof JvmVoid
+		typeReference == null// || typeReference.type == null || typeReference.type instanceof JvmVoid
 	}
 
 	def toLightweightTypeReference(JvmTypeReference typeRef, Resource context) {
@@ -289,15 +298,24 @@ class SpeADLUtils {
 		val se = e.specializes.type.associatedEcosystem
 		if(se == null) return null
 
-		val substitutor = e.specializes.getSubstitutor(se.eResource)
-
 		val ov = getPorts.apply(se).findFirst[p|p.name == name]
-
-		if (ov == null) {
+		val ov2 = if (ov == null) {
 			se.getOverridenPortTypeRef(getPorts, name)
 		} else {
 			ov.typeReference.toLightweightTypeReference(ov.eResource)
-		}.substituteWith(substitutor)
+		}
+		if (ov2 == null) return null
+		
+		val substitutor = e.specializes.getSubstitutor(se.eResource)
+		ov2.substituteWith(substitutor)
+	}
+
+	def getSubstitutor(AbstractComponent parametersHolder, JvmTypeParameterDeclarator to, Resource context) {
+		val realParameterHolder = switch parametersHolder {
+			Ecosystem: parametersHolder.associatedJvmClass
+			Species: parametersHolder.associatedJvmClass.declaringType as JvmGenericType
+		}
+		realParameterHolder.getSubstitutor(to, context)
 	}
 
 	def getSubstitutor(JvmGenericType parametersHolder, JvmTypeParameterDeclarator to, Resource context) {
