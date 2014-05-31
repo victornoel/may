@@ -60,9 +60,9 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 	@Check
 	def checkPortRef(PortRef pr) {
 		// port can't be null nor a proxy: no need to check
-		if (pr.port == null || pr.port.eIsProxy) return;
+		if (pr.port === null || pr.port.eIsProxy) return;
 		// part can be null, but can't be a proxy: no need to check
-		if (pr.part != null && pr.part.eIsProxy) return;
+		if (pr.part !== null && pr.part.eIsProxy) return;
 		
 		val typeTo = pr.resolveType
 		
@@ -71,7 +71,7 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 			ProvidedPort: cont.typeReference.toLightweightTypeReference(pr.eResource)
 		}
 		
-		if(typeFrom != null && typeTo != null) {
+		if(typeFrom !== null && typeTo !== null) {
 			if(!typeFrom.isAssignableFrom(typeTo)) {
 				error("Incompatible types: " +typeFrom +" is not the same or a supertype of "+typeTo, SpeadlPackage.Literals.PORT_REF__PORT)
 			}
@@ -166,7 +166,7 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 		val typeTo = p.typeReference.toLightweightTypeReference(p.eResource)
 		val typeFrom = p.overridenPortTypeRef
 		
-		if(typeFrom != null && typeTo != null) {
+		if(typeFrom !== null && typeTo !== null) {
 			if(!typeFrom.isAssignableFrom(typeTo)) {
 				error("Incompatible type override: " +typeFrom +" is not the same or a supertype of "+typeTo, SpeadlPackage.Literals.PORT__TYPE_REFERENCE)
 			}
@@ -195,9 +195,9 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 	@Check
 	def checkSpecializeReference(Ecosystem ecosystem) {
 		val superTypeRef = ecosystem.specializes
-		if(!superTypeRef.useless) {
+		if(superTypeRef !== null) {
 			val superType = superTypeRef.type.associatedEcosystem
-			if (superType == null) {
+			if (superType === null) {
 				error(ecosystem.specializes.simpleName + " cannot be resolved", ecosystem.specializes, TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE)
 			} else {
 				if(!superType.parts.empty) {
@@ -238,7 +238,7 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 	@Check
 	def checkComponentReference(ComponentPart p) {
 		val eco = p.componentReference.type.associatedEcosystem
-		if(eco == null) {
+		if(eco === null) {
 			error(p.componentReference.simpleName + " cannot be resolved", p.componentReference, TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE)
 		}
 	}

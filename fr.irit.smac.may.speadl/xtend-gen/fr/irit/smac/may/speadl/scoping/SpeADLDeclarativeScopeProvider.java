@@ -1,6 +1,5 @@
 package fr.irit.smac.may.speadl.scoping;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import fr.irit.smac.may.speadl.SpeADLUtils;
@@ -106,8 +105,8 @@ public class SpeADLDeclarativeScopeProvider extends AbstractDeclarativeScopeProv
   public IScope scope_PortRef_port(final PortRef ctx, final EReference ref) {
     IScope _xifexpression = null;
     Part _part = ctx.getPart();
-    boolean _notEquals = (!Objects.equal(_part, null));
-    if (_notEquals) {
+    boolean _tripleNotEquals = (_part != null);
+    if (_tripleNotEquals) {
       Part _part_1 = ctx.getPart();
       AbstractComponent _abstractComponent = this._speADLUtils.abstractComponent(_part_1);
       Iterable<ProvidedPort> _allProvides = this._speADLUtils.getAllProvides(_abstractComponent);

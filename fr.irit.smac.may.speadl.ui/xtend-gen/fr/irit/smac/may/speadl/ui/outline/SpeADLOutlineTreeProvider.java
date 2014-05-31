@@ -1,6 +1,5 @@
 package fr.irit.smac.may.speadl.ui.outline;
 
-import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import fr.irit.smac.may.speadl.speadl.Ecosystem;
 import fr.irit.smac.may.speadl.speadl.Model;
@@ -42,8 +41,8 @@ public class SpeADLOutlineTreeProvider extends DefaultOutlineTreeProvider {
   public void _createChildren(final DocumentRootNode parentNode, final Model modelElement) {
     boolean _and = false;
     XImportSection _imports = modelElement.getImports();
-    boolean _notEquals = (!Objects.equal(_imports, null));
-    if (!_notEquals) {
+    boolean _tripleNotEquals = (_imports != null);
+    if (!_tripleNotEquals) {
       _and = false;
     } else {
       XImportSection _imports_1 = modelElement.getImports();

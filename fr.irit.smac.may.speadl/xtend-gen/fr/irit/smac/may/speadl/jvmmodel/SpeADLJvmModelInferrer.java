@@ -1,6 +1,5 @@
 package fr.irit.smac.may.speadl.jvmmodel;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import fr.irit.smac.may.speadl.SpeADLUtils;
@@ -157,8 +156,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     List<JvmTypeParameter> _map = ListExtensions.<JvmTypeParameter, JvmTypeParameter>map(_typeParameters_1, _function);
     this._speADLJvmTypesBuilder.<JvmTypeParameter>operator_add(_typeParameters, _map);
     JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-    boolean _equals = Objects.equal(_specializes, null);
-    if (_equals) {
+    boolean _tripleEquals = (_specializes == null);
+    if (_tripleEquals) {
       final Procedure1<JvmGenericType> _function_1 = new Procedure1<JvmGenericType>() {
         public void apply(final JvmGenericType it) {
           EList<JvmTypeParameter> _typeParameters = it.getTypeParameters();
@@ -321,17 +320,16 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
       }
     }
     JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-    boolean _isUseless = this._speADLUtils.isUseless(_specializes);
-    boolean _not = (!_isUseless);
-    if (_not) {
+    boolean _tripleNotEquals = (_specializes != null);
+    if (_tripleNotEquals) {
       JvmParameterizedTypeReference _specializes_1 = comp.getSpecializes();
       final JvmTypeReference superType = this._speADLUtils.substituteWith(_specializes_1, substitutor);
       EList<JvmTypeReference> _superTypes = clazz.getSuperTypes();
       this._speADLJvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, superType);
     }
     boolean _notAbstract = this._speADLUtils.notAbstract(comp);
-    boolean _not_1 = (!_notAbstract);
-    clazz.setAbstract(_not_1);
+    boolean _not = (!_notAbstract);
+    clazz.setAbstract(_not);
     if ((comp instanceof Species)) {
       clazz.setStatic(true);
     }
@@ -342,9 +340,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     final JvmParameterizedTypeReference partsRef = this._speADLUtils.getInnerTypeReference(clazzRef, SpeADLJvmModelInferrer.PARTS_INTERFACE);
     JvmTypeReference _xifexpression = null;
     JvmParameterizedTypeReference _specializes_2 = comp.getSpecializes();
-    boolean _isUseless_1 = this._speADLUtils.isUseless(_specializes_2);
-    boolean _not_2 = (!_isUseless_1);
-    if (_not_2) {
+    boolean _tripleNotEquals_1 = (_specializes_2 != null);
+    if (_tripleNotEquals_1) {
       JvmParameterizedTypeReference _specializes_3 = comp.getSpecializes();
       JvmTypeReference _substituteWith = this._speADLUtils.substituteWith(_specializes_3, substitutor);
       _xifexpression = this._speADLUtils.rootSupertype(_substituteWith);
@@ -407,9 +404,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     final Procedure1<JvmOperation> _function_4 = new Procedure1<JvmOperation>() {
       public void apply(final JvmOperation it) {
         JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-        boolean _isUseless = SpeADLJvmModelInferrer.this._speADLUtils.isUseless(_specializes);
-        boolean _not = (!_isUseless);
-        if (_not) {
+        boolean _tripleNotEquals = (_specializes != null);
+        if (_tripleNotEquals) {
           EList<JvmAnnotationReference> _annotations = it.getAnnotations();
           JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(clazz, Override.class);
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
@@ -443,9 +439,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     final Procedure1<JvmOperation> _function_5 = new Procedure1<JvmOperation>() {
       public void apply(final JvmOperation it) {
         JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-        boolean _isUseless = SpeADLJvmModelInferrer.this._speADLUtils.isUseless(_specializes);
-        boolean _not = (!_isUseless);
-        if (_not) {
+        boolean _tripleNotEquals = (_specializes != null);
+        if (_tripleNotEquals) {
           EList<JvmAnnotationReference> _annotations = it.getAnnotations();
           JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(clazz, Override.class);
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
@@ -480,8 +475,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     EList<ProvidedPort> _provides = comp.getProvides();
     for (final ProvidedPort port : _provides) {
       PortRef _bound = port.getBound();
-      boolean _equals = Objects.equal(_bound, null);
-      if (_equals) {
+      boolean _tripleEquals = (_bound == null);
+      if (_tripleEquals) {
         EList<JvmMember> _members_5 = clazz.getMembers();
         String _name = port.getName();
         String _plus = ("make_" + _name);
@@ -507,9 +502,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     final Procedure1<JvmOperation> _function_7 = new Procedure1<JvmOperation>() {
       public void apply(final JvmOperation it) {
         JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-        boolean _isUseless = SpeADLJvmModelInferrer.this._speADLUtils.isUseless(_specializes);
-        boolean _not = (!_isUseless);
-        if (_not) {
+        boolean _tripleNotEquals = (_specializes != null);
+        if (_tripleNotEquals) {
           EList<JvmAnnotationReference> _annotations = it.getAnnotations();
           JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(clazz, Override.class);
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
@@ -545,9 +539,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     final Procedure1<JvmOperation> _function_8 = new Procedure1<JvmOperation>() {
       public void apply(final JvmOperation it) {
         JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-        boolean _isUseless = SpeADLJvmModelInferrer.this._speADLUtils.isUseless(_specializes);
-        boolean _not = (!_isUseless);
-        if (_not) {
+        boolean _tripleNotEquals = (_specializes != null);
+        if (_tripleNotEquals) {
           EList<JvmAnnotationReference> _annotations = it.getAnnotations();
           JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(clazz, Override.class);
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
@@ -627,9 +620,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     final Procedure1<JvmOperation> _function_9 = new Procedure1<JvmOperation>() {
       public void apply(final JvmOperation it) {
         JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-        boolean _isUseless = SpeADLJvmModelInferrer.this._speADLUtils.isUseless(_specializes);
-        boolean _not = (!_isUseless);
-        if (_not) {
+        boolean _tripleNotEquals = (_specializes != null);
+        if (_tripleNotEquals) {
           EList<JvmAnnotationReference> _annotations = it.getAnnotations();
           JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(clazz, Override.class);
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
@@ -969,9 +961,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
           final Procedure1<JvmOperation> _function_10 = new Procedure1<JvmOperation>() {
             public void apply(final JvmOperation it) {
               JvmParameterizedTypeReference _specializes = ((Ecosystem)comp).getSpecializes();
-              boolean _isUseless = SpeADLJvmModelInferrer.this._speADLUtils.isUseless(_specializes);
-              boolean _not = (!_isUseless);
-              if (_not) {
+              boolean _tripleNotEquals = (_specializes != null);
+              if (_tripleNotEquals) {
                 EList<JvmAnnotationReference> _annotations = it.getAnnotations();
                 JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(clazz, Override.class);
                 SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
@@ -1146,9 +1137,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
       }
     }
     JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-    boolean _isUseless = this._speADLUtils.isUseless(_specializes);
-    boolean _not = (!_isUseless);
-    if (_not) {
+    boolean _tripleNotEquals = (_specializes != null);
+    if (_tripleNotEquals) {
       JvmParameterizedTypeReference _specializes_1 = comp.getSpecializes();
       final JvmTypeReference nstr = this._speADLUtils.substituteWith(_specializes_1, substitutor);
       EList<JvmTypeReference> _superTypes = provides.getSuperTypes();
@@ -1193,9 +1183,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
       }
     }
     JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-    boolean _isUseless = this._speADLUtils.isUseless(_specializes);
-    boolean _not = (!_isUseless);
-    if (_not) {
+    boolean _tripleNotEquals = (_specializes != null);
+    if (_tripleNotEquals) {
       JvmParameterizedTypeReference _specializes_1 = comp.getSpecializes();
       final JvmTypeReference nstr = this._speADLUtils.substituteWith(_specializes_1, substitutor);
       EList<JvmTypeReference> _superTypes = parts.getSuperTypes();
@@ -1226,42 +1215,37 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     }
   }
   
-  public boolean initLaterComponent(final AbstractComponent comp, final JvmGenericType clazz, final JvmGenericType componentIf, final JvmGenericType provides) {
-    boolean _xblockexpression = false;
-    {
-      Resource _eResource = comp.eResource();
-      final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(comp, componentIf, _eResource);
-      EList<JvmTypeParameter> _typeParameters = componentIf.getTypeParameters();
-      final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
-        public EList<JvmTypeConstraint> apply(final JvmTypeParameter it) {
-          return it.getConstraints();
-        }
-      };
-      List<EList<JvmTypeConstraint>> _map = ListExtensions.<JvmTypeParameter, EList<JvmTypeConstraint>>map(_typeParameters, _function);
-      Iterable<JvmTypeConstraint> _flatten = Iterables.<JvmTypeConstraint>concat(_map);
-      for (final JvmTypeConstraint c : _flatten) {
-        {
-          JvmTypeReference _typeReference = c.getTypeReference();
-          final JvmTypeReference tr = this._speADLUtils.substituteWith(_typeReference, substitutor);
-          c.setTypeReference(tr);
-        }
+  public void initLaterComponent(final AbstractComponent comp, final JvmGenericType clazz, final JvmGenericType componentIf, final JvmGenericType provides) {
+    Resource _eResource = comp.eResource();
+    final StandardTypeParameterSubstitutor substitutor = this._speADLUtils.getSubstitutor(comp, componentIf, _eResource);
+    EList<JvmTypeParameter> _typeParameters = componentIf.getTypeParameters();
+    final Function1<JvmTypeParameter, EList<JvmTypeConstraint>> _function = new Function1<JvmTypeParameter, EList<JvmTypeConstraint>>() {
+      public EList<JvmTypeConstraint> apply(final JvmTypeParameter it) {
+        return it.getConstraints();
       }
-      JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-      boolean _isUseless = this._speADLUtils.isUseless(_specializes);
-      boolean _not = (!_isUseless);
-      if (_not) {
-        JvmParameterizedTypeReference _specializes_1 = comp.getSpecializes();
-        final JvmTypeReference nstr = this._speADLUtils.substituteWith(_specializes_1, substitutor);
-        EList<JvmTypeReference> _superTypes = componentIf.getSuperTypes();
-        JvmParameterizedTypeReference _innerTypeReference = this._speADLUtils.getInnerTypeReference(nstr, SpeADLJvmModelInferrer.COMPONENT_INTERFACE);
-        this._speADLJvmTypesBuilder.<JvmParameterizedTypeReference>operator_add(_superTypes, _innerTypeReference);
+    };
+    List<EList<JvmTypeConstraint>> _map = ListExtensions.<JvmTypeParameter, EList<JvmTypeConstraint>>map(_typeParameters, _function);
+    Iterable<JvmTypeConstraint> _flatten = Iterables.<JvmTypeConstraint>concat(_map);
+    for (final JvmTypeConstraint c : _flatten) {
+      {
+        JvmTypeReference _typeReference = c.getTypeReference();
+        final JvmTypeReference tr = this._speADLUtils.substituteWith(_typeReference, substitutor);
+        c.setTypeReference(tr);
       }
-      EList<JvmTypeReference> _superTypes_1 = componentIf.getSuperTypes();
-      EList<JvmTypeParameter> _typeParameters_1 = componentIf.getTypeParameters();
-      JvmParameterizedTypeReference _parameterizedTypeRefWith = this._speADLUtils.getParameterizedTypeRefWith(provides, _typeParameters_1);
-      _xblockexpression = this._speADLJvmTypesBuilder.<JvmParameterizedTypeReference>operator_add(_superTypes_1, _parameterizedTypeRefWith);
     }
-    return _xblockexpression;
+    JvmParameterizedTypeReference _specializes = comp.getSpecializes();
+    boolean _tripleNotEquals = (_specializes != null);
+    if (_tripleNotEquals) {
+      JvmParameterizedTypeReference _specializes_1 = comp.getSpecializes();
+      final JvmTypeReference nstr = this._speADLUtils.substituteWith(_specializes_1, substitutor);
+      EList<JvmTypeReference> _superTypes = componentIf.getSuperTypes();
+      JvmParameterizedTypeReference _innerTypeReference = this._speADLUtils.getInnerTypeReference(nstr, SpeADLJvmModelInferrer.COMPONENT_INTERFACE);
+      this._speADLJvmTypesBuilder.<JvmParameterizedTypeReference>operator_add(_superTypes, _innerTypeReference);
+    }
+    EList<JvmTypeReference> _superTypes_1 = componentIf.getSuperTypes();
+    EList<JvmTypeParameter> _typeParameters_1 = componentIf.getTypeParameters();
+    JvmParameterizedTypeReference _parameterizedTypeRefWith = this._speADLUtils.getParameterizedTypeRefWith(provides, _typeParameters_1);
+    this._speADLJvmTypesBuilder.<JvmParameterizedTypeReference>operator_add(_superTypes_1, _parameterizedTypeRefWith);
   }
   
   public void initLaterComponentImpl(final AbstractComponent comp, final JvmGenericType clazz, final JvmGenericType componentClass) {
@@ -1286,9 +1270,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     }
     componentClass.setStatic(true);
     JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-    boolean _isUseless = this._speADLUtils.isUseless(_specializes);
-    boolean _not = (!_isUseless);
-    if (_not) {
+    boolean _tripleNotEquals = (_specializes != null);
+    if (_tripleNotEquals) {
       JvmParameterizedTypeReference _specializes_1 = comp.getSpecializes();
       final JvmTypeReference nstr = this._speADLUtils.substituteWith(_specializes_1, substitutor);
       EList<JvmTypeReference> _superTypes = componentClass.getSuperTypes();
@@ -1303,9 +1286,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     this._speADLJvmTypesBuilder.<JvmParameterizedTypeReference>operator_add(_superTypes_2, _innerTypeReference_2);
     JvmTypeReference _xifexpression = null;
     JvmParameterizedTypeReference _specializes_2 = comp.getSpecializes();
-    boolean _isUseless_1 = this._speADLUtils.isUseless(_specializes_2);
-    boolean _not_1 = (!_isUseless_1);
-    if (_not_1) {
+    boolean _tripleNotEquals_1 = (_specializes_2 != null);
+    if (_tripleNotEquals_1) {
       JvmParameterizedTypeReference _specializes_3 = comp.getSpecializes();
       JvmTypeReference _substituteWith = this._speADLUtils.substituteWith(_specializes_3, substitutor);
       _xifexpression = this._speADLUtils.rootSupertype(_substituteWith);
@@ -1334,9 +1316,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     final Procedure1<JvmOperation> _function_3 = new Procedure1<JvmOperation>() {
       public void apply(final JvmOperation it) {
         JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-        boolean _isUseless = SpeADLJvmModelInferrer.this._speADLUtils.isUseless(_specializes);
-        boolean _not = (!_isUseless);
-        if (_not) {
+        boolean _tripleNotEquals = (_specializes != null);
+        if (_tripleNotEquals) {
           EList<JvmAnnotationReference> _annotations = it.getAnnotations();
           JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(componentClass, Override.class);
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
@@ -1347,9 +1328,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             StringConcatenation _builder = new StringConcatenation();
             {
               JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-              boolean _isUseless = SpeADLJvmModelInferrer.this._speADLUtils.isUseless(_specializes);
-              boolean _not = (!_isUseless);
-              if (_not) {
+              boolean _tripleNotEquals = (_specializes != null);
+              if (_tripleNotEquals) {
                 _builder.append("super.start();");
                 _builder.newLine();
               }
@@ -1503,9 +1483,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     final Procedure1<JvmOperation> _function_5 = new Procedure1<JvmOperation>() {
       public void apply(final JvmOperation it) {
         JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-        boolean _isUseless = SpeADLJvmModelInferrer.this._speADLUtils.isUseless(_specializes);
-        boolean _not = (!_isUseless);
-        if (_not) {
+        boolean _tripleNotEquals = (_specializes != null);
+        if (_tripleNotEquals) {
           EList<JvmAnnotationReference> _annotations = it.getAnnotations();
           JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(componentClass, Override.class);
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
@@ -1516,9 +1495,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             StringConcatenation _builder = new StringConcatenation();
             {
               JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-              boolean _isUseless = SpeADLJvmModelInferrer.this._speADLUtils.isUseless(_specializes);
-              boolean _not = (!_isUseless);
-              if (_not) {
+              boolean _tripleNotEquals = (_specializes != null);
+              if (_tripleNotEquals) {
                 _builder.append("super.initParts();");
                 _builder.newLine();
               }
@@ -1546,13 +1524,13 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
       public Boolean apply(final ProvidedPort it) {
         boolean _and = false;
         PortRef _bound = it.getBound();
-        boolean _equals = Objects.equal(_bound, null);
-        if (!_equals) {
+        boolean _tripleEquals = (_bound == null);
+        if (!_tripleEquals) {
           _and = false;
         } else {
           LightweightTypeReference _overridenPortTypeRef = SpeADLJvmModelInferrer.this._speADLUtils.getOverridenPortTypeRef(it);
-          boolean _equals_1 = Objects.equal(_overridenPortTypeRef, null);
-          _and = _equals_1;
+          boolean _tripleEquals_1 = (_overridenPortTypeRef == null);
+          _and = _tripleEquals_1;
         }
         return Boolean.valueOf(_and);
       }
@@ -1612,8 +1590,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     final Procedure1<JvmOperation> _function_8 = new Procedure1<JvmOperation>() {
       public void apply(final JvmOperation it) {
         JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-        boolean _notEquals = (!Objects.equal(_specializes, null));
-        if (_notEquals) {
+        boolean _tripleNotEquals = (_specializes != null);
+        if (_tripleNotEquals) {
           EList<JvmAnnotationReference> _annotations = it.getAnnotations();
           JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(componentClass, Override.class);
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
@@ -1624,9 +1602,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             StringConcatenation _builder = new StringConcatenation();
             {
               JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-              boolean _isUseless = SpeADLJvmModelInferrer.this._speADLUtils.isUseless(_specializes);
-              boolean _not = (!_isUseless);
-              if (_not) {
+              boolean _tripleNotEquals = (_specializes != null);
+              if (_tripleNotEquals) {
                 _builder.append("super.initProvidedPorts();");
                 _builder.newLine();
               }
@@ -1666,9 +1643,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             StringConcatenation _builder = new StringConcatenation();
             {
               JvmParameterizedTypeReference _specializes = comp.getSpecializes();
-              boolean _isUseless = SpeADLJvmModelInferrer.this._speADLUtils.isUseless(_specializes);
-              boolean _not = (!_isUseless);
-              if (_not) {
+              boolean _tripleNotEquals = (_specializes != null);
+              if (_tripleNotEquals) {
                 _builder.append("super(implem, b, false);");
                 _builder.newLine();
               }
@@ -1714,10 +1690,10 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         JvmParameterizedTypeReference _typeReference = port_1.getTypeReference();
         final JvmTypeReference ptr = this._speADLUtils.substituteWith(_typeReference, substitutor);
         LightweightTypeReference _overridenPortTypeRef = this._speADLUtils.getOverridenPortTypeRef(port_1);
-        final boolean isOverride = (!Objects.equal(_overridenPortTypeRef, null));
+        final boolean isOverride = (_overridenPortTypeRef != null);
         boolean _and = false;
-        boolean _equals = Objects.equal(bound, null);
-        if (!_equals) {
+        boolean _tripleEquals = (bound == null);
+        if (!_tripleEquals) {
           _and = false;
         } else {
           _and = (!isOverride);
@@ -1771,8 +1747,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                   StringConcatenation _builder = new StringConcatenation();
                   _builder.append("return this.");
                   it.append(_builder);
-                  boolean _equals = Objects.equal(bound, null);
-                  if (_equals) {
+                  boolean _tripleEquals = (bound == null);
+                  if (_tripleEquals) {
                     String _name = port_1.getName();
                     it.append(_name);
                   } else {
@@ -1904,64 +1880,60 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     }
   }
   
-  private ITreeAppendable appendPortRefCall(final ITreeAppendable it, final PortRef bound, final boolean inSpecies) {
-    ITreeAppendable _xblockexpression = null;
-    {
-      Part _part = bound.getPart();
-      boolean _notEquals = (!Objects.equal(_part, null));
-      if (_notEquals) {
-        boolean _and = false;
-        if (!inSpecies) {
-          _and = false;
-        } else {
-          Part _part_1 = bound.getPart();
-          EObject _eContainer = _part_1.eContainer();
-          _and = (_eContainer instanceof Ecosystem);
-        }
-        if (_and) {
-          StringConcatenation _builder = new StringConcatenation();
-          _builder.append("implementation.ecosystemComponent.");
-          it.append(_builder);
-        }
-        StringConcatenation _builder_1 = new StringConcatenation();
-        Part _part_2 = bound.getPart();
-        String _name = _part_2.getName();
-        _builder_1.append(_name, "");
-        _builder_1.append("().");
-        it.append(_builder_1);
+  private void appendPortRefCall(final ITreeAppendable it, final PortRef bound, final boolean inSpecies) {
+    Part _part = bound.getPart();
+    boolean _tripleNotEquals = (_part != null);
+    if (_tripleNotEquals) {
+      boolean _and = false;
+      if (!inSpecies) {
+        _and = false;
       } else {
-        boolean _and_1 = false;
-        if (!inSpecies) {
-          _and_1 = false;
-        } else {
-          Port _port = bound.getPort();
-          EObject _eContainer_1 = _port.eContainer();
-          _and_1 = (_eContainer_1 instanceof Ecosystem);
-        }
-        if (_and_1) {
-          StringConcatenation _builder_2 = new StringConcatenation();
-          _builder_2.append("implementation.ecosystemComponent.");
-          it.append(_builder_2);
-        }
-        Port _port_1 = bound.getPort();
-        boolean _matched = false;
-        if (!_matched) {
-          if (_port_1 instanceof RequiredPort) {
-            _matched=true;
-            StringConcatenation _builder_3 = new StringConcatenation();
-            _builder_3.append("bridge.");
-            it.append(_builder_3);
-          }
+        Part _part_1 = bound.getPart();
+        EObject _eContainer = _part_1.eContainer();
+        _and = (_eContainer instanceof Ecosystem);
+      }
+      if (_and) {
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("implementation.ecosystemComponent.");
+        it.append(_builder);
+      }
+      StringConcatenation _builder_1 = new StringConcatenation();
+      Part _part_2 = bound.getPart();
+      String _name = _part_2.getName();
+      _builder_1.append(_name, "");
+      _builder_1.append("().");
+      it.append(_builder_1);
+    } else {
+      boolean _and_1 = false;
+      if (!inSpecies) {
+        _and_1 = false;
+      } else {
+        Port _port = bound.getPort();
+        EObject _eContainer_1 = _port.eContainer();
+        _and_1 = (_eContainer_1 instanceof Ecosystem);
+      }
+      if (_and_1) {
+        StringConcatenation _builder_2 = new StringConcatenation();
+        _builder_2.append("implementation.ecosystemComponent.");
+        it.append(_builder_2);
+      }
+      Port _port_1 = bound.getPort();
+      boolean _matched = false;
+      if (!_matched) {
+        if (_port_1 instanceof RequiredPort) {
+          _matched=true;
+          StringConcatenation _builder_3 = new StringConcatenation();
+          _builder_3.append("bridge.");
+          it.append(_builder_3);
         }
       }
-      StringConcatenation _builder_3 = new StringConcatenation();
-      Port _port_2 = bound.getPort();
-      String _name_1 = _port_2.getName();
-      _builder_3.append(_name_1, "");
-      _builder_3.append("()");
-      _xblockexpression = it.append(_builder_3);
     }
-    return _xblockexpression;
+    StringConcatenation _builder_3 = new StringConcatenation();
+    Port _port_2 = bound.getPort();
+    String _name_1 = _port_2.getName();
+    _builder_3.append(_name_1, "");
+    _builder_3.append("()");
+    it.append(_builder_3);
   }
   
   public void infer(final EObject ecosystem, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {

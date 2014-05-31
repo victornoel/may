@@ -44,6 +44,8 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.ListExtensions;
+import org.eclipse.xtext.xbase.lib.ObjectExtensions;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.references.ITypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightMergedBoundTypeArgument;
@@ -79,7 +81,7 @@ public class SpeADLUtils {
       final Function1<ProvidedPort, Boolean> _function = new Function1<ProvidedPort, Boolean>() {
         public Boolean apply(final ProvidedPort it) {
           PortRef _bound = it.getBound();
-          return Boolean.valueOf((!Objects.equal(_bound, null)));
+          return Boolean.valueOf((_bound != null));
         }
       };
       boolean _forall = IterableExtensions.<ProvidedPort>forall(_provides, _function);
@@ -166,14 +168,14 @@ public class SpeADLUtils {
   public JvmParameterizedTypeReference getInnerTypeReference(final JvmTypeReference r, final String simpleName) {
     JvmParameterizedTypeReference _xblockexpression = null;
     {
-      boolean _equals = Objects.equal(r, null);
-      if (_equals) {
+      boolean _tripleEquals = (r == null);
+      if (_tripleEquals) {
         return null;
       }
       JvmType _type = r.getType();
       final JvmGenericType iType = this.getInnerType(_type, simpleName);
-      boolean _equals_1 = Objects.equal(iType, null);
-      if (_equals_1) {
+      boolean _tripleEquals_1 = (iType == null);
+      if (_tripleEquals_1) {
         return null;
       }
       JvmParameterizedTypeReference _switchResult = null;
@@ -184,8 +186,8 @@ public class SpeADLUtils {
           int _size = _typeParameters.size();
           EList<JvmTypeReference> _arguments = ((JvmParameterizedTypeReference)r).getArguments();
           int _size_1 = _arguments.size();
-          boolean _equals_2 = (_size == _size_1);
-          if (_equals_2) {
+          boolean _equals = (_size == _size_1);
+          if (_equals) {
             _matched=true;
             EList<JvmTypeReference> _arguments_1 = ((JvmParameterizedTypeReference)r).getArguments();
             _switchResult = this._typeReferences.createTypeRef(iType, ((JvmTypeReference[])Conversions.unwrapArray(_arguments_1, JvmTypeReference.class)));
@@ -203,16 +205,16 @@ public class SpeADLUtils {
   public JvmGenericType getInnerType(final JvmType in, final String simpleName) {
     JvmGenericType _xblockexpression = null;
     {
-      boolean _equals = Objects.equal(in, null);
-      if (_equals) {
+      boolean _tripleEquals = (in == null);
+      if (_tripleEquals) {
         return null;
       }
       JvmGenericType _switchResult = null;
       boolean _matched = false;
       if (!_matched) {
-        if (in instanceof JvmDeclaredType) {
+        if (in instanceof JvmGenericType) {
           _matched=true;
-          EList<JvmMember> _members = ((JvmDeclaredType)in).getMembers();
+          EList<JvmMember> _members = ((JvmGenericType)in).getMembers();
           Iterable<JvmGenericType> _filter = Iterables.<JvmGenericType>filter(_members, JvmGenericType.class);
           final Function1<JvmGenericType, Boolean> _function = new Function1<JvmGenericType, Boolean>() {
             public Boolean apply(final JvmGenericType t) {
@@ -230,8 +232,8 @@ public class SpeADLUtils {
   
   public JvmParameterizedTypeReference getParameterizedTypeRefWith(final JvmType type, final List<JvmTypeParameter> typeParameters) {
     JvmParameterizedTypeReference _xifexpression = null;
-    boolean _equals = Objects.equal(type, null);
-    if (_equals) {
+    boolean _tripleEquals = (type == null);
+    if (_tripleEquals) {
       _xifexpression = null;
     } else {
       JvmParameterizedTypeReference _xblockexpression = null;
@@ -262,15 +264,14 @@ public class SpeADLUtils {
     }
     processedSuperTypes.add(ecosystem);
     JvmParameterizedTypeReference _specializes = ecosystem.getSpecializes();
-    boolean _isUseless = this.isUseless(_specializes);
-    boolean _not = (!_isUseless);
-    if (_not) {
+    boolean _tripleNotEquals = (_specializes != null);
+    if (_tripleNotEquals) {
       JvmParameterizedTypeReference _specializes_1 = ecosystem.getSpecializes();
       JvmType _type = _specializes_1.getType();
       final Ecosystem superType = this.associatedEcosystem(_type);
       boolean _and = false;
-      boolean _notEquals = (!Objects.equal(superType, null));
-      if (!_notEquals) {
+      boolean _tripleNotEquals_1 = (superType != null);
+      if (!_tripleNotEquals_1) {
         _and = false;
       } else {
         boolean _hasCycleInHierarchy = this.hasCycleInHierarchy(superType, processedSuperTypes);
@@ -316,8 +317,8 @@ public class SpeADLUtils {
     Iterable<P> _switchResult = null;
     boolean _matched = false;
     if (!_matched) {
-      boolean _equals = Objects.equal(i, null);
-      if (_equals) {
+      boolean _tripleEquals = (i == null);
+      if (_tripleEquals) {
         _matched=true;
         _switchResult = CollectionLiterals.<P>newArrayList();
       }
@@ -328,13 +329,13 @@ public class SpeADLUtils {
         boolean _not = (!_hasCycleInHierarchy);
         if (_not) {
           _matched=true;
-          ArrayList<P> _xblockexpression = null;
-          {
-            final ArrayList<P> res = CollectionLiterals.<P>newArrayList();
-            this.<P>gatherPorts(((Ecosystem)i), getPorts, res);
-            _xblockexpression = res;
-          }
-          _switchResult = _xblockexpression;
+          ArrayList<P> _newArrayList = CollectionLiterals.<P>newArrayList();
+          final Procedure1<ArrayList<P>> _function = new Procedure1<ArrayList<P>>() {
+            public void apply(final ArrayList<P> it) {
+              SpeADLUtils.this.<P>gatherPorts(((Ecosystem)i), getPorts, it);
+            }
+          };
+          _switchResult = ObjectExtensions.<ArrayList<P>>operator_doubleArrow(_newArrayList, _function);
         }
       }
     }
@@ -362,21 +363,16 @@ public class SpeADLUtils {
     Iterable<P> _filter = IterableExtensions.<P>filter(_apply, _function);
     Iterables.<P>addAll(ports, _filter);
     JvmParameterizedTypeReference _specializes = i.getSpecializes();
-    boolean _isUseless = this.isUseless(_specializes);
-    boolean _not = (!_isUseless);
-    if (_not) {
+    boolean _tripleNotEquals = (_specializes != null);
+    if (_tripleNotEquals) {
       JvmParameterizedTypeReference _specializes_1 = i.getSpecializes();
       JvmType _type = _specializes_1.getType();
       final Ecosystem eco = this.associatedEcosystem(_type);
-      boolean _notEquals = (!Objects.equal(eco, null));
-      if (_notEquals) {
+      boolean _tripleNotEquals_1 = (eco != null);
+      if (_tripleNotEquals_1) {
         this.<P>gatherPorts(eco, getPorts, ports);
       }
     }
-  }
-  
-  public boolean isUseless(final JvmTypeReference typeReference) {
-    return Objects.equal(typeReference, null);
   }
   
   public LightweightTypeReference toLightweightTypeReference(final JvmTypeReference typeRef, final Resource context) {
@@ -410,8 +406,8 @@ public class SpeADLUtils {
   public LightweightTypeReference resolveType(final PortRef ref) {
     LightweightTypeReference _xifexpression = null;
     Part _part = ref.getPart();
-    boolean _equals = Objects.equal(_part, null);
-    if (_equals) {
+    boolean _tripleEquals = (_part == null);
+    if (_tripleEquals) {
       LightweightTypeReference _xblockexpression = null;
       {
         final AbstractComponent comp = EcoreUtil2.<AbstractComponent>getContainerOfType(ref, AbstractComponent.class);
@@ -440,8 +436,8 @@ public class SpeADLUtils {
         }
         final LightweightTypeReference otr = _switchResult;
         LightweightTypeReference _xifexpression_1 = null;
-        boolean _equals_1 = Objects.equal(otr, null);
-        if (_equals_1) {
+        boolean _tripleEquals_1 = (otr == null);
+        if (_tripleEquals_1) {
           Port _port_1 = ref.getPort();
           _xifexpression_1 = this.getTypeRef(_port_1);
         } else {
@@ -479,8 +475,8 @@ public class SpeADLUtils {
       }
       final LightweightTypeReference otr = _switchResult;
       LightweightTypeReference _xifexpression = null;
-      boolean _equals = Objects.equal(otr, null);
-      if (_equals) {
+      boolean _tripleEquals = (otr == null);
+      if (_tripleEquals) {
         _xifexpression = this.getTypeRef(port);
       } else {
         _xifexpression = otr;
@@ -520,8 +516,8 @@ public class SpeADLUtils {
   public JvmTypeReference rootSupertype(final JvmTypeReference in) {
     JvmTypeReference _xblockexpression = null;
     {
-      boolean _isUseless = this.isUseless(in);
-      if (_isUseless) {
+      boolean _tripleEquals = (in == null);
+      if (_tripleEquals) {
         return null;
       }
       JvmTypeReference _switchResult = null;
@@ -537,14 +533,13 @@ public class SpeADLUtils {
           if (!_matched_1) {
             if (in instanceof JvmParameterizedTypeReference) {
               boolean _and = false;
-              boolean _notEquals = (!Objects.equal(comp, null));
-              if (!_notEquals) {
+              boolean _tripleNotEquals = (comp != null);
+              if (!_tripleNotEquals) {
                 _and = false;
               } else {
                 JvmParameterizedTypeReference _specializes = ((Ecosystem)comp).getSpecializes();
-                boolean _isUseless_1 = this.isUseless(_specializes);
-                boolean _not = (!_isUseless_1);
-                _and = _not;
+                boolean _tripleNotEquals_1 = (_specializes != null);
+                _and = _tripleNotEquals_1;
               }
               if (_and) {
                 _matched_1=true;
@@ -606,15 +601,15 @@ public class SpeADLUtils {
     LightweightTypeReference _xblockexpression = null;
     {
       JvmParameterizedTypeReference _specializes = e.getSpecializes();
-      boolean _isUseless = this.isUseless(_specializes);
-      if (_isUseless) {
+      boolean _tripleEquals = (_specializes == null);
+      if (_tripleEquals) {
         return null;
       }
       JvmParameterizedTypeReference _specializes_1 = e.getSpecializes();
       JvmType _type = _specializes_1.getType();
       final Ecosystem se = this.associatedEcosystem(_type);
-      boolean _equals = Objects.equal(se, null);
-      if (_equals) {
+      boolean _tripleEquals_1 = (se == null);
+      if (_tripleEquals_1) {
         return null;
       }
       Iterable<P> _apply = getPorts.apply(se);
@@ -626,8 +621,8 @@ public class SpeADLUtils {
       };
       final P ov = IterableExtensions.<P>findFirst(_apply, _function);
       LightweightTypeReference _xifexpression = null;
-      boolean _equals_1 = Objects.equal(ov, null);
-      if (_equals_1) {
+      boolean _tripleEquals_2 = (ov == null);
+      if (_tripleEquals_2) {
         _xifexpression = this.<P>getOverridenPortTypeRef(se, getPorts, name);
       } else {
         JvmParameterizedTypeReference _typeReference = ov.getTypeReference();
@@ -635,8 +630,8 @@ public class SpeADLUtils {
         _xifexpression = this.toLightweightTypeReference(_typeReference, _eResource);
       }
       final LightweightTypeReference ov2 = _xifexpression;
-      boolean _equals_2 = Objects.equal(ov2, null);
-      if (_equals_2) {
+      boolean _tripleEquals_3 = (ov2 == null);
+      if (_tripleEquals_3) {
         return null;
       }
       JvmParameterizedTypeReference _specializes_2 = e.getSpecializes();

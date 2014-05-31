@@ -82,7 +82,7 @@ class SpeADLDeclarativeScopeProvider extends AbstractDeclarativeScopeProvider {
 	}
 	
 	def IScope scope_PortRef_port(PortRef ctx, EReference ref) {
-		if (ctx.part != null) {
+		if (ctx.part !== null) {
 			Scopes.scopeFor(ctx.part.abstractComponent.allProvides)
 		} else {
 			val comp = EcoreUtil2.getContainerOfType(ctx, AbstractComponent)

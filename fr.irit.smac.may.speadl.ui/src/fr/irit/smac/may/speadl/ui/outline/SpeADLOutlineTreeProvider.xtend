@@ -29,7 +29,7 @@ class SpeADLOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	
 	def _createChildren(DocumentRootNode parentNode, Model modelElement) {
 		// TODO add import
-		if (modelElement.imports != null && !modelElement.imports.importDeclarations.empty) {
+		if (modelElement.imports !== null && !modelElement.imports.importDeclarations.empty) {
 				factory.createEStructuralFeatureNode(parentNode, modelElement.imports,
 						XtypePackage.Literals.XIMPORT_SECTION__IMPORT_DECLARATIONS, images.forImportContainer(),
 						"import declarations", false)

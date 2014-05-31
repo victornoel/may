@@ -30,8 +30,8 @@ public class MyJvmModelGenerator extends JvmModelGenerator {
   protected void _internalDoGenerate(final JvmDeclaredType type, final IFileSystemAccess fsa) {
     final Ecosystem eco = this._speADLUtils.associatedEcosystem(type);
     boolean _and = false;
-    boolean _notEquals = (!Objects.equal(eco, null));
-    if (!_notEquals) {
+    boolean _tripleNotEquals = (eco != null);
+    if (!_tripleNotEquals) {
       _and = false;
     } else {
       boolean _modelElementHasError = this.modelElementHasError(eco);

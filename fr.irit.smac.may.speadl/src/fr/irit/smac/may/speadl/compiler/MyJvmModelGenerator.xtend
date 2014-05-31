@@ -18,7 +18,7 @@ class MyJvmModelGenerator extends JvmModelGenerator {
 		// see also SpeADLBuilderParticipant where checking of errors is disabled
 		// Note: only Ecosystem are generated
 		val eco = type.associatedEcosystem
-		if (eco != null && !eco.modelElementHasError) {
+		if (eco !== null && !eco.modelElementHasError) {
 			super._internalDoGenerate(type, fsa)
 		}
 	}

@@ -66,8 +66,8 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
   public void checkPortRef(final PortRef pr) {
     boolean _or = false;
     Port _port = pr.getPort();
-    boolean _equals = Objects.equal(_port, null);
-    if (_equals) {
+    boolean _tripleEquals = (_port == null);
+    if (_tripleEquals) {
       _or = true;
     } else {
       Port _port_1 = pr.getPort();
@@ -79,8 +79,8 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
     }
     boolean _and = false;
     Part _part = pr.getPart();
-    boolean _notEquals = (!Objects.equal(_part, null));
-    if (!_notEquals) {
+    boolean _tripleNotEquals = (_part != null);
+    if (!_tripleNotEquals) {
       _and = false;
     } else {
       Part _part_1 = pr.getPart();
@@ -111,12 +111,12 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
     }
     final LightweightTypeReference typeFrom = _switchResult;
     boolean _and_1 = false;
-    boolean _notEquals_1 = (!Objects.equal(typeFrom, null));
-    if (!_notEquals_1) {
+    boolean _tripleNotEquals_1 = (typeFrom != null);
+    if (!_tripleNotEquals_1) {
       _and_1 = false;
     } else {
-      boolean _notEquals_2 = (!Objects.equal(typeTo, null));
-      _and_1 = _notEquals_2;
+      boolean _tripleNotEquals_2 = (typeTo != null);
+      _and_1 = _tripleNotEquals_2;
     }
     if (_and_1) {
       boolean _isAssignableFrom = typeFrom.isAssignableFrom(typeTo);
@@ -310,12 +310,12 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
     final LightweightTypeReference typeTo = this._speADLUtils.toLightweightTypeReference(_typeReference, _eResource);
     final LightweightTypeReference typeFrom = this._speADLUtils.getOverridenPortTypeRef(p);
     boolean _and = false;
-    boolean _notEquals = (!Objects.equal(typeFrom, null));
-    if (!_notEquals) {
+    boolean _tripleNotEquals = (typeFrom != null);
+    if (!_tripleNotEquals) {
       _and = false;
     } else {
-      boolean _notEquals_1 = (!Objects.equal(typeTo, null));
-      _and = _notEquals_1;
+      boolean _tripleNotEquals_1 = (typeTo != null);
+      _and = _tripleNotEquals_1;
     }
     if (_and) {
       boolean _isAssignableFrom = typeFrom.isAssignableFrom(typeTo);
@@ -433,13 +433,12 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
   @Check
   public void checkSpecializeReference(final Ecosystem ecosystem) {
     final JvmParameterizedTypeReference superTypeRef = ecosystem.getSpecializes();
-    boolean _isUseless = this._speADLUtils.isUseless(superTypeRef);
-    boolean _not = (!_isUseless);
-    if (_not) {
+    boolean _tripleNotEquals = (superTypeRef != null);
+    if (_tripleNotEquals) {
       JvmType _type = superTypeRef.getType();
       final Ecosystem superType = this._speADLUtils.associatedEcosystem(_type);
-      boolean _equals = Objects.equal(superType, null);
-      if (_equals) {
+      boolean _tripleEquals = (superType == null);
+      if (_tripleEquals) {
         JvmParameterizedTypeReference _specializes = ecosystem.getSpecializes();
         String _simpleName = _specializes.getSimpleName();
         String _plus = (_simpleName + " cannot be resolved");
@@ -448,8 +447,8 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
       } else {
         EList<Part> _parts = superType.getParts();
         boolean _isEmpty = _parts.isEmpty();
-        boolean _not_1 = (!_isEmpty);
-        if (_not_1) {
+        boolean _not = (!_isEmpty);
+        if (_not) {
           this.error("Can only implements components without subcomponents", SpeadlPackage.Literals.ABSTRACT_COMPONENT__SPECIALIZES);
         }
         boolean _hasCycleInHierarchy = this._speADLUtils.hasCycleInHierarchy(superType);
@@ -502,8 +501,8 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
     JvmParameterizedTypeReference _componentReference = p.getComponentReference();
     JvmType _type = _componentReference.getType();
     final Ecosystem eco = this._speADLUtils.associatedEcosystem(_type);
-    boolean _equals = Objects.equal(eco, null);
-    if (_equals) {
+    boolean _tripleEquals = (eco == null);
+    if (_tripleEquals) {
       JvmParameterizedTypeReference _componentReference_1 = p.getComponentReference();
       String _simpleName = _componentReference_1.getSimpleName();
       String _plus = (_simpleName + " cannot be resolved");
