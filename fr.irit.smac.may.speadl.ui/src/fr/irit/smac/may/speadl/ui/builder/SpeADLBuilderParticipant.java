@@ -10,10 +10,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -58,7 +56,7 @@ public class SpeADLBuilderParticipant extends BuilderParticipant {
 		final IFile file = getFile(resource, context);
 		if (file != null) {
 			try {
-				registerCurrentSourceFolder(delta, fileSystemAccess);
+				registerCurrentSourceFolder(context, delta, fileSystemAccess);
 				try {
 					elementIssueProviderFactory.attachData(resource);
 					getGenerator().doGenerate(resource, fileSystemAccess);
@@ -84,31 +82,6 @@ public class SpeADLBuilderParticipant extends BuilderParticipant {
 			}
 		}
 		return null;
-	}
-	
-	protected void registerCurrentSourceFolder(Delta delta, EclipseResourceFileSystemAccess2 fileSystemAccess) {
-		if (fileSystemAccess instanceof SourceRelativeFileSystemAccess) {
-			try {
-				Iterable<Pair<IStorage, IProject>> storages = mapper.getStorages(delta.getUri());
-				for (Pair<IStorage, IProject> pair : storages) {
-					IJavaProject javaProject = JavaCore.create(pair.getSecond());
-					final IResource first = (IResource) pair.getFirst();
-					IPackageFragmentRoot[] roots = javaProject.getPackageFragmentRoots();
-					for (IPackageFragmentRoot root : roots) {
-						if (root.getKind() == IPackageFragmentRoot.K_SOURCE) {
-							final IResource underlyingResource = root.getUnderlyingResource();
-							if (underlyingResource instanceof IFolder && underlyingResource.contains(first)) {
-								((SourceRelativeFileSystemAccess) fileSystemAccess)
-										.setCurrentSource((IFolder) underlyingResource);
-								return;
-							}
-						}
-					}
-				}
-			} catch (CoreException e) {
-				LOGGER.error(e.getMessage(), e);
-			}
-		}
 	}
 	
 	protected List<IPath> getSourceFolderPathes(IProject project){
