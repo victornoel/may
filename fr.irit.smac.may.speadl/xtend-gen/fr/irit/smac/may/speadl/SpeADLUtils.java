@@ -316,6 +316,13 @@ public class SpeADLUtils {
     Iterable<P> _switchResult = null;
     boolean _matched = false;
     if (!_matched) {
+      boolean _equals = Objects.equal(i, null);
+      if (_equals) {
+        _matched=true;
+        _switchResult = CollectionLiterals.<P>newArrayList();
+      }
+    }
+    if (!_matched) {
       if (i instanceof Ecosystem) {
         boolean _hasCycleInHierarchy = this.hasCycleInHierarchy(((Ecosystem)i));
         boolean _not = (!_hasCycleInHierarchy);

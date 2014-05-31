@@ -164,6 +164,7 @@ class SpeADLUtils {
 	
 	private def <P extends Port> Iterable<P> getAllPorts(AbstractComponent i, (AbstractComponent) => Iterable<P> getPorts) {
 		switch i {
+			case i == null: newArrayList()
 			Ecosystem case !i.hasCycleInHierarchy: {
 				val res = newArrayList()
 				i.gatherPorts(getPorts, res)
