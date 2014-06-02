@@ -267,7 +267,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cPortParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cPartParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//// Used to check for name duplicate!
+		//// Used to check for name duplicate in SpeADLValidator
 		//ContentElement:
 		//	Port | Part;
 		public ParserRule getRule() { return rule; }
@@ -397,20 +397,15 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cSpeciesSpeciesParserRuleCall_5_3_0 = (RuleCall)cSpeciesAssignment_5_3.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
-		//// another element is introduced here because SpeADLProposalProvider
-		//// can't make the difference between specializes and implementedBy
-		////ImplementedBy:
-		////	"implementedBy" ref=JvmParameterizedTypeReference
-		////;
 		//Ecosystem:
 		//	"ecosystem" name=ValidID ("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
-		//	("specializes" specializes=JvmParameterizedTypeReference)? //implementedBy=ImplementedBy?
-		//	"{" (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart | species+=Species)* "}";
+		//	("specializes" specializes=JvmParameterizedTypeReference)? "{" (provides+=ProvidedPort | requires+=RequiredPort |
+		//	parts+=ComponentPart | species+=Species)* "}";
 		public ParserRule getRule() { return rule; }
 
 		//"ecosystem" name=ValidID ("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
-		//("specializes" specializes=JvmParameterizedTypeReference)? //implementedBy=ImplementedBy?
-		//"{" (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart | species+=Species)* "}"
+		//("specializes" specializes=JvmParameterizedTypeReference)? "{" (provides+=ProvidedPort | requires+=RequiredPort |
+		//parts+=ComponentPart | species+=Species)* "}"
 		public Group getGroup() { return cGroup; }
 
 		//"ecosystem"
@@ -461,7 +456,6 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		//JvmParameterizedTypeReference
 		public RuleCall getSpecializesJvmParameterizedTypeReferenceParserRuleCall_3_1_0() { return cSpecializesJvmParameterizedTypeReferenceParserRuleCall_3_1_0; }
 
-		////implementedBy=ImplementedBy?
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
 
@@ -527,13 +521,13 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Component returns Ecosystem:
 		//	"component" name=ValidID ("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
-		//	("specializes" specializes=JvmParameterizedTypeReference)? //implementedBy=ImplementedBy?
-		//	"{" (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart)* "}";
+		//	("specializes" specializes=JvmParameterizedTypeReference)? "{" (provides+=ProvidedPort | requires+=RequiredPort |
+		//	parts+=ComponentPart)* "}";
 		public ParserRule getRule() { return rule; }
 
 		//"component" name=ValidID ("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
-		//("specializes" specializes=JvmParameterizedTypeReference)? //implementedBy=ImplementedBy?
-		//"{" (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart)* "}"
+		//("specializes" specializes=JvmParameterizedTypeReference)? "{" (provides+=ProvidedPort | requires+=RequiredPort |
+		//parts+=ComponentPart)* "}"
 		public Group getGroup() { return cGroup; }
 
 		//"component"
@@ -584,7 +578,6 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		//JvmParameterizedTypeReference
 		public RuleCall getSpecializesJvmParameterizedTypeReferenceParserRuleCall_3_1_0() { return cSpecializesJvmParameterizedTypeReferenceParserRuleCall_3_1_0; }
 
-		////implementedBy=ImplementedBy?
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
 
@@ -1320,7 +1313,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		return getFakeAbstractPortAccess().getRule();
 	}
 
-	//// Used to check for name duplicate!
+	//// Used to check for name duplicate in SpeADLValidator
 	//ContentElement:
 	//	Port | Part;
 	public ContentElementElements getContentElementAccess() {
@@ -1371,15 +1364,10 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		return getFeatureAccess().getRule();
 	}
 
-	//// another element is introduced here because SpeADLProposalProvider
-	//// can't make the difference between specializes and implementedBy
-	////ImplementedBy:
-	////	"implementedBy" ref=JvmParameterizedTypeReference
-	////;
 	//Ecosystem:
 	//	"ecosystem" name=ValidID ("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
-	//	("specializes" specializes=JvmParameterizedTypeReference)? //implementedBy=ImplementedBy?
-	//	"{" (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart | species+=Species)* "}";
+	//	("specializes" specializes=JvmParameterizedTypeReference)? "{" (provides+=ProvidedPort | requires+=RequiredPort |
+	//	parts+=ComponentPart | species+=Species)* "}";
 	public EcosystemElements getEcosystemAccess() {
 		return (pEcosystem != null) ? pEcosystem : (pEcosystem = new EcosystemElements());
 	}
@@ -1390,8 +1378,8 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 
 	//Component returns Ecosystem:
 	//	"component" name=ValidID ("[" typeParameters+=JvmTypeParameter ("," typeParameters+=JvmTypeParameter)* "]")?
-	//	("specializes" specializes=JvmParameterizedTypeReference)? //implementedBy=ImplementedBy?
-	//	"{" (provides+=ProvidedPort | requires+=RequiredPort | parts+=ComponentPart)* "}";
+	//	("specializes" specializes=JvmParameterizedTypeReference)? "{" (provides+=ProvidedPort | requires+=RequiredPort |
+	//	parts+=ComponentPart)* "}";
 	public ComponentElements getComponentAccess() {
 		return (pComponent != null) ? pComponent : (pComponent = new ComponentElements());
 	}

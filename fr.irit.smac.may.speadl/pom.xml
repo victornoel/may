@@ -72,8 +72,8 @@
 					<mainClass>org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher</mainClass>
 					<arguments>
 						<argument>file://${project.basedir}/src/fr/irit/smac/may/speadl/GenerateSpeADL.mwe2</argument>
-						<argument>-p</argument>
-						<argument>runtimeProject=/${project.basedir}</argument>
+						<!--<argument>-p</argument>
+						<argument>runtimeProject=/${project.basedir}</argument>-->
 					</arguments>
 				</configuration>
 				<dependencies>

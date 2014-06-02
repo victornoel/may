@@ -12,7 +12,9 @@ Release procedure:
     -> hg tag v2.1.0
 
  * Do the release
-  * Compile, install in the local repository and deploy (deploy implies install)
+  * Compile, install in the local repository and deploy (deploy implies install which implies package)
+    (Note: do note execute mvn package install deploy, or mvn package install, just call the last desired phase
+     because tycho-p2-repository-plugin insists to clean between two explicit phases which remove the repository before deployment or install)
     -> mvn deploy
 
 (if this fail, you can go in the updatesite project and run mvn install deploy)

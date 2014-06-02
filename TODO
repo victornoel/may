@@ -28,9 +28,6 @@
 
 - add multiple mode for outline (with and without inherited ports for e.g.)
 
-- check that one can refer to a port from a species to its ecosystem!
- - introduce keyword?
-
 - add conflict with class name of specialise and type parameter name (???)
 
 - disable the behaviour of F3 in eclipse that redirect to the speadl: see http://www.eclipse.org/forums/index.php/m/1205133 but careful not to disable it for references IN speadl, or maybe the best is to disable it for eveything but the type itself?! that would make sense...
