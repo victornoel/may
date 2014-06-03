@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmField;
@@ -387,7 +388,10 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         };
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setInitializer(it, _function);
         it.setVisibility(JvmVisibility.PRIVATE);
-        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, "Used to check that the component is not started by hand.");
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("Used to check that the component is not started by hand.");
+        _builder.newLine();
+        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
       }
     };
     JvmField _newField_1 = this._speADLJvmTypesBuilder.newField("started", _typeForName_1, _function_2);
@@ -417,9 +421,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         _builder.append("It will be called automatically after the component has been instantiated.");
         _builder.newLine();
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
-        final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-          public void apply(final ITreeAppendable it) {
-            StringConcatenation _builder = new StringConcatenation();
+        StringConcatenationClient _client = new StringConcatenationClient() {
+          @Override
+          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
             _builder.append("if (!this.init || this.started) {");
             _builder.newLine();
             _builder.append("\t");
@@ -427,10 +431,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             _builder.newLine();
             _builder.append("}");
             _builder.newLine();
-            it.append(_builder);
           }
         };
-        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
       }
     };
     JvmOperation _method = this._speADLJvmTypesBuilder.toMethod(comp, "start", _typeForName_2, _function_4);
@@ -450,9 +453,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         _builder.append("This can be called by the implementation to access the provided ports.");
         _builder.newLine();
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
-        final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-          public void apply(final ITreeAppendable it) {
-            StringConcatenation _builder = new StringConcatenation();
+        StringConcatenationClient _client = new StringConcatenationClient() {
+          @Override
+          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
             _builder.append("assert this.selfComponent != null: \"This is a bug.\";");
             _builder.newLine();
             _builder.append("if (!this.init) {");
@@ -464,10 +467,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             _builder.newLine();
             _builder.append("return this.selfComponent;");
             _builder.newLine();
-            it.append(_builder);
           }
         };
-        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
       }
     };
     JvmOperation _method_1 = this._speADLJvmTypesBuilder.toMethod(comp, "provides", providesRef, _function_5);
@@ -513,9 +515,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         _builder.append("This can be called by the implementation to access the required ports.");
         _builder.newLine();
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
-        final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-          public void apply(final ITreeAppendable it) {
-            StringConcatenation _builder = new StringConcatenation();
+        StringConcatenationClient _client = new StringConcatenationClient() {
+          @Override
+          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
             _builder.append("assert this.selfComponent != null: \"This is a bug.\";");
             _builder.newLine();
             _builder.append("if (!this.init) {");
@@ -527,10 +529,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             _builder.newLine();
             _builder.append("return this.selfComponent.bridge;");
             _builder.newLine();
-            it.append(_builder);
           }
         };
-        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
       }
     };
     JvmOperation _method_3 = this._speADLJvmTypesBuilder.toMethod(comp, "requires", requiresRef, _function_7);
@@ -550,9 +551,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         _builder.append("This can be called by the implementation to access the parts and their provided ports.");
         _builder.newLine();
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
-        final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-          public void apply(final ITreeAppendable it) {
-            StringConcatenation _builder = new StringConcatenation();
+        StringConcatenationClient _client = new StringConcatenationClient() {
+          @Override
+          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
             _builder.append("assert this.selfComponent != null: \"This is a bug.\";");
             _builder.newLine();
             _builder.append("if (!this.init) {");
@@ -564,10 +565,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             _builder.newLine();
             _builder.append("return this.selfComponent;");
             _builder.newLine();
-            it.append(_builder);
           }
         };
-        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
       }
     };
     JvmOperation _method_4 = this._speADLJvmTypesBuilder.toMethod(comp, "parts", partsRef, _function_8);
@@ -638,10 +638,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         _builder.append("Not meant to be used to manually instantiate components (except for testing).");
         _builder.newLine();
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
-        final JvmOperation m = it;
-        final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-          public void apply(final ITreeAppendable it) {
-            StringConcatenation _builder = new StringConcatenation();
+        StringConcatenationClient _client = new StringConcatenationClient() {
+          @Override
+          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
             _builder.append("if (this.init) {");
             _builder.newLine();
             _builder.append("\t");
@@ -654,35 +653,23 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             _builder.newLine();
             _builder.append("this.init = true;");
             _builder.newLine();
-            it.append(_builder);
-            SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(componentClassRef, clazz, it);
-            StringConcatenation _builder_1 = new StringConcatenation();
-            _builder_1.append(" ");
-            String _declareSyntheticVariable = it.declareSyntheticVariable(m, "comp");
-            _builder_1.append(_declareSyntheticVariable, " ");
-            _builder_1.append(" = new ");
-            it.append(_builder_1);
-            SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(componentClassRef, clazz, it);
-            StringConcatenation _builder_2 = new StringConcatenation();
-            _builder_2.append("(this, b, true);");
-            _builder_2.newLine();
-            it.append(_builder_2);
-            StringConcatenation _builder_3 = new StringConcatenation();
-            _builder_3.append("if (start) {");
-            _builder_3.newLine();
-            _builder_3.append("\t");
-            String _name = it.getName(m);
-            _builder_3.append(_name, "\t");
-            _builder_3.append(".start();");
-            _builder_3.newLineIfNotEmpty();
-            _builder_3.append("}");
-            _builder_3.newLine();
-            _builder_3.append("return comp;");
-            _builder_3.newLine();
-            it.append(_builder_3);
+            _builder.append(componentClassRef, "");
+            _builder.append("  _comp = new ");
+            _builder.append(componentClassRef, "");
+            _builder.append("(this, b, true);");
+            _builder.newLineIfNotEmpty();
+            _builder.append("if (start) {");
+            _builder.newLine();
+            _builder.append("\t");
+            _builder.append("_comp.start();");
+            _builder.newLine();
+            _builder.append("}");
+            _builder.newLine();
+            _builder.append("return _comp;");
+            _builder.newLine();
           }
         };
-        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
       }
     };
     JvmOperation _method_5 = this._speADLJvmTypesBuilder.toMethod(comp, "_newComponent", componentIfRef, _function_9);
@@ -722,14 +709,12 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                 _builder.newLine();
                 SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
                 if ((!isAbstract)) {
-                  final Procedure1<ITreeAppendable> _function_1 = new Procedure1<ITreeAppendable>() {
-                    public void apply(final ITreeAppendable it) {
-                      StringConcatenation _builder = new StringConcatenation();
+                  StringConcatenationClient _client = new StringConcatenationClient() {
+                    @Override
+                    protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                       _builder.append("return new ");
-                      it.append(_builder);
-                      SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(str, clazz, it);
-                      StringConcatenation _builder_1 = new StringConcatenation();
-                      _builder_1.append("(");
+                      _builder.append(str, "");
+                      _builder.append("(");
                       EList<Feature> _parameters = species.getParameters();
                       final Function1<Feature, String> _function = new Function1<Feature, String>() {
                         public String apply(final Feature it) {
@@ -737,13 +722,12 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                         }
                       };
                       String _join = IterableExtensions.<Feature>join(_parameters, ",", _function);
-                      _builder_1.append(_join, "");
-                      _builder_1.append(");");
-                      _builder_1.newLineIfNotEmpty();
-                      it.append(_builder_1);
+                      _builder.append(_join, "");
+                      _builder.append(");");
+                      _builder.newLineIfNotEmpty();
                     }
                   };
-                  SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function_1);
+                  SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
                 }
               }
             };
@@ -909,17 +893,13 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                   _builder.append("This can be called to create an instance of the species from inside the implementation of the ecosystem.");
                   _builder.newLine();
                   SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
-                  final JvmOperation m = it;
-                  final Procedure1<ITreeAppendable> _function_1 = new Procedure1<ITreeAppendable>() {
-                    public void apply(final ITreeAppendable it) {
-                      SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(str, clazz, it);
-                      StringConcatenation _builder = new StringConcatenation();
-                      _builder.append(" ");
-                      String _declareSyntheticVariable = it.declareSyntheticVariable(m, "implem");
-                      _builder.append(_declareSyntheticVariable, " ");
-                      _builder.append(" = _createImplementationOf");
+                  StringConcatenationClient _client = new StringConcatenationClient() {
+                    @Override
+                    protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                      _builder.append(str, "");
+                      _builder.append(" _implem = _createImplementationOf");
                       String _name = species.getName();
-                      _builder.append(_name, " ");
+                      _builder.append(_name, "");
                       _builder.append("(");
                       EList<Feature> _parameters = species.getParameters();
                       final Function1<Feature, String> _function = new Function1<Feature, String>() {
@@ -929,24 +909,17 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                       };
                       List<String> _map = ListExtensions.<Feature, String>map(_parameters, _function);
                       String _join = IterableExtensions.join(_map, ",");
-                      _builder.append(_join, " ");
+                      _builder.append(_join, "");
                       _builder.append(");");
                       _builder.newLineIfNotEmpty();
-                      it.append(_builder);
-                      StringConcatenation _builder_1 = new StringConcatenation();
-                      _builder_1.append("return ");
-                      String _name_1 = it.getName(m);
-                      _builder_1.append(_name_1, "");
-                      _builder_1.append("._newComponent(new ");
-                      it.append(_builder_1);
-                      final JvmParameterizedTypeReference i = SpeADLJvmModelInferrer.this._speADLUtils.getInnerTypeReference(str, SpeADLJvmModelInferrer.REQUIRES_INTERFACE);
-                      SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(i, clazz, it);
-                      StringConcatenation _builder_2 = new StringConcatenation();
-                      _builder_2.append("() {},true);");
-                      it.append(_builder_2);
+                      _builder.append("return _implem._newComponent(new ");
+                      JvmParameterizedTypeReference _innerTypeReference = SpeADLJvmModelInferrer.this._speADLUtils.getInnerTypeReference(str, SpeADLJvmModelInferrer.REQUIRES_INTERFACE);
+                      _builder.append(_innerTypeReference, "");
+                      _builder.append("() {},true);");
+                      _builder.newLineIfNotEmpty();
                     }
                   };
-                  SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function_1);
+                  SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
                 }
               };
               JvmOperation _method_8 = this._speADLJvmTypesBuilder.toMethod(species, _plus_3, _innerTypeReference, _function_12);
@@ -971,18 +944,16 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
               _builder.append("Use to instantiate a component from this implementation.");
               _builder.newLine();
               SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
-              final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-                public void apply(final ITreeAppendable it) {
-                  StringConcatenation _builder = new StringConcatenation();
+              StringConcatenationClient _client = new StringConcatenationClient() {
+                @Override
+                protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                   _builder.append("return this._newComponent(new ");
-                  it.append(_builder);
-                  SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(requiresRef, clazz, it);
-                  StringConcatenation _builder_1 = new StringConcatenation();
-                  _builder_1.append("() {}, true);");
-                  it.append(_builder_1);
+                  _builder.append(requiresRef, "");
+                  _builder.append("() {}, true);");
+                  _builder.newLineIfNotEmpty();
                 }
               };
-              SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+              SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
             }
           };
           JvmOperation _method_6 = this._speADLJvmTypesBuilder.toMethod(comp, "newComponent", componentIfRef, _function_10);
@@ -1013,17 +984,16 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             _builder.append("This can be called by the species implementation to access the provided ports of its ecosystem.");
             _builder.newLine();
             SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
-            final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-              public void apply(final ITreeAppendable it) {
-                StringConcatenation _builder = new StringConcatenation();
+            StringConcatenationClient _client = new StringConcatenationClient() {
+              @Override
+              protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                 _builder.append("assert this.ecosystemComponent != null: \"This is a bug.\";");
                 _builder.newLine();
                 _builder.append("return this.ecosystemComponent;");
                 _builder.newLine();
-                it.append(_builder);
               }
             };
-            SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+            SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
           }
         };
         JvmOperation _method_6 = this._speADLJvmTypesBuilder.toMethod(parentEco, "eco_provides", _innerTypeReference_1, _function_11);
@@ -1038,17 +1008,16 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             _builder.append("This can be called by the species implementation to access the required ports of its ecosystem.");
             _builder.newLine();
             SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
-            final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-              public void apply(final ITreeAppendable it) {
-                StringConcatenation _builder = new StringConcatenation();
+            StringConcatenationClient _client = new StringConcatenationClient() {
+              @Override
+              protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                 _builder.append("assert this.ecosystemComponent != null: \"This is a bug.\";");
                 _builder.newLine();
                 _builder.append("return this.ecosystemComponent.bridge;");
                 _builder.newLine();
-                it.append(_builder);
               }
             };
-            SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+            SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
           }
         };
         JvmOperation _method_7 = this._speADLJvmTypesBuilder.toMethod(parentEco, "eco_requires", _innerTypeReference_2, _function_12);
@@ -1062,17 +1031,16 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             _builder.append("This can be called by the species implementation to access the parts of its ecosystem and their provided ports.");
             _builder.newLine();
             SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setDocumentation(it, _builder.toString());
-            final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-              public void apply(final ITreeAppendable it) {
-                StringConcatenation _builder = new StringConcatenation();
+            StringConcatenationClient _client = new StringConcatenationClient() {
+              @Override
+              protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                 _builder.append("assert this.ecosystemComponent != null: \"This is a bug.\";");
                 _builder.newLine();
                 _builder.append("return this.ecosystemComponent;");
                 _builder.newLine();
-                it.append(_builder);
               }
             };
-            SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+            SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
           }
         };
         JvmOperation _method_8 = this._speADLJvmTypesBuilder.toMethod(parentEco, "eco_parts", _innerTypeReference_3, _function_13);
@@ -1323,9 +1291,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
         }
         it.setVisibility(JvmVisibility.PUBLIC);
-        final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-          public void apply(final ITreeAppendable it) {
-            StringConcatenation _builder = new StringConcatenation();
+        StringConcatenationClient _client = new StringConcatenationClient() {
+          @Override
+          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
             {
               JvmParameterizedTypeReference _specializes = comp.getSpecializes();
               boolean _tripleNotEquals = (_specializes != null);
@@ -1334,40 +1302,33 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                 _builder.newLine();
               }
             }
-            it.append(_builder);
-            EList<Part> _parts = comp.getParts();
-            for (final Part part : _parts) {
-              {
+            {
+              EList<Part> _parts = comp.getParts();
+              for(final Part part : _parts) {
+                _builder.append("assert this.");
+                String _name = part.getName();
+                _builder.append(_name, "");
+                _builder.append(" != null: \"This is a bug.\";");
+                _builder.newLineIfNotEmpty();
+                _builder.append("((");
                 JvmParameterizedTypeReference _typeReference = SpeADLJvmModelInferrer.this._speADLUtils.typeReference(part);
                 JvmTypeReference _substituteWith = SpeADLJvmModelInferrer.this._speADLUtils.substituteWith(_typeReference, substitutor);
-                final JvmParameterizedTypeReference ctr = SpeADLJvmModelInferrer.this._speADLUtils.getInnerTypeReference(_substituteWith, SpeADLJvmModelInferrer.COMPONENT_CLASS);
-                StringConcatenation _builder_1 = new StringConcatenation();
-                _builder_1.append("assert this.");
-                String _name = part.getName();
-                _builder_1.append(_name, "");
-                _builder_1.append(" != null: \"This is a bug.\";");
-                _builder_1.newLineIfNotEmpty();
-                _builder_1.append("((");
-                it.append(_builder_1);
-                SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(ctr, componentClass, it);
-                StringConcatenation _builder_2 = new StringConcatenation();
-                _builder_2.append(") this.");
+                JvmParameterizedTypeReference _innerTypeReference = SpeADLJvmModelInferrer.this._speADLUtils.getInnerTypeReference(_substituteWith, SpeADLJvmModelInferrer.COMPONENT_CLASS);
+                _builder.append(_innerTypeReference, "");
+                _builder.append(") this.");
                 String _name_1 = part.getName();
-                _builder_2.append(_name_1, "");
-                _builder_2.append(").start();");
-                _builder_2.newLineIfNotEmpty();
-                it.append(_builder_2);
+                _builder.append(_name_1, "");
+                _builder.append(").start();");
+                _builder.newLineIfNotEmpty();
               }
             }
-            StringConcatenation _builder_1 = new StringConcatenation();
-            _builder_1.append("this.implementation.start();");
-            _builder_1.newLine();
-            _builder_1.append("this.implementation.started = true;");
-            _builder_1.newLine();
-            it.append(_builder_1);
+            _builder.append("this.implementation.start();");
+            _builder.newLine();
+            _builder.append("this.implementation.started = true;");
+            _builder.newLine();
           }
         };
-        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
       }
     };
     JvmOperation _method = this._speADLJvmTypesBuilder.toMethod(comp, "start", _typeForName, _function_3);
@@ -1490,9 +1451,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
         }
         it.setVisibility(JvmVisibility.PROTECTED);
-        final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-          public void apply(final ITreeAppendable it) {
-            StringConcatenation _builder = new StringConcatenation();
+        StringConcatenationClient _client = new StringConcatenationClient() {
+          @Override
+          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
             {
               JvmParameterizedTypeReference _specializes = comp.getSpecializes();
               boolean _tripleNotEquals = (_specializes != null);
@@ -1511,10 +1472,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                 _builder.newLineIfNotEmpty();
               }
             }
-            it.append(_builder);
           }
         };
-        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
       }
     };
     JvmOperation _method_2 = this._speADLJvmTypesBuilder.toMethod(comp, "initParts", _typeForName_2, _function_5);
@@ -1544,9 +1504,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
       final Procedure1<JvmOperation> _function_7 = new Procedure1<JvmOperation>() {
         public void apply(final JvmOperation it) {
           it.setVisibility(JvmVisibility.PRIVATE);
-          final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-            public void apply(final ITreeAppendable it) {
-              StringConcatenation _builder = new StringConcatenation();
+          StringConcatenationClient _client = new StringConcatenationClient() {
+            @Override
+            protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
               _builder.append("assert this.");
               String _name = port.getName();
               _builder.append(_name, "");
@@ -1576,10 +1536,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
               _builder.newLineIfNotEmpty();
               _builder.append("}");
               _builder.newLine();
-              it.append(_builder);
             }
           };
-          SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+          SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
         }
       };
       JvmOperation _method_3 = this._speADLJvmTypesBuilder.toMethod(port, _plus_1, _typeForName_3, _function_7);
@@ -1597,9 +1556,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
           SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
         }
         it.setVisibility(JvmVisibility.PROTECTED);
-        final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-          public void apply(final ITreeAppendable it) {
-            StringConcatenation _builder = new StringConcatenation();
+        StringConcatenationClient _client = new StringConcatenationClient() {
+          @Override
+          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
             {
               JvmParameterizedTypeReference _specializes = comp.getSpecializes();
               boolean _tripleNotEquals = (_specializes != null);
@@ -1617,10 +1576,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                 _builder.newLineIfNotEmpty();
               }
             }
-            it.append(_builder);
           }
         };
-        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
       }
     };
     JvmOperation _method_4 = this._speADLJvmTypesBuilder.toMethod(comp, "initProvidedPorts", _typeForName_4, _function_8);
@@ -1638,9 +1596,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         JvmTypeReference _typeForName = SpeADLJvmModelInferrer.this._typeReferences.getTypeForName(Boolean.TYPE, componentClass);
         JvmFormalParameter _newParameter_2 = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.newParameter("doInits", _typeForName);
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters_2, _newParameter_2);
-        final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-          public void apply(final ITreeAppendable it) {
-            StringConcatenation _builder = new StringConcatenation();
+        StringConcatenationClient _client = new StringConcatenationClient() {
+          @Override
+          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
             {
               JvmParameterizedTypeReference _specializes = comp.getSpecializes();
               boolean _tripleNotEquals = (_specializes != null);
@@ -1675,10 +1633,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             _builder.newLine();
             _builder.append("}");
             _builder.newLine();
-            it.append(_builder);
           }
         };
-        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+        SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
       }
     };
     JvmConstructor _newConstructor = this._speADLJvmTypesBuilder.newConstructor(_function_9);
@@ -1716,9 +1673,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
               EList<JvmAnnotationReference> _annotations = it.getAnnotations();
               JvmAnnotationReference _annotation = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toAnnotation(componentClass, Override.class);
               SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotation);
-              final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-                public void apply(final ITreeAppendable it) {
-                  StringConcatenation _builder = new StringConcatenation();
+              StringConcatenationClient _client = new StringConcatenationClient() {
+                @Override
+                protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                   _builder.append("// it\'s ok to cast because make_");
                   String _name = port_1.getName();
                   _builder.append(_name, "");
@@ -1730,19 +1687,17 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                   _builder.append(" field with the correct type");
                   _builder.newLineIfNotEmpty();
                   _builder.append("return (");
-                  it.append(_builder);
-                  SpeADLJvmModelInferrer.this._typeReferenceSerializer.serialize(ptr, componentClass, it);
-                  StringConcatenation _builder_1 = new StringConcatenation();
-                  _builder_1.append(") super.");
+                  _builder.append(ptr, "");
+                  _builder.append(") super.");
                   String _name_2 = port_1.getName();
-                  _builder_1.append(_name_2, "");
-                  _builder_1.append("();");
-                  it.append(_builder_1);
+                  _builder.append(_name_2, "");
+                  _builder.append("();");
+                  _builder.newLineIfNotEmpty();
                 }
               };
-              SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+              SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
             } else {
-              final Procedure1<ITreeAppendable> _function_1 = new Procedure1<ITreeAppendable>() {
+              final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
                 public void apply(final ITreeAppendable it) {
                   StringConcatenation _builder = new StringConcatenation();
                   _builder.append("return this.");
@@ -1757,7 +1712,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                   it.append(";");
                 }
               };
-              SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function_1);
+              SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
             }
           }
         };
@@ -1861,17 +1816,17 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         final Procedure1<JvmOperation> _function_12 = new Procedure1<JvmOperation>() {
           public void apply(final JvmOperation it) {
             it.setFinal(true);
-            final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-              public void apply(final ITreeAppendable it) {
-                StringConcatenation _builder = new StringConcatenation();
+            StringConcatenationClient _client = new StringConcatenationClient() {
+              @Override
+              protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                 _builder.append("return this.");
                 String _name = part_1.getName();
                 _builder.append(_name, "");
                 _builder.append(";");
-                it.append(_builder);
+                _builder.newLineIfNotEmpty();
               }
             };
-            SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+            SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
           }
         };
         JvmOperation _method_5 = this._speADLJvmTypesBuilder.toMethod(part_1, _name_3, ctr, _function_12);

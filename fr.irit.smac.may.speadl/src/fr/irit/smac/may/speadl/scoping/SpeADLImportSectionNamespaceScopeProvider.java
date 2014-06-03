@@ -78,7 +78,7 @@ public class SpeADLImportSectionNamespaceScopeProvider extends XImportSectionNam
 		if (context instanceof Ecosystem) {
 			JvmGenericType type = utils.associatedJvmClass((Ecosystem) context);
 			// used for refering to java types in the same package
-			if (!Strings.isEmpty(type.getPackageName())) {
+			if (type != null && !Strings.isEmpty(type.getPackageName())) {
 				QualifiedName packageName = this.qualifiedNameConverter.toQualifiedName(type.getPackageName());
 				ImportNormalizer normalizer = doCreateImportNormalizer(packageName, true, ignoreCase);
 				result = createImportScope(result, singletonList(normalizer), globalScopeSelectable, reference.getEReferenceType(), ignoreCase);

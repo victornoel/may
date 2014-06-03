@@ -50,9 +50,9 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 	@Inject extension TypeReferenceSerializer
 	
 	def dispatch void infer(Ecosystem ecosystem, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+		// the try-catch are useful to avoid popups with error in the editor when something goes wrong
 		// we use a big try-catch because if something fails, the rest is useless…
 		// TODO is it?
-		// the try-catch are useful to avoid popups with error in the editor when something goes wrong
 		try {
 			// - toClass makes that the type parameters are those seen
 			// and referred to in the speadl file inside the ecosystem
@@ -201,16 +201,18 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			initializer = [append('''false;''')]
 			visibility = JvmVisibility.PRIVATE
 			documentation = '''
-			Used to check that two components are not created from the same implementation,
-			that the component has been started to call requires(), provides() and parts()
-			and that the component is not started by hand.
+				Used to check that two components are not created from the same implementation,
+				that the component has been started to call requires(), provides() and parts()
+				and that the component is not started by hand.
 			'''
 		]
 		
 		clazz.members += newField("started", Boolean.TYPE.getTypeForName(clazz)) [
 			initializer = [append('''false;''')]
 			visibility = JvmVisibility.PRIVATE
-			documentation = "Used to check that the component is not started by hand."
+			documentation = '''
+				Used to check that the component is not started by hand.
+			'''
 		]
 		
 		clazz.members += newField("selfComponent", componentClassRef)[]
@@ -221,16 +223,14 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			}
 			visibility = JvmVisibility.PROTECTED
 			documentation = '''
-			Can be overridden by the implementation.
-			It will be called automatically after the component has been instantiated.
+				Can be overridden by the implementation.
+				It will be called automatically after the component has been instantiated.
 			'''
-			body = [
-				append('''
-					if (!this.init || this.started) {
-						throw new RuntimeException("start() should not be called by hand: to create a new component, use newComponent().");
-					}
-				''')
-			]
+			body = '''
+				if (!this.init || this.started) {
+					throw new RuntimeException("start() should not be called by hand: to create a new component, use newComponent().");
+				}
+			'''
 		]
 		
 		clazz.members += comp.toMethod("provides", providesRef) [
@@ -239,17 +239,15 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			}
 			visibility = JvmVisibility.PROTECTED
 			documentation = '''
-			This can be called by the implementation to access the provided ports.
+				This can be called by the implementation to access the provided ports.
 			'''
-			body = [
-				append('''
+			body = '''
 				assert this.selfComponent != null: "This is a bug.";
 				if (!this.init) {
 					throw new RuntimeException("provides() can't be accessed until a component has been created from this implementation, use start() instead of the constructor if provides() is needed to initialise the component.");
 				}
 				return this.selfComponent;
-				''')
-			]
+			'''
 		]
 		
 		for (port : comp.provides) {
@@ -263,8 +261,8 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 					abstract = true
 					visibility = JvmVisibility.PROTECTED
 					documentation = '''
-					This should be overridden by the implementation to define the provided port.
-					This will be called once during the construction of the component to initialize the port.
+						This should be overridden by the implementation to define the provided port.
+						This will be called once during the construction of the component to initialize the port.
 					'''
 				]
 			}
@@ -276,17 +274,15 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			}
 			visibility = JvmVisibility.PROTECTED
 			documentation = '''
-			This can be called by the implementation to access the required ports.
+				This can be called by the implementation to access the required ports.
 			'''
-			body = [
-				append('''
+			body = '''
 				assert this.selfComponent != null: "This is a bug.";
 				if (!this.init) {
 					throw new RuntimeException("requires() can't be accessed until a component has been created from this implementation, use start() instead of the constructor if requires() is needed to initialise the component.");
 				}
 				return this.selfComponent.bridge;
-				''')
-			]
+			'''
 		]
 		
 		clazz.members += comp.toMethod("parts", partsRef) [
@@ -295,16 +291,15 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			}
 			visibility = JvmVisibility.PROTECTED
 			documentation = '''
-			This can be called by the implementation to access the parts and their provided ports.
+				This can be called by the implementation to access the parts and their provided ports.
 			'''
-			body = [
-				append('''
+			body = '''
 				assert this.selfComponent != null: "This is a bug.";
 				if (!this.init) {
 					throw new RuntimeException("parts() can't be accessed until a component has been created from this implementation, use start() instead of the constructor if parts() is needed to initialise the component.");
 				}
 				return this.selfComponent;
-				''')]
+			'''
 		]
 		
 		for (part : comp.parts) {
@@ -315,8 +310,8 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 						visibility = JvmVisibility.PROTECTED
 						abstract = true
 						documentation = '''
-						This should be overridden by the implementation to define how to create this sub-component.
-						This will be called once during the construction of the component to initialize this sub-component.
+							This should be overridden by the implementation to define how to create this sub-component.
+							This will be called once during the construction of the component to initialize this sub-component.
 						'''
 					]
 				}
@@ -335,28 +330,19 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			
 			synchronized = true
 			documentation = '''
-			Not meant to be used to manually instantiate components (except for testing).
+				Not meant to be used to manually instantiate components (except for testing).
 			'''
-			val m = it
-			body = [
-				append('''
+			body = '''
 				if (this.init) {
 					throw new RuntimeException("This instance of «clazz.simpleName» has already been used to create a component, use another one.");
 				}
 				this.init = true;
-				''')
-				componentClassRef.serialize(clazz, it)
-				append(''' «declareSyntheticVariable(m, "comp")» = new ''')
-				componentClassRef.serialize(clazz, it)
-				append('''(this, b, true);
-				''')
-				append('''
+				«componentClassRef»  _comp = new «componentClassRef»(this, b, true);
 				if (start) {
-					«getName(m)».start();
+					_comp.start();
 				}
-				return comp;
-				''')
-			]
+				return _comp;
+			'''
 		]
 		
 		switch comp {
@@ -373,23 +359,19 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 						visibility = JvmVisibility.PROTECTED
 						abstract = isAbstract
 						documentation = '''
-						This should be overridden by the implementation to instantiate the implementation of the species.
+							This should be overridden by the implementation to instantiate the implementation of the species.
 						'''
 						if (!isAbstract) {
-							body = [
-								append('''
-								return new ''')
-								str.serialize(clazz, it)
-								append('''(«species.parameters.join(",", [name])»);
-								''')
-							]
+							body = '''
+								return new «str»(«species.parameters.join(",", [name])»);
+							'''
 						}
 					]
 					
 					clazz.members += species.toMethod("_createImplementationOf"+species.name, str) [
 						parameters += species.parameters.map[p|newParameter(p.name, p.parameterType)]
 						documentation = '''
-						Do not call, used by generated code.
+							Do not call, used by generated code.
 						'''
 						val m = it
 						body = [
@@ -420,19 +402,12 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 							parameters += species.parameters.map[p|newParameter(p.name, p.parameterType)]
 							visibility = JvmVisibility.PROTECTED
 							documentation = '''
-							This can be called to create an instance of the species from inside the implementation of the ecosystem.
+								This can be called to create an instance of the species from inside the implementation of the ecosystem.
 							'''
-							val m = it
-							body = [
-								str.serialize(clazz, it)
-								append(''' «declareSyntheticVariable(m, "implem")» = _createImplementationOf«species.name»(«species.parameters.map[name].join(",")»);
-								''')
-								append('''
-								return «getName(m)»._newComponent(new ''')
-								val i = str.getInnerTypeReference(REQUIRES_INTERFACE)
-								i.serialize(clazz, it)
-								append('''() {},true);''')
-							]
+							body = '''
+								«str» _implem = _createImplementationOf«species.name»(«species.parameters.map[name].join(",")»);
+								return _implem._newComponent(new «str.getInnerTypeReference(REQUIRES_INTERFACE)»() {},true);
+							'''
 						]
 					}
 				}
@@ -443,14 +418,11 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 							annotations += clazz.toAnnotation(Override)
 						}
 						documentation = '''
-						Use to instantiate a component from this implementation.
+							Use to instantiate a component from this implementation.
 						'''
-						body = [
-							append('''
-							return this._newComponent(new ''')
-							requiresRef.serialize(clazz, it)
-							append('''() {}, true);''')
-						]
+						body = '''
+							return this._newComponent(new «requiresRef»() {}, true);
+						'''
 					]
 				}
 			}
@@ -463,39 +435,33 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				clazz.members += parentEco.toMethod("eco_provides", parentRef.getInnerTypeReference(PROVIDES_INTERFACE)) [
 					visibility = JvmVisibility.PROTECTED
 					documentation = '''
-					This can be called by the species implementation to access the provided ports of its ecosystem.
+						This can be called by the species implementation to access the provided ports of its ecosystem.
 					'''
-					body = [
-						append('''
+					body = '''
 						assert this.ecosystemComponent != null: "This is a bug.";
 						return this.ecosystemComponent;
-						''')
-					]
+					'''
 				]
 				
 				clazz.members += parentEco.toMethod("eco_requires", parentRef.rootSupertype.getInnerTypeReference(REQUIRES_INTERFACE)) [
 					visibility = JvmVisibility.PROTECTED
 					documentation = '''
-					This can be called by the species implementation to access the required ports of its ecosystem.
+						This can be called by the species implementation to access the required ports of its ecosystem.
 					'''
-					body = [
-						append('''
+					body = '''
 						assert this.ecosystemComponent != null: "This is a bug.";
 						return this.ecosystemComponent.bridge;
-						''')
-					]
+					'''
 				]
 				clazz.members += parentEco.toMethod("eco_parts", parentRef.getInnerTypeReference(PARTS_INTERFACE)) [
 					visibility = JvmVisibility.PROTECTED
 					documentation = '''
-					This can be called by the species implementation to access the parts of its ecosystem and their provided ports.
+						This can be called by the species implementation to access the parts of its ecosystem and their provided ports.
 					'''
-					body = [
-						append('''
+					body = '''
 						assert this.ecosystemComponent != null: "This is a bug.";
 						return this.ecosystemComponent;
-						''')
-					]
+					'''
 				]
 			}
 		}
@@ -513,7 +479,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		for (port : comp.requires) {
 			requires.members += port.toMethod(port.name, port.typeReference.substituteWith(substitutor))[
 				documentation = '''
-				This can be called by the implementation to access this required port.
+					This can be called by the implementation to access this required port.
 				'''
 			]
 		}
@@ -536,7 +502,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		for (port : comp.provides) {
 			provides.members += port.toMethod(port.name, port.typeReference.substituteWith(substitutor)) [
 				documentation = '''
-				This can be called to access the provided port.
+					This can be called to access the provided port.
 				'''
 			]
 		}
@@ -560,8 +526,8 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			val nptr = part.typeReference.substituteWith(substitutor)
 			parts.members += part.toMethod(part.name, nptr.getInnerTypeReference(COMPONENT_INTERFACE)) [
 				documentation = '''
-				This can be called by the implementation to access the part and its provided ports.
-				It will be initialized after the required ports are initialized and before the provided ports are initialized.
+					This can be called by the implementation to access the part and its provided ports.
+					It will be initialized after the required ports are initialized and before the provided ports are initialized.
 				'''
 			]
 		}
@@ -625,26 +591,17 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				annotations += componentClass.toAnnotation(Override)
 			}
 			visibility = JvmVisibility.PUBLIC
-			body = [
-				append('''
+			body = '''
 				«IF comp.specializes !== null»
-				super.start();
+					super.start();
 				«ENDIF»
-				''')
-				for (part : comp.parts) {
-					val ctr = part.typeReference.substituteWith(substitutor).getInnerTypeReference(COMPONENT_CLASS)
-					append('''
+				«FOR part : comp.parts»
 					assert this.«part.name» != null: "This is a bug.";
-					((''');
-					ctr.serialize(componentClass, it)
-					append(''') this.«part.name»).start();
-					''')
-				}
-				append('''
+					((«part.typeReference.substituteWith(substitutor).getInnerTypeReference(COMPONENT_CLASS)») this.«part.name»).start();
+				«ENDFOR»
 				this.implementation.start();
 				this.implementation.started = true;
-				''')
-			]
+			'''
 		]
 		
 		for (part : comp.parts) {
@@ -681,16 +638,14 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				annotations += componentClass.toAnnotation(Override)
 			}
 			visibility = JvmVisibility.PROTECTED
-			body = [
-				append('''
+			body = '''
 				«IF comp.specializes !== null»
-				super.initParts();
+					super.initParts();
 				«ENDIF»
 				«FOR part : comp.parts»
-				init_«part.name»();
+					init_«part.name»();
 				«ENDFOR»
-				''')
-			]
+			'''
 		]
 		
 		val providesToInit = comp.provides.filter[bound === null && overridenPortTypeRef === null]
@@ -698,15 +653,13 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		for(port: providesToInit) {
 			componentClass.members += port.toMethod("init_"+port.name, Void.TYPE.getTypeForName(componentClass)) [
 				visibility = JvmVisibility.PRIVATE
-				body = [
-					append('''
+				body = '''
 					assert this.«port.name» == null: "This is a bug.";
 					this.«port.name» = this.implementation.make_«port.name»();
 					if (this.«port.name» == null) {
 						throw new RuntimeException("make_«port.name»() in «clazzRef.qualifiedName» should not return null.");
 					}
-					''')
-				]
+				'''
 			]
 		}
 		
@@ -715,26 +668,23 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				annotations += componentClass.toAnnotation(Override)
 			}
 			visibility = JvmVisibility.PROTECTED
-			body = [
-				append('''
+			body = '''
 				«IF comp.specializes !== null»
-				super.initProvidedPorts();
+					super.initProvidedPorts();
 				«ENDIF»
 				«FOR port : providesToInit»
-				init_«port.name»();
+					init_«port.name»();
 				«ENDFOR»
-				''')
-			]
+			'''
 		]
 		
 		componentClass.members += newConstructor() [
 			parameters += newParameter("implem", clazzRef)
 			parameters += newParameter("b", requiresRef)
 			parameters += newParameter("doInits", Boolean.TYPE.getTypeForName(componentClass))
-			body = [
-				append('''
+			body = '''
 				«IF comp.specializes !== null»
-				super(implem, b, false);
+					super(implem, b, false);
 				«ENDIF»
 				this.bridge = b;
 				this.implementation = implem;
@@ -749,8 +699,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 					initParts();
 					initProvidedPorts();
 				}
-				''')
-			]
+			'''
 		]
 		
 		for (port : comp.provides) {
@@ -767,14 +716,12 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			componentClass.members += port.toMethod(port.name, ptr) [
 				if (isOverride) {
 					annotations += componentClass.toAnnotation(Override)
-					body = [
-						append('''
+					body = '''
 						// it's ok to cast because make_«port.name»()
 						// fill the parent class «port.name» field with the correct type
-						return (''')
-						ptr.serialize(componentClass, it)
-						append(''') super.«port.name»();''')
-					]
+						return («ptr») super.«port.name»();
+					'''
+					
 				} else {
 					body = [
 						append('''return this.''')
@@ -830,7 +777,9 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			
 			componentClass.members += part.toMethod(part.name, ctr) [
 				final = true
-				body = [append('''return this.«part.name»;''')]
+				body = '''
+					return this.«part.name»;
+				'''
 			]
 		}
 	}
