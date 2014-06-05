@@ -25,6 +25,7 @@ public class SpeADLJvmTypeReferenceValidator extends JvmTypeReferencesValidator 
 	
 	@Check
 	@Override // to always have an error even when there is no arguments
+	// TODO verify overriden class in xtext 2.6.1, many changes were introduced
 	public void checkTypeArgsAgainstTypeParameters(JvmParameterizedTypeReference typeRef) {
 		if(typeRef.getType() instanceof JvmGenericType) {
 			int numTypeParameters = ((JvmGenericType) typeRef.getType()).getTypeParameters().size();

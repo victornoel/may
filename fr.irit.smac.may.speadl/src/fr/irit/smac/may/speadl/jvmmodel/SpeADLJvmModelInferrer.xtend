@@ -52,7 +52,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 	def dispatch void infer(Ecosystem ecosystem, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		// the try-catch are useful to avoid popups with error in the editor when something goes wrong
 		// we use a big try-catch because if something fails, the rest is useless…
-		// TODO is it?
+		// TODO remove for xtext 2.6.1, xtext handles the try-catch
 		try {
 			// - toClass makes that the type parameters are those seen
 			// and referred to in the speadl file inside the ecosystem
@@ -67,6 +67,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		}
 	}
 	
+	// TODO this can be removed when xtext 2.6.1 is released
 	def <T extends JvmGenericType> (T) => void trycatch((T) => void i) {
 			[try {
 				i.apply(it)

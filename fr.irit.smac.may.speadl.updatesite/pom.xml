@@ -36,7 +36,7 @@
 							<fromDir>${project.build.directory}/repository/</fromDir>
 							<includes>**</includes>
 							<url>ftp://ftpintra.irit.fr</url>
-							<toDir>/usr/local/WWW-personnel/Victor.Noel/may/update-may-3.2/</toDir>
+							<toDir>/usr/local/WWW-personnel/Victor.Noel/may/update-may-3.3/</toDir>
 							<serverId>ftp-repository-irit-vnoel</serverId>
 						</configuration>
 					</execution>
