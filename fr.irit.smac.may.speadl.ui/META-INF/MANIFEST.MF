@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Make Agents Yourself UI
 Bundle-Vendor: IRIT SMAC
-Bundle-Version: 3.3.0.qualifier
+Bundle-Version: 3.3.1.qualifier
 Bundle-SymbolicName: fr.irit.smac.may.speadl.ui;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: fr.irit.smac.may.speadl;visibility:=reexport,
@@ -22,8 +22,7 @@ Require-Bundle: fr.irit.smac.may.speadl;visibility:=reexport,
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: fr.irit.smac.may.speadl.ui.contentassist.antlr,
- fr.irit.smac.may.speadl.ui.internal,
- fr.irit.smac.may.speadl.ui.contentassist,
- fr.irit.smac.may.speadl.ui.quickfix
+Export-Package: fr.irit.smac.may.speadl.ui.contentassist.antlr,fr.irit
+ .smac.may.speadl.ui.internal,fr.irit.smac.may.speadl.ui.contentassist
+ ,fr.irit.smac.may.speadl.ui.quickfix
 Bundle-Activator: fr.irit.smac.may.speadl.ui.internal.SpeADLActivator

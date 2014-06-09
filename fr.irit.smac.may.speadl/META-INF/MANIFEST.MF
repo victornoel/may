@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Make Agents Yourself
 Bundle-Vendor: IRIT SMAC
-Bundle-Version: 3.3.0.qualifier
+Bundle-Version: 3.3.1.qualifier
 Bundle-SymbolicName: fr.irit.smac.may.speadl;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext;bundle-version="[2.6.0,2.7.0)";visibility:=reexport,
@@ -21,14 +21,9 @@ Require-Bundle: org.eclipse.xtext;bundle-version="[2.6.0,2.7.0)";visibility:=ree
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: fr.irit.smac.may.speadl.parser.antlr,
- fr.irit.smac.may.speadl.parser.antlr.internal,
- fr.irit.smac.may.speadl.serializer,
- fr.irit.smac.may.speadl.services,
- fr.irit.smac.may.speadl.speadl,
- fr.irit.smac.may.speadl.speadl.impl,
- fr.irit.smac.may.speadl.speadl.util,
- fr.irit.smac.may.speadl,
- fr.irit.smac.may.speadl.formatting,
- fr.irit.smac.may.speadl.jvmmodel,
- fr.irit.smac.may.speadl.validation
+Export-Package: fr.irit.smac.may.speadl.parser.antlr,fr.irit.smac.may.
+ speadl.parser.antlr.internal,fr.irit.smac.may.speadl.serializer,fr.ir
+ it.smac.may.speadl.services,fr.irit.smac.may.speadl.speadl,fr.irit.sm
+ ac.may.speadl.speadl.impl,fr.irit.smac.may.speadl.speadl.util,fr.irit
+ .smac.may.speadl,fr.irit.smac.may.speadl.formatting,fr.irit.smac.may.
+ speadl.jvmmodel,fr.irit.smac.may.speadl.validation
