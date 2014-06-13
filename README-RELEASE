@@ -6,8 +6,6 @@ Release procedure:
    -> export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
 
  * Prepare for release
-  * Clean everything
-    -> mvn -Dtycho.mode=maven clean
   * change the version to a fixed one (for example, if we were to 2.1.0-SNAPSHOT, go to 2.1.0) (note: it won't change the osgi versions, on purpose to keep the qualifier)
     -> mvn -Dtycho.mode=maven versions:set -DnewVersion=2.1.0
   * commit and tag the release
@@ -16,15 +14,13 @@ Release procedure:
 
  * Do the release
   * Compile, install in the local repository and deploy (deploy implies install which implies package)
-    (Note: do note execute mvn package install deploy, or mvn package install, just call the last desired phase
+    (Note: do note execute mvn package clean install deploy, or mvn clean package install, just call the last desired phase after call
      because tycho-p2-repository-plugin insists to clean between two explicit phases which remove the repository before deployment or install)
-    -> mvn deploy
+    -> mvn clean deploy
 
 (if this fail, you can go in the updatesite project and run mvn install deploy)
     
  * Increment for development
-  * Clean everything
-    -> mvn -Dtycho.mode=maven clean
   * change the version (note: it will change the osgi version AND the pom versions)
     -> mvn -Dtycho.mode=maven versions:set -DnewVersion=2.1.0-SNAPSHOT # (go back to previous version ! needed for the next command to succeed updating osgi versions)
     -> mvn -Dtycho.mode=maven org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=2.2.0-SNAPSHOT
