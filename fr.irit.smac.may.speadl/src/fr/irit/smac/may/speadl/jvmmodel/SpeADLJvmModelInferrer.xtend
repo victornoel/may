@@ -9,7 +9,6 @@ import fr.irit.smac.may.speadl.speadl.PortRef
 import fr.irit.smac.may.speadl.speadl.RequiredPort
 import fr.irit.smac.may.speadl.speadl.Species
 import fr.irit.smac.may.speadl.speadl.SpeciesPart
-import org.apache.log4j.Logger
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.common.types.util.TypeReferences
@@ -26,8 +25,6 @@ import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
  * which is generated from the source model. Other models link against the JVM model rather than the source model.</p>     
  */
 class SpeADLJvmModelInferrer extends AbstractModelInferrer {
-
-	static val LOG = Logger.getLogger(SpeADLJvmModelInferrer)
 
 	public static val REQUIRES_INTERFACE = "Requires"
 	public static val PROVIDES_INTERFACE = "Provides"
@@ -50,31 +47,14 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 	@Inject extension TypeReferenceSerializer
 	
 	def dispatch void infer(Ecosystem ecosystem, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		// the try-catch are useful to avoid popups with error in the editor when something goes wrong
-		// we use a big try-catch because if something fails, the rest is useless…
-		// TODO remove for xtext 2.6.1, xtext handles the try-catch
-		try {
-			// - toClass makes that the type parameters are those seen
-			// and referred to in the speadl file inside the ecosystem
-			// because SpeADLImportSectionNamespaceScopeProvider exploits the JvmType
-			// TODO it would be better to only rely on those of the ecosystem itself
-			// (in SpeADLImportSectionNamespaceScopeProvider)
-			// but it create strange loops that prevent things to work… to investigate!
-			val clazz =	ecosystem.toClass(ecosystem.fullyQualifiedName)
-			ecosystem.initNowAbstractComponent(clazz, acceptor)
-		} catch (Exception e) {
-			LOG.error("Error initializing JvmElement", e);
-		}
-	}
-	
-	// TODO this can be removed when xtext 2.6.1 is released
-	def <T extends JvmGenericType> (T) => void trycatch((T) => void i) {
-			[try {
-				i.apply(it)
-			}
-			catch (Exception e) {
-				LOG.error("Error initializing JvmElement", e);
-			}]
+		// - toClass makes that the type parameters are those seen
+		// and referred to in the speadl file inside the ecosystem
+		// because SpeADLImportSectionNamespaceScopeProvider exploits the JvmType
+		// TODO it would be better to only rely on those of the ecosystem itself
+		// (in SpeADLImportSectionNamespaceScopeProvider)
+		// but it create strange loops that prevent things to work… to investigate!
+		val clazz =	ecosystem.toClass(ecosystem.fullyQualifiedName)
+		ecosystem.initNowAbstractComponent(clazz, acceptor)
 	}
 	
 	def void initNowAbstractComponent(AbstractComponent comp, JvmGenericType clazz, IJvmDeclaredTypeAcceptor acceptor) {
@@ -103,9 +83,9 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				typeParameters += sourceParametersHolder.typeParameters.map[cloneWithProxies]
 			]
 			clazz.members += requires
-			acceptor.accept(requires).initializeLater(trycatch[
+			acceptor.accept(requires).initializeLater [
 				comp.initLaterRequires(clazz, requires)
-			])
+			]
 		}
 		
 		val componentClass = comp.toClass(COMPONENT_CLASS) [
@@ -126,22 +106,22 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		clazz.members += parts
 		clazz.members += componentClass
 		
-		acceptor.accept(provides).initializeLater(trycatch[
+		acceptor.accept(provides).initializeLater [
 			comp.initLaterProvides(clazz, provides)
-		])
-		acceptor.accept(componentIf).initializeLater(trycatch[
+		]
+		acceptor.accept(componentIf).initializeLater [
 			comp.initLaterComponent(clazz, componentIf, provides)
-		])
-		acceptor.accept(parts).initializeLater(trycatch[
+		]
+		acceptor.accept(parts).initializeLater [
 			comp.initLaterParts(clazz, parts)
-		])
-		acceptor.accept(componentClass).initializeLater(trycatch[
+		]
+		acceptor.accept(componentClass).initializeLater [
 			comp.initLaterComponentImpl(clazz, componentClass)
-		])
+		]
 		
-		acceptor.accept(clazz).initializeLater(trycatch[
+		acceptor.accept(clazz).initializeLater [
 			comp.initLaterAbstractComponent(clazz)
-		])
+		]
 		
 		if (comp instanceof Ecosystem) {
 			for(species: comp.species) {

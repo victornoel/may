@@ -19,7 +19,6 @@ import fr.irit.smac.may.speadl.speadl.SpeciesPart;
 import fr.irit.smac.may.speadl.speadl.SpeciesReference;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -44,7 +43,6 @@ import org.eclipse.xtext.xbase.compiler.TypeReferenceSerializer;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor;
-import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
@@ -61,8 +59,6 @@ import org.eclipse.xtext.xbase.typesystem.util.StandardTypeParameterSubstitutor;
  */
 @SuppressWarnings("all")
 public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
-  private final static Logger LOG = Logger.getLogger(SpeADLJvmModelInferrer.class);
-  
   public final static String REQUIRES_INTERFACE = "Requires";
   
   public final static String PROVIDES_INTERFACE = "Provides";
@@ -99,36 +95,9 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
   private TypeReferenceSerializer _typeReferenceSerializer;
   
   protected void _infer(final Ecosystem ecosystem, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
-    try {
-      QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(ecosystem);
-      final JvmGenericType clazz = this._speADLJvmTypesBuilder.toClass(ecosystem, _fullyQualifiedName);
-      this.initNowAbstractComponent(ecosystem, clazz, acceptor);
-    } catch (final Throwable _t) {
-      if (_t instanceof Exception) {
-        final Exception e = (Exception)_t;
-        SpeADLJvmModelInferrer.LOG.error("Error initializing JvmElement", e);
-      } else {
-        throw Exceptions.sneakyThrow(_t);
-      }
-    }
-  }
-  
-  public <T extends JvmGenericType> Procedure1<? super T> trycatch(final Procedure1<? super T> i) {
-    final Procedure1<T> _function = new Procedure1<T>() {
-      public void apply(final T it) {
-        try {
-          i.apply(it);
-        } catch (final Throwable _t) {
-          if (_t instanceof Exception) {
-            final Exception e = (Exception)_t;
-            SpeADLJvmModelInferrer.LOG.error("Error initializing JvmElement", e);
-          } else {
-            throw Exceptions.sneakyThrow(_t);
-          }
-        }
-      }
-    };
-    return _function;
+    QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(ecosystem);
+    final JvmGenericType clazz = this._speADLJvmTypesBuilder.toClass(ecosystem, _fullyQualifiedName);
+    this.initNowAbstractComponent(ecosystem, clazz, acceptor);
   }
   
   public void initNowAbstractComponent(final AbstractComponent comp, final JvmGenericType clazz, final IJvmDeclaredTypeAcceptor acceptor) {
@@ -181,8 +150,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
           SpeADLJvmModelInferrer.this.initLaterRequires(comp, clazz, requires);
         }
       };
-      Procedure1<? super JvmGenericType> _trycatch = this.<JvmGenericType>trycatch(_function_2);
-      _accept.initializeLater(_trycatch);
+      _accept.initializeLater(_function_2);
     }
     final Procedure1<JvmGenericType> _function_3 = new Procedure1<JvmGenericType>() {
       public void apply(final JvmGenericType it) {
@@ -254,40 +222,35 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         SpeADLJvmModelInferrer.this.initLaterProvides(comp, clazz, provides);
       }
     };
-    Procedure1<? super JvmGenericType> _trycatch_1 = this.<JvmGenericType>trycatch(_function_7);
-    _accept_1.initializeLater(_trycatch_1);
+    _accept_1.initializeLater(_function_7);
     IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept_2 = acceptor.<JvmGenericType>accept(componentIf);
     final Procedure1<JvmGenericType> _function_8 = new Procedure1<JvmGenericType>() {
       public void apply(final JvmGenericType it) {
         SpeADLJvmModelInferrer.this.initLaterComponent(comp, clazz, componentIf, provides);
       }
     };
-    Procedure1<? super JvmGenericType> _trycatch_2 = this.<JvmGenericType>trycatch(_function_8);
-    _accept_2.initializeLater(_trycatch_2);
+    _accept_2.initializeLater(_function_8);
     IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept_3 = acceptor.<JvmGenericType>accept(parts);
     final Procedure1<JvmGenericType> _function_9 = new Procedure1<JvmGenericType>() {
       public void apply(final JvmGenericType it) {
         SpeADLJvmModelInferrer.this.initLaterParts(comp, clazz, parts);
       }
     };
-    Procedure1<? super JvmGenericType> _trycatch_3 = this.<JvmGenericType>trycatch(_function_9);
-    _accept_3.initializeLater(_trycatch_3);
+    _accept_3.initializeLater(_function_9);
     IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept_4 = acceptor.<JvmGenericType>accept(componentClass);
     final Procedure1<JvmGenericType> _function_10 = new Procedure1<JvmGenericType>() {
       public void apply(final JvmGenericType it) {
         SpeADLJvmModelInferrer.this.initLaterComponentImpl(comp, clazz, componentClass);
       }
     };
-    Procedure1<? super JvmGenericType> _trycatch_4 = this.<JvmGenericType>trycatch(_function_10);
-    _accept_4.initializeLater(_trycatch_4);
+    _accept_4.initializeLater(_function_10);
     IJvmDeclaredTypeAcceptor.IPostIndexingInitializing<JvmGenericType> _accept_5 = acceptor.<JvmGenericType>accept(clazz);
     final Procedure1<JvmGenericType> _function_11 = new Procedure1<JvmGenericType>() {
       public void apply(final JvmGenericType it) {
         SpeADLJvmModelInferrer.this.initLaterAbstractComponent(comp, clazz);
       }
     };
-    Procedure1<? super JvmGenericType> _trycatch_5 = this.<JvmGenericType>trycatch(_function_11);
-    _accept_5.initializeLater(_trycatch_5);
+    _accept_5.initializeLater(_function_11);
     if ((comp instanceof Ecosystem)) {
       EList<Species> _species = ((Ecosystem)comp).getSpecies();
       for (final Species species : _species) {

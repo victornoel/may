@@ -2,11 +2,13 @@ package fr.irit.smac.may.speadl.validation;
 
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.EValidatorRegistrar;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.eclipse.xtext.xbase.validation.JvmTypeReferencesValidator;
+import org.eclipse.xtext.xbase.validation.ProxyAwareUIStrings;
 
 import com.google.inject.Inject;
 
@@ -16,6 +18,9 @@ public class SpeADLJvmTypeReferenceValidator extends JvmTypeReferencesValidator 
 	
 	@Inject
 	private TypeReferences typeReferences;
+
+	@Inject
+	private ProxyAwareUIStrings proxyAwareUIStrings;
 	
 	@Override
 	public void register(EValidatorRegistrar registrar) {
@@ -25,16 +30,25 @@ public class SpeADLJvmTypeReferenceValidator extends JvmTypeReferencesValidator 
 	
 	@Check
 	@Override // to always have an error even when there is no arguments
-	// TODO verify overriden class in xtext 2.6.1, many changes were introduced
 	public void checkTypeArgsAgainstTypeParameters(JvmParameterizedTypeReference typeRef) {
-		if(typeRef.getType() instanceof JvmGenericType) {
-			int numTypeParameters = ((JvmGenericType) typeRef.getType()).getTypeParameters().size();
-			if(numTypeParameters != typeRef.getArguments().size()) 
-				error("Incorrect number of arguments for type " 
-						+ getTypeSignature(typeRef.getType()) 
-						+ "; it cannot be parameterized with arguments " 
-						+ getTypeArguments(typeRef),
-					IssueCodes.INVALID_NUMBER_OF_TYPE_ARGUMENTS, typeRef);
+		JvmType type = typeRef.getType();
+		if(type instanceof JvmGenericType && !type.eIsProxy()) {
+			int numTypeParameters = ((JvmGenericType) type).getTypeParameters().size();
+			if (numTypeParameters == 0) {
+				errorTypeIsNotGeneric(type, typeRef);
+			} else if (numTypeParameters != typeRef.getArguments().size()) {
+				StringBuilder message = new StringBuilder(64);
+				message.append("Incorrect number of arguments for type ");
+				message = proxyAwareUIStrings.appendTypeSignature(type, message);
+				message.append("; it cannot be parameterized with arguments ");
+				message = proxyAwareUIStrings.appendTypeArguments(typeRef, message);
+				if (message != null) {
+					error(message.toString(),
+							IssueCodes.INVALID_NUMBER_OF_TYPE_ARGUMENTS, typeRef);
+				}
+			}
+		} else if (type != null && !type.eIsProxy() && !typeRef.getArguments().isEmpty()) {
+			errorTypeIsNotGeneric(type, typeRef);
 		}
 	}
 	
