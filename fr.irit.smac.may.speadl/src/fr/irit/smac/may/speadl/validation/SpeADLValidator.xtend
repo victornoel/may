@@ -252,6 +252,5 @@ class SpeADLValidator extends AbstractSpeADLValidator {
 	override checkTypeParameterNotUsedInStaticContext(JvmTypeReference ref) {
 		// do nothing because this conflicts with our JvmModelInferrer and
 		// we don't have such cases in our language
-	}
-	
+	}	
 }
