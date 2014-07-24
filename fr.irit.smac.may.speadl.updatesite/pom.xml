@@ -22,26 +22,6 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>wagon-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>upload-repo</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>upload</goal>
-						</goals>
-						<configuration>
-							<fromDir>${project.build.directory}/repository/</fromDir>
-							<includes>**</includes>
-							<url>ftp://ftpintra.irit.fr</url>
-							<toDir>/usr/local/WWW-personnel/Victor.Noel/may/update-may-3.3/</toDir>
-							<serverId>ftp-repository-irit-vnoel</serverId>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 </project>

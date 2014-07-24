@@ -18,6 +18,10 @@ Release procedure:
      because tycho-p2-repository-plugin insists to clean between two explicit phases which remove the repository before deployment or install)
     -> mvn clean deploy
 
+ * Update the web repository
+  -> cd fr.irit.smac.may.speadl.updatesite
+  -> ./get-repository-append-artifacts-push-back-repository.sh
+
 (if this fail, you can go in the updatesite project and run mvn install deploy)
     
  * Increment for development
