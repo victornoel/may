@@ -15,6 +15,7 @@ import org.eclipse.xtext.util.Pair;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import org.eclipse.xtext.xbase.services.XbaseGrammarAccess;
 
 /**
  * This class contains custom formatting description.
@@ -29,6 +30,9 @@ public class SpeADLFormatter extends AbstractDeclarativeFormatter {
   @Inject
   @Extension
   private SpeADLGrammarAccess _speADLGrammarAccess;
+  
+  @Inject
+  private XbaseGrammarAccess xbase;
   
   protected void configureFormatting(final FormattingConfig c) {
     FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(0, 1, 2);
@@ -112,25 +116,34 @@ public class SpeADLFormatter extends AbstractDeclarativeFormatter {
     ParserRule _ecosystemRule = this._speADLGrammarAccess.getEcosystemRule();
     _setLinewrap_3.around(_ecosystemRule);
     FormattingConfig.LinewrapLocator _setLinewrap_4 = c.setLinewrap(1, 1, 2);
-    ParserRule _namespaceRule = this._speADLGrammarAccess.getNamespaceRule();
-    _setLinewrap_4.around(_namespaceRule);
+    ParserRule _componentRule = this._speADLGrammarAccess.getComponentRule();
+    _setLinewrap_4.around(_componentRule);
     FormattingConfig.LinewrapLocator _setLinewrap_5 = c.setLinewrap(1, 1, 2);
-    ParserRule _providedPortRule = this._speADLGrammarAccess.getProvidedPortRule();
-    _setLinewrap_5.around(_providedPortRule);
+    ParserRule _namespaceRule = this._speADLGrammarAccess.getNamespaceRule();
+    _setLinewrap_5.around(_namespaceRule);
     FormattingConfig.LinewrapLocator _setLinewrap_6 = c.setLinewrap(1, 1, 2);
-    ParserRule _requiredPortRule = this._speADLGrammarAccess.getRequiredPortRule();
-    _setLinewrap_6.around(_requiredPortRule);
+    ParserRule _providedPortRule = this._speADLGrammarAccess.getProvidedPortRule();
+    _setLinewrap_6.around(_providedPortRule);
     FormattingConfig.LinewrapLocator _setLinewrap_7 = c.setLinewrap(1, 1, 2);
-    ParserRule _componentPartRule = this._speADLGrammarAccess.getComponentPartRule();
-    _setLinewrap_7.around(_componentPartRule);
+    ParserRule _requiredPortRule = this._speADLGrammarAccess.getRequiredPortRule();
+    _setLinewrap_7.around(_requiredPortRule);
     FormattingConfig.LinewrapLocator _setLinewrap_8 = c.setLinewrap(1, 1, 2);
-    ParserRule _speciesPartRule = this._speADLGrammarAccess.getSpeciesPartRule();
-    _setLinewrap_8.around(_speciesPartRule);
+    ParserRule _componentPartRule = this._speADLGrammarAccess.getComponentPartRule();
+    _setLinewrap_8.around(_componentPartRule);
     FormattingConfig.LinewrapLocator _setLinewrap_9 = c.setLinewrap(1, 1, 2);
-    ParserRule _speciesRule = this._speADLGrammarAccess.getSpeciesRule();
-    _setLinewrap_9.around(_speciesRule);
+    ParserRule _speciesPartRule = this._speADLGrammarAccess.getSpeciesPartRule();
+    _setLinewrap_9.around(_speciesPartRule);
     FormattingConfig.LinewrapLocator _setLinewrap_10 = c.setLinewrap(1, 1, 2);
+    ParserRule _speciesRule = this._speADLGrammarAccess.getSpeciesRule();
+    _setLinewrap_10.around(_speciesRule);
+    FormattingConfig.LinewrapLocator _setLinewrap_11 = c.setLinewrap(1, 1, 2);
     ParserRule _bindingRule = this._speADLGrammarAccess.getBindingRule();
-    _setLinewrap_10.around(_bindingRule);
+    _setLinewrap_11.around(_bindingRule);
+    FormattingConfig.LinewrapLocator _setLinewrap_12 = c.setLinewrap();
+    ParserRule _xImportDeclarationRule = this.xbase.getXImportDeclarationRule();
+    _setLinewrap_12.around(_xImportDeclarationRule);
+    FormattingConfig.LinewrapLocator _setLinewrap_13 = c.setLinewrap(2, 2, 2);
+    ParserRule _xImportSectionRule = this.xbase.getXImportSectionRule();
+    _setLinewrap_13.after(_xImportSectionRule);
   }
 }

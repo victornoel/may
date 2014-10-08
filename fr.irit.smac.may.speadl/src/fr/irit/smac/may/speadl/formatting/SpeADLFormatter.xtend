@@ -7,6 +7,7 @@ import com.google.inject.Inject
 import fr.irit.smac.may.speadl.services.SpeADLGrammarAccess
 import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter
 import org.eclipse.xtext.formatting.impl.FormattingConfig
+import org.eclipse.xtext.xbase.services.XbaseGrammarAccess
 
 /**
  * This class contains custom formatting description.
@@ -19,6 +20,7 @@ import org.eclipse.xtext.formatting.impl.FormattingConfig
 class SpeADLFormatter extends AbstractDeclarativeFormatter {
 
 	@Inject extension SpeADLGrammarAccess
+	@Inject XbaseGrammarAccess xbase
 	
 	override protected void configureFormatting(FormattingConfig c) {
 		
@@ -53,16 +55,20 @@ class SpeADLFormatter extends AbstractDeclarativeFormatter {
 			c.setSpace(" ").after(k)
 		]
 
-		c.setLinewrap(1, 1, 2).around(getEcosystemRule());
-		c.setLinewrap(1, 1, 2).around(getNamespaceRule());
+		c.setLinewrap(1, 1, 2).around(ecosystemRule)
+		c.setLinewrap(1, 1, 2).around(componentRule)
+		c.setLinewrap(1, 1, 2).around(namespaceRule)
 		
-		c.setLinewrap(1, 1, 2).around(getProvidedPortRule());
-		c.setLinewrap(1, 1, 2).around(getRequiredPortRule());
+		c.setLinewrap(1, 1, 2).around(providedPortRule)
+		c.setLinewrap(1, 1, 2).around(requiredPortRule)
 
-		c.setLinewrap(1, 1, 2).around(getComponentPartRule());
-		c.setLinewrap(1, 1, 2).around(getSpeciesPartRule());
-		c.setLinewrap(1, 1, 2).around(getSpeciesRule());
+		c.setLinewrap(1, 1, 2).around(componentPartRule)
+		c.setLinewrap(1, 1, 2).around(speciesPartRule)
+		c.setLinewrap(1, 1, 2).around(speciesRule)
 
-		c.setLinewrap(1, 1, 2).around(getBindingRule());
+		c.setLinewrap(1, 1, 2).around(bindingRule)
+		
+		c.setLinewrap.around(xbase.XImportDeclarationRule)
+		c.setLinewrap(2,2,2).after(xbase.XImportSectionRule)
 	}
 }
