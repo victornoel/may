@@ -85,20 +85,21 @@ public class SpeADLImportSectionNamespaceScopeProvider extends XImportSectionNam
 			}
 		}
 		
-		
 		if (context instanceof Ecosystem) {
 			// TODO it would be better to only return those of the ecosystem
 			// but it creates strange loop… (see also SpeADLJvmModelInferrer)
 			JvmGenericType type = utils.associatedJvmClass((Ecosystem) context);
-			List<IEObjectDescription> descriptions = Lists.newArrayList();
-			for (JvmTypeParameter param : type.getTypeParameters()) {
-				if (param.getSimpleName() != null) {
-					QualifiedName paramName = QualifiedName.create(param.getSimpleName());
-					descriptions.add(EObjectDescription.create(paramName, param));
+			if (type != null) {
+				final List<IEObjectDescription> descriptions = Lists.newArrayList();
+				for (JvmTypeParameter param : type.getTypeParameters()) {
+					if (param.getSimpleName() != null) {
+						QualifiedName paramName = QualifiedName.create(param.getSimpleName());
+						descriptions.add(EObjectDescription.create(paramName, param));
+					}
 				}
+				if (!descriptions.isEmpty())
+					result = MapBasedScope.createScope(result, descriptions);
 			}
-			if (!descriptions.isEmpty())
-				result = MapBasedScope.createScope(result, descriptions);
 		}
 		
 		return result;
