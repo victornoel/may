@@ -281,8 +281,7 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
     if ((argSize == paramSize)) {
       int i = 0;
       final ComponentPart part = reference.getPart();
-      boolean _while = (i < argSize);
-      while (_while) {
+      while ((i < argSize)) {
         {
           Species _species_1 = reference.getSpecies();
           EList<Feature> _parameters_1 = _species_1.getParameters();
@@ -298,7 +297,6 @@ public class SpeADLValidator extends AbstractSpeADLValidator {
           }
           i = (i + 1);
         }
-        _while = (i < argSize);
       }
     }
   }

@@ -1168,41 +1168,66 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	
-	private ModelElements pModel;
-	private NamespaceElements pNamespace;
-	private ModelElementElements pModelElement;
-	private ElementElements pElement;
-	private AbstractComponentElements pAbstractComponent;
-	private FakeAbstractComponentElements pFakeAbstractComponent;
-	private PortElements pPort;
-	private FakeAbstractPortElements pFakeAbstractPort;
-	private ContentElementElements pContentElement;
-	private FakeContentElementElements pFakeContentElement;
-	private PartElements pPart;
-	private FakePartElements pFakePart;
-	private FeatureElements pFeature;
-	private EcosystemElements pEcosystem;
-	private ComponentElements pComponent;
-	private SpeciesElements pSpecies;
-	private ProvidedPortElements pProvidedPort;
-	private RequiredPortElements pRequiredPort;
-	private ComponentPartElements pComponentPart;
-	private SpeciesPartElements pSpeciesPart;
-	private BindingElements pBinding;
-	private PortRefElements pPortRef;
-	private SpeciesReferenceElements pSpeciesReference;
-	private JvmTypeReferenceElements pJvmTypeReference;
-	private JvmParameterizedTypeReferenceElements pJvmParameterizedTypeReference;
+	private final ModelElements pModel;
+	private final NamespaceElements pNamespace;
+	private final ModelElementElements pModelElement;
+	private final ElementElements pElement;
+	private final AbstractComponentElements pAbstractComponent;
+	private final FakeAbstractComponentElements pFakeAbstractComponent;
+	private final PortElements pPort;
+	private final FakeAbstractPortElements pFakeAbstractPort;
+	private final ContentElementElements pContentElement;
+	private final FakeContentElementElements pFakeContentElement;
+	private final PartElements pPart;
+	private final FakePartElements pFakePart;
+	private final FeatureElements pFeature;
+	private final EcosystemElements pEcosystem;
+	private final ComponentElements pComponent;
+	private final SpeciesElements pSpecies;
+	private final ProvidedPortElements pProvidedPort;
+	private final RequiredPortElements pRequiredPort;
+	private final ComponentPartElements pComponentPart;
+	private final SpeciesPartElements pSpeciesPart;
+	private final BindingElements pBinding;
+	private final PortRefElements pPortRef;
+	private final SpeciesReferenceElements pSpeciesReference;
+	private final JvmTypeReferenceElements pJvmTypeReference;
+	private final JvmParameterizedTypeReferenceElements pJvmParameterizedTypeReference;
 	
 	private final Grammar grammar;
 
-	private XbaseGrammarAccess gaXbase;
+	private final XbaseGrammarAccess gaXbase;
 
 	@Inject
 	public SpeADLGrammarAccess(GrammarProvider grammarProvider,
 		XbaseGrammarAccess gaXbase) {
 		this.grammar = internalFindGrammar(grammarProvider);
 		this.gaXbase = gaXbase;
+		this.pModel = new ModelElements();
+		this.pNamespace = new NamespaceElements();
+		this.pModelElement = new ModelElementElements();
+		this.pElement = new ElementElements();
+		this.pAbstractComponent = new AbstractComponentElements();
+		this.pFakeAbstractComponent = new FakeAbstractComponentElements();
+		this.pPort = new PortElements();
+		this.pFakeAbstractPort = new FakeAbstractPortElements();
+		this.pContentElement = new ContentElementElements();
+		this.pFakeContentElement = new FakeContentElementElements();
+		this.pPart = new PartElements();
+		this.pFakePart = new FakePartElements();
+		this.pFeature = new FeatureElements();
+		this.pEcosystem = new EcosystemElements();
+		this.pComponent = new ComponentElements();
+		this.pSpecies = new SpeciesElements();
+		this.pProvidedPort = new ProvidedPortElements();
+		this.pRequiredPort = new RequiredPortElements();
+		this.pComponentPart = new ComponentPartElements();
+		this.pSpeciesPart = new SpeciesPartElements();
+		this.pBinding = new BindingElements();
+		this.pPortRef = new PortRefElements();
+		this.pSpeciesReference = new SpeciesReferenceElements();
+		this.pJvmTypeReference = new JvmTypeReferenceElements();
+		this.pJvmParameterizedTypeReference = new JvmParameterizedTypeReferenceElements();
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -1235,7 +1260,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//Model:
 	//	imports=XImportSection? elements+=Namespace*;
 	public ModelElements getModelAccess() {
-		return (pModel != null) ? pModel : (pModel = new ModelElements());
+		return pModel;
 	}
 	
 	public ParserRule getModelRule() {
@@ -1245,7 +1270,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//Namespace:
 	//	"namespace" name=QualifiedName "{" elements+=ModelElement* "}";
 	public NamespaceElements getNamespaceAccess() {
-		return (pNamespace != null) ? pNamespace : (pNamespace = new NamespaceElements());
+		return pNamespace;
 	}
 	
 	public ParserRule getNamespaceRule() {
@@ -1255,7 +1280,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//ModelElement:
 	//	Namespace | Element;
 	public ModelElementElements getModelElementAccess() {
-		return (pModelElement != null) ? pModelElement : (pModelElement = new ModelElementElements());
+		return pModelElement;
 	}
 	
 	public ParserRule getModelElementRule() {
@@ -1265,7 +1290,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//Element:
 	//	Ecosystem | Component;
 	public ElementElements getElementAccess() {
-		return (pElement != null) ? pElement : (pElement = new ElementElements());
+		return pElement;
 	}
 	
 	public ParserRule getElementRule() {
@@ -1275,7 +1300,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//AbstractComponent:
 	//	Ecosystem | Species;
 	public AbstractComponentElements getAbstractComponentAccess() {
-		return (pAbstractComponent != null) ? pAbstractComponent : (pAbstractComponent = new AbstractComponentElements());
+		return pAbstractComponent;
 	}
 	
 	public ParserRule getAbstractComponentRule() {
@@ -1286,7 +1311,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//	name=ValidID parameters+=Feature typeParameters+=JvmTypeParameter specializes=JvmParameterizedTypeReference
 	//	provides+=ProvidedPort requires+=RequiredPort parts+=Part species+=Species;
 	public FakeAbstractComponentElements getFakeAbstractComponentAccess() {
-		return (pFakeAbstractComponent != null) ? pFakeAbstractComponent : (pFakeAbstractComponent = new FakeAbstractComponentElements());
+		return pFakeAbstractComponent;
 	}
 	
 	public ParserRule getFakeAbstractComponentRule() {
@@ -1296,7 +1321,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//Port:
 	//	ProvidedPort | RequiredPort;
 	public PortElements getPortAccess() {
-		return (pPort != null) ? pPort : (pPort = new PortElements());
+		return pPort;
 	}
 	
 	public ParserRule getPortRule() {
@@ -1306,7 +1331,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//FakeAbstractPort returns Port:
 	//	typeReference=JvmParameterizedTypeReference;
 	public FakeAbstractPortElements getFakeAbstractPortAccess() {
-		return (pFakeAbstractPort != null) ? pFakeAbstractPort : (pFakeAbstractPort = new FakeAbstractPortElements());
+		return pFakeAbstractPort;
 	}
 	
 	public ParserRule getFakeAbstractPortRule() {
@@ -1317,7 +1342,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//ContentElement:
 	//	Port | Part;
 	public ContentElementElements getContentElementAccess() {
-		return (pContentElement != null) ? pContentElement : (pContentElement = new ContentElementElements());
+		return pContentElement;
 	}
 	
 	public ParserRule getContentElementRule() {
@@ -1327,7 +1352,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//FakeContentElement returns ContentElement:
 	//	name=ValidID;
 	public FakeContentElementElements getFakeContentElementAccess() {
-		return (pFakeContentElement != null) ? pFakeContentElement : (pFakeContentElement = new FakeContentElementElements());
+		return pFakeContentElement;
 	}
 	
 	public ParserRule getFakeContentElementRule() {
@@ -1337,7 +1362,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//Part:
 	//	ComponentPart | SpeciesPart;
 	public PartElements getPartAccess() {
-		return (pPart != null) ? pPart : (pPart = new PartElements());
+		return pPart;
 	}
 	
 	public ParserRule getPartRule() {
@@ -1347,7 +1372,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//FakePart returns Part:
 	//	bindings+=Binding;
 	public FakePartElements getFakePartAccess() {
-		return (pFakePart != null) ? pFakePart : (pFakePart = new FakePartElements());
+		return pFakePart;
 	}
 	
 	public ParserRule getFakePartRule() {
@@ -1357,7 +1382,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//Feature:
 	//	name=ValidID ":" parameterType=JvmTypeReference;
 	public FeatureElements getFeatureAccess() {
-		return (pFeature != null) ? pFeature : (pFeature = new FeatureElements());
+		return pFeature;
 	}
 	
 	public ParserRule getFeatureRule() {
@@ -1369,7 +1394,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//	("specializes" specializes=JvmParameterizedTypeReference)? "{" (provides+=ProvidedPort | requires+=RequiredPort |
 	//	parts+=ComponentPart | species+=Species)* "}";
 	public EcosystemElements getEcosystemAccess() {
-		return (pEcosystem != null) ? pEcosystem : (pEcosystem = new EcosystemElements());
+		return pEcosystem;
 	}
 	
 	public ParserRule getEcosystemRule() {
@@ -1381,7 +1406,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//	("specializes" specializes=JvmParameterizedTypeReference)? "{" (provides+=ProvidedPort | requires+=RequiredPort |
 	//	parts+=ComponentPart)* "}";
 	public ComponentElements getComponentAccess() {
-		return (pComponent != null) ? pComponent : (pComponent = new ComponentElements());
+		return pComponent;
 	}
 	
 	public ParserRule getComponentRule() {
@@ -1392,7 +1417,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//	"species" name=ValidID ("(" (parameters+=Feature ("," parameters+=Feature)*)? ")")? "{" (provides+=ProvidedPort |
 	//	requires+=RequiredPort | parts+=Part)* "}";
 	public SpeciesElements getSpeciesAccess() {
-		return (pSpecies != null) ? pSpecies : (pSpecies = new SpeciesElements());
+		return pSpecies;
 	}
 	
 	public ParserRule getSpeciesRule() {
@@ -1402,7 +1427,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//ProvidedPort:
 	//	"provides" name=ValidID ":" typeReference=JvmParameterizedTypeReference ("=" bound=PortRef)?;
 	public ProvidedPortElements getProvidedPortAccess() {
-		return (pProvidedPort != null) ? pProvidedPort : (pProvidedPort = new ProvidedPortElements());
+		return pProvidedPort;
 	}
 	
 	public ParserRule getProvidedPortRule() {
@@ -1412,7 +1437,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//RequiredPort:
 	//	"requires" name=ValidID ":" typeReference=JvmParameterizedTypeReference;
 	public RequiredPortElements getRequiredPortAccess() {
-		return (pRequiredPort != null) ? pRequiredPort : (pRequiredPort = new RequiredPortElements());
+		return pRequiredPort;
 	}
 	
 	public ParserRule getRequiredPortRule() {
@@ -1422,7 +1447,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//ComponentPart:
 	//	"part" name=ValidID ":" componentReference=JvmParameterizedTypeReference ("{" bindings+=Binding* "}")?;
 	public ComponentPartElements getComponentPartAccess() {
-		return (pComponentPart != null) ? pComponentPart : (pComponentPart = new ComponentPartElements());
+		return pComponentPart;
 	}
 	
 	public ParserRule getComponentPartRule() {
@@ -1432,7 +1457,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//SpeciesPart:
 	//	"use" name=ValidID ":" speciesReference=SpeciesReference ("{" bindings+=Binding* "}")?;
 	public SpeciesPartElements getSpeciesPartAccess() {
-		return (pSpeciesPart != null) ? pSpeciesPart : (pSpeciesPart = new SpeciesPartElements());
+		return pSpeciesPart;
 	}
 	
 	public ParserRule getSpeciesPartRule() {
@@ -1442,7 +1467,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//Binding:
 	//	"bind" from=[RequiredPort] "to" to=PortRef;
 	public BindingElements getBindingAccess() {
-		return (pBinding != null) ? pBinding : (pBinding = new BindingElements());
+		return pBinding;
 	}
 	
 	public ParserRule getBindingRule() {
@@ -1453,7 +1478,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//	ecosystem?="eco"? // I don't know why but without ()?, eco seems to be mandatory...
 	//	(part=[Part|ValidID] ".")? port=[Port|ValidID];
 	public PortRefElements getPortRefAccess() {
-		return (pPortRef != null) ? pPortRef : (pPortRef = new PortRefElements());
+		return pPortRef;
 	}
 	
 	public ParserRule getPortRefRule() {
@@ -1464,7 +1489,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//	part=[ComponentPart|ValidID] "." species=[Species|ValidID] ("(" (arguments+=[Feature|ValidID] (","
 	//	arguments+=[Feature|ValidID])*)? ")")?;
 	public SpeciesReferenceElements getSpeciesReferenceAccess() {
-		return (pSpeciesReference != null) ? pSpeciesReference : (pSpeciesReference = new SpeciesReferenceElements());
+		return pSpeciesReference;
 	}
 	
 	public ParserRule getSpeciesReferenceRule() {
@@ -1475,7 +1500,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//JvmTypeReference:
 	//	JvmParameterizedTypeReference;
 	public JvmTypeReferenceElements getJvmTypeReferenceAccess() {
-		return (pJvmTypeReference != null) ? pJvmTypeReference : (pJvmTypeReference = new JvmTypeReferenceElements());
+		return pJvmTypeReference;
 	}
 	
 	public ParserRule getJvmTypeReferenceRule() {
@@ -1487,7 +1512,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	//	type=[JvmType|QualifiedName] ("[" arguments+=JvmArgumentTypeReference ("," arguments+=JvmArgumentTypeReference)*
 	//	"]")?;
 	public JvmParameterizedTypeReferenceElements getJvmParameterizedTypeReferenceAccess() {
-		return (pJvmParameterizedTypeReference != null) ? pJvmParameterizedTypeReference : (pJvmParameterizedTypeReference = new JvmParameterizedTypeReferenceElements());
+		return pJvmParameterizedTypeReference;
 	}
 	
 	public ParserRule getJvmParameterizedTypeReferenceRule() {
@@ -1866,7 +1891,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//XCasePart:
-	//	{XCasePart} typeGuard=JvmTypeReference? ("case" case=XExpression)? (":" then=XExpression | ",");
+	//	{XCasePart} typeGuard=JvmTypeReference? ("case" case=XExpression)? (":" then=XExpression | fallThrough?=",");
 	public XbaseGrammarAccess.XCasePartElements getXCasePartAccess() {
 		return gaXbase.getXCasePartAccess();
 	}
@@ -2197,7 +2222,8 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//JvmWildcardTypeReference:
-	//	{JvmWildcardTypeReference} "?" (constraints+=JvmUpperBound | constraints+=JvmLowerBound)?;
+	//	{JvmWildcardTypeReference} "?" (constraints+=JvmUpperBound constraints+=JvmUpperBoundAnded* |
+	//	constraints+=JvmLowerBound constraints+=JvmLowerBoundAnded*)?;
 	public XtypeGrammarAccess.JvmWildcardTypeReferenceElements getJvmWildcardTypeReferenceAccess() {
 		return gaXbase.getJvmWildcardTypeReferenceAccess();
 	}
@@ -2234,6 +2260,16 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getJvmLowerBoundRule() {
 		return getJvmLowerBoundAccess().getRule();
+	}
+
+	//JvmLowerBoundAnded returns JvmLowerBound:
+	//	"&" typeReference=JvmTypeReference;
+	public XtypeGrammarAccess.JvmLowerBoundAndedElements getJvmLowerBoundAndedAccess() {
+		return gaXbase.getJvmLowerBoundAndedAccess();
+	}
+	
+	public ParserRule getJvmLowerBoundAndedRule() {
+		return getJvmLowerBoundAndedAccess().getRule();
 	}
 
 	//JvmTypeParameter:
@@ -2305,8 +2341,8 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 	} 
 
 	//terminal STRING:
-	//	"\"" ("\\" ("b" | "t" | "n" | "f" | "r" | "u" | "\"" | "\'" | "\\") | !("\\" | "\""))* "\"" | "\'" ("\\" ("b" | "t" |
-	//	"n" | "f" | "r" | "u" | "\"" | "\'" | "\\") | !("\\" | "\'"))* "\'";
+	//	"\"" ("\\" . / * ('b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\') * / | !("\\" | "\""))* "\""? | "\'" ("\\" .
+	//	/ * ('b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\') * / | !("\\" | "\'"))* "\'"?;
 	public TerminalRule getSTRINGRule() {
 		return gaXbase.getSTRINGRule();
 	} 

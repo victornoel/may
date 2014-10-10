@@ -6,11 +6,11 @@ Release procedure:
    -> export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
 
  * Prepare for release
-  * change the version to a fixed one (for example, if we were to 2.1.0-SNAPSHOT, go to 2.1.0) (note: it won't change the osgi versions, on purpose to keep the qualifier)
-    -> mvn -Dtycho.mode=maven versions:set -DnewVersion=2.1.0
+  * change the version to a fixed one (for example, if we were to 3.4.0-SNAPSHOT, go to 3.4.0) (note: it won't change the osgi versions, on purpose to keep the qualifier)
+    -> mvn -Dtycho.mode=maven versions:set -DnewVersion=3.4.0
   * commit and tag the release
-    -> hg commit -m "prepare for 2.1.0 release"
-    -> hg tag v2.1.0
+    -> hg commit -m "prepare for 3.4.0 release"
+    -> hg tag v3.4.0
 
  * Do the release
   * Compile, install in the local repository and deploy (deploy implies install which implies package)
@@ -26,10 +26,10 @@ Release procedure:
     
  * Increment for development
   * change the version (note: it will change the osgi version AND the pom versions)
-    -> mvn -Dtycho.mode=maven versions:set -DnewVersion=2.1.0-SNAPSHOT # (go back to previous version ! needed for the next command to succeed updating osgi versions)
-    -> mvn -Dtycho.mode=maven org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=2.2.0-SNAPSHOT
+    -> mvn -Dtycho.mode=maven versions:set -DnewVersion=3.3.1-SNAPSHOT # (go back to previous version ! needed for the next command to succeed updating osgi versions)
+    -> mvn -Dtycho.mode=maven org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=3.4.0-SNAPSHOT
   * commit
-    -> hg commit -m "increment to 2.2.0 development version"
+    -> hg commit -m "increment to 3.4.0 development version"
 
  * Develop!
 
