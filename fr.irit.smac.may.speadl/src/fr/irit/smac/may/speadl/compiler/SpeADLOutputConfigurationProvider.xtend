@@ -6,7 +6,7 @@ import org.eclipse.xtext.generator.OutputConfigurationProvider
 
 class SpeADLOutputConfigurationProvider extends OutputConfigurationProvider {
 	
-	// taken fron XtendOutputConfigurationProvide
+	// taken fron XtendOutputConfigurationProvider
 	override getOutputConfigurations() {
 		#{
 			new OutputConfiguration(IFileSystemAccess.DEFAULT_OUTPUT) => [
@@ -14,7 +14,7 @@ class SpeADLOutputConfigurationProvider extends OutputConfigurationProvider {
 				outputDirectory = "speadl-gen"
 				overrideExistingResources = true
 				createOutputDirectory = true
-				canClearOutputDirectory = true
+				canClearOutputDirectory = false
 				cleanUpDerivedResources = true
 				keepLocalHistory = false
 				setDerivedProperty = true

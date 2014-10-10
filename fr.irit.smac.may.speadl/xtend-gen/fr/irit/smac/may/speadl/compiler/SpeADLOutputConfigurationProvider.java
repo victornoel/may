@@ -1,11 +1,11 @@
 package fr.irit.smac.may.speadl.compiler;
 
-import com.google.common.collect.Sets;
 import java.util.Collections;
 import java.util.Set;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.OutputConfiguration;
 import org.eclipse.xtext.generator.OutputConfigurationProvider;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.ObjectExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
@@ -19,13 +19,13 @@ public class SpeADLOutputConfigurationProvider extends OutputConfigurationProvid
         it.setOutputDirectory("speadl-gen");
         it.setOverrideExistingResources(true);
         it.setCreateOutputDirectory(true);
-        it.setCanClearOutputDirectory(true);
+        it.setCanClearOutputDirectory(false);
         it.setCleanUpDerivedResources(true);
         it.setKeepLocalHistory(Boolean.valueOf(false));
         it.setSetDerivedProperty(true);
       }
     };
     OutputConfiguration _doubleArrow = ObjectExtensions.<OutputConfiguration>operator_doubleArrow(_outputConfiguration, _function);
-    return Collections.<OutputConfiguration>unmodifiableSet(Sets.<OutputConfiguration>newHashSet(_doubleArrow));
+    return Collections.<OutputConfiguration>unmodifiableSet(CollectionLiterals.<OutputConfiguration>newHashSet(_doubleArrow));
   }
 }
