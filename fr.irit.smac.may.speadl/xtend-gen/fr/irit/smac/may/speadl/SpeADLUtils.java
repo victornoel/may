@@ -73,7 +73,8 @@ public class SpeADLUtils {
     boolean _and = false;
     boolean _and_1 = false;
     EList<Part> _parts = c.getParts();
-    boolean _isEmpty = _parts.isEmpty();
+    Iterable<ComponentPart> _filter = Iterables.<ComponentPart>filter(_parts, ComponentPart.class);
+    boolean _isEmpty = IterableExtensions.isEmpty(_filter);
     if (!_isEmpty) {
       _and_1 = false;
     } else {

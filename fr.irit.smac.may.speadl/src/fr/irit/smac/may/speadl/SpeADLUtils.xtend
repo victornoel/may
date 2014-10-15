@@ -45,7 +45,7 @@ class SpeADLUtils {
 	// and the inferred model
 	
 	def boolean notAbstract(AbstractComponent c) {
-		c.parts.empty
+		c.parts.filter(ComponentPart).empty
 			&& c.provides.forall[bound !== null]
 			&& c.species.forall[notAbstract]
 	}
