@@ -51,7 +51,7 @@ public class SpeADLImportSectionNamespaceScopeProvider extends XImportSectionNam
 	@Override
 	protected List<ImportNormalizer> getImplicitImports(boolean ignoreCase) {
 		// only import java lang by default
-		return Lists.newArrayList(new ImportNormalizer(JAVA_LANG, true, false));
+		return Lists.newArrayList(new ImportNormalizer(XImportSectionNamespaceScopeProvider.JAVA_LANG, true, false));
 	}
 	
 	protected IScope getLocalElementsScope(IScope parent, IScope globalScope, EObject context, EReference reference) {
@@ -76,20 +76,18 @@ public class SpeADLImportSectionNamespaceScopeProvider extends XImportSectionNam
 		}
 		
 		if (context instanceof Ecosystem) {
+			
 			JvmGenericType type = utils.associatedJvmClass((Ecosystem) context);
-			// used for refering to java types in the same package
-			if (type != null && !Strings.isEmpty(type.getPackageName())) {
-				QualifiedName packageName = this.qualifiedNameConverter.toQualifiedName(type.getPackageName());
-				ImportNormalizer normalizer = doCreateImportNormalizer(packageName, true, ignoreCase);
-				result = createImportScope(result, singletonList(normalizer), globalScopeSelectable, reference.getEReferenceType(), ignoreCase);
-			}
-		}
-		
-		if (context instanceof Ecosystem) {
-			// TODO it would be better to only return those of the ecosystem
-			// but it creates strange loop… (see also SpeADLJvmModelInferrer)
-			JvmGenericType type = utils.associatedJvmClass((Ecosystem) context);
+			
 			if (type != null) {
+				
+				// used for refering to java types in the same package
+				if (!Strings.isEmpty(type.getPackageName())) {
+					QualifiedName packageName = this.qualifiedNameConverter.toQualifiedName(type.getPackageName());
+					ImportNormalizer normalizer = doCreateImportNormalizer(packageName, true, ignoreCase);
+					result = createImportScope(result, singletonList(normalizer), globalScopeSelectable, reference.getEReferenceType(), ignoreCase);
+				}
+			
 				final List<IEObjectDescription> descriptions = Lists.newArrayList();
 				for (JvmTypeParameter param : type.getTypeParameters()) {
 					if (param.getSimpleName() != null) {

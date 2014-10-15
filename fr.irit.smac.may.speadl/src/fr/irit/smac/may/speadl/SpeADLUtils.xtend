@@ -62,16 +62,22 @@ class SpeADLUtils {
 		e.jvmElements.filter(JvmGenericType).findFirst[t|t.simpleName == e.name]
 	}
 
-	def associatedEcosystem(JvmType type) {
-		type.primarySourceElement as Ecosystem
+	def Ecosystem associatedEcosystem(JvmType type) {
+		val source = type.primarySourceElement
+		if (source instanceof Ecosystem) source
+		else null
 	}
 	
-	def associatedSpecies(JvmType type) {
-		type.primarySourceElement as Species
+	def Species associatedSpecies(JvmType type) {
+		val source = type.primarySourceElement
+		if (source instanceof Species) source
+		else null
 	}
 	
 	def associatedAbstractComponent(JvmType type) {
-		type.primarySourceElement as AbstractComponent
+		val source = type.primarySourceElement
+		if (source instanceof AbstractComponent) source
+		else null
 	}
 
 	def dispatch abstractComponent(ComponentPart part) {

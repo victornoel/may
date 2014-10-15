@@ -127,18 +127,48 @@ public class SpeADLUtils {
   }
   
   public Ecosystem associatedEcosystem(final JvmType type) {
-    EObject _primarySourceElement = this._iJvmModelAssociations.getPrimarySourceElement(type);
-    return ((Ecosystem) _primarySourceElement);
+    Ecosystem _xblockexpression = null;
+    {
+      final EObject source = this._iJvmModelAssociations.getPrimarySourceElement(type);
+      Ecosystem _xifexpression = null;
+      if ((source instanceof Ecosystem)) {
+        _xifexpression = ((Ecosystem)source);
+      } else {
+        _xifexpression = null;
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
   }
   
   public Species associatedSpecies(final JvmType type) {
-    EObject _primarySourceElement = this._iJvmModelAssociations.getPrimarySourceElement(type);
-    return ((Species) _primarySourceElement);
+    Species _xblockexpression = null;
+    {
+      final EObject source = this._iJvmModelAssociations.getPrimarySourceElement(type);
+      Species _xifexpression = null;
+      if ((source instanceof Species)) {
+        _xifexpression = ((Species)source);
+      } else {
+        _xifexpression = null;
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
   }
   
   public AbstractComponent associatedAbstractComponent(final JvmType type) {
-    EObject _primarySourceElement = this._iJvmModelAssociations.getPrimarySourceElement(type);
-    return ((AbstractComponent) _primarySourceElement);
+    AbstractComponent _xblockexpression = null;
+    {
+      final EObject source = this._iJvmModelAssociations.getPrimarySourceElement(type);
+      AbstractComponent _xifexpression = null;
+      if ((source instanceof AbstractComponent)) {
+        _xifexpression = ((AbstractComponent)source);
+      } else {
+        _xifexpression = null;
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return _xblockexpression;
   }
   
   protected AbstractComponent _abstractComponent(final ComponentPart part) {
