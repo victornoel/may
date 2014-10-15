@@ -673,16 +673,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                     protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                       _builder.append("return new ");
                       _builder.append(str, "");
-                      _builder.append("(");
-                      EList<Feature> _parameters = species.getParameters();
-                      final Function1<Feature, String> _function = new Function1<Feature, String>() {
-                        public String apply(final Feature it) {
-                          return it.getName();
-                        }
-                      };
-                      String _join = IterableExtensions.<Feature>join(_parameters, ",", _function);
-                      _builder.append(_join, "");
-                      _builder.append(");");
+                      _builder.append("();");
                       _builder.newLineIfNotEmpty();
                     }
                   };

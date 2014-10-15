@@ -346,7 +346,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 						'''
 						if (!isAbstract) {
 							body = '''
-								return new «str»(«species.parameters.join(",", [name])»);
+								return new «str»();
 							'''
 						}
 					]
