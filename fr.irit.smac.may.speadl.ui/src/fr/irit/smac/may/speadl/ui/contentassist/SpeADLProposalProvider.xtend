@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EcoreFactory
 import org.eclipse.xtext.Assignment
 import org.eclipse.xtext.CrossReference
+import org.eclipse.xtext.common.types.TypesPackage
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor
 
@@ -29,7 +30,11 @@ class SpeADLProposalProvider extends AbstractSpeADLProposalProvider {
 			// already open, it will work as desired…
 			lookupCrossReference(assignment.getTerminal() as CrossReference, eref, context, acceptor, getFeatureDescriptionPredicate(context))
 		} else {
-			super.completeJvmParameterizedTypeReference_Type(model, assignment, context, acceptor)
+			// taken from XbaseProposalProvider, because it was overriden 
+			// by our language redefinition of the rules
+			if (getXbaseCrossReferenceProposalCreator().isShowTypeProposals() || getXbaseCrossReferenceProposalCreator().isShowSmartProposals()) {
+				completeJavaTypes(context, TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE, acceptor);
+			}
 		}
 	}
 }

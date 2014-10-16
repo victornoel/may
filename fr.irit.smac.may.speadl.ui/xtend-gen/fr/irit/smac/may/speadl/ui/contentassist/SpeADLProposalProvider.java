@@ -11,9 +11,11 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.xtext.AbstractElement;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.CrossReference;
+import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
+import org.eclipse.xtext.xbase.ui.contentassist.XbaseReferenceProposalCreator;
 
 /**
  * see http://www.eclipse.org/Xtext/documentation.html#contentAssist on how to customize content assistant
@@ -34,7 +36,19 @@ public class SpeADLProposalProvider extends AbstractSpeADLProposalProvider {
       Predicate<IEObjectDescription> _featureDescriptionPredicate = this.getFeatureDescriptionPredicate(context);
       this.lookupCrossReference(((CrossReference) _terminal), eref, context, acceptor, _featureDescriptionPredicate);
     } else {
-      super.completeJvmParameterizedTypeReference_Type(model, assignment, context, acceptor);
+      boolean _or_1 = false;
+      XbaseReferenceProposalCreator _xbaseCrossReferenceProposalCreator = this.getXbaseCrossReferenceProposalCreator();
+      boolean _isShowTypeProposals = _xbaseCrossReferenceProposalCreator.isShowTypeProposals();
+      if (_isShowTypeProposals) {
+        _or_1 = true;
+      } else {
+        XbaseReferenceProposalCreator _xbaseCrossReferenceProposalCreator_1 = this.getXbaseCrossReferenceProposalCreator();
+        boolean _isShowSmartProposals = _xbaseCrossReferenceProposalCreator_1.isShowSmartProposals();
+        _or_1 = _isShowSmartProposals;
+      }
+      if (_or_1) {
+        this.completeJavaTypes(context, TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE, acceptor);
+      }
     }
   }
 }
