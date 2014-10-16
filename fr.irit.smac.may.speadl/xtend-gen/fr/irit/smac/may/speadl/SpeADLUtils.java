@@ -46,11 +46,10 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.ListExtensions;
 import org.eclipse.xtext.xbase.lib.ObjectExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
-import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.references.ITypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightMergedBoundTypeArgument;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
-import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter;
+import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.typesystem.util.ConstraintAwareTypeArgumentCollector;
 import org.eclipse.xtext.xbase.typesystem.util.StandardTypeParameterSubstitutor;
@@ -407,13 +406,8 @@ public class SpeADLUtils {
   }
   
   public LightweightTypeReference toLightweightTypeReference(final JvmTypeReference typeRef, final Resource context) {
-    LightweightTypeReference _xblockexpression = null;
-    {
-      StandardTypeReferenceOwner _standardTypeReferenceOwner = new StandardTypeReferenceOwner(this.services, context);
-      final OwnedConverter converter = new OwnedConverter(_standardTypeReferenceOwner, false);
-      _xblockexpression = converter.toLightweightReference(typeRef);
-    }
-    return _xblockexpression;
+    StandardTypeReferenceOwner _standardTypeReferenceOwner = new StandardTypeReferenceOwner(this.services, context);
+    return _standardTypeReferenceOwner.toLightweightTypeReference(typeRef);
   }
   
   public LightweightTypeReference getTypeRef(final Feature f) {

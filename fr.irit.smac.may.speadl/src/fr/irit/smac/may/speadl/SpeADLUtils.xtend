@@ -27,9 +27,8 @@ import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.util.TypeReferences
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations
-import org.eclipse.xtext.xbase.typesystem.legacy.StandardTypeReferenceOwner
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
-import org.eclipse.xtext.xbase.typesystem.references.OwnedConverter
+import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
 import org.eclipse.xtext.xbase.typesystem.util.ConstraintAwareTypeArgumentCollector
 import org.eclipse.xtext.xbase.typesystem.util.StandardTypeParameterSubstitutor
@@ -194,8 +193,7 @@ class SpeADLUtils {
 	}
 
 	def toLightweightTypeReference(JvmTypeReference typeRef, Resource context) {
-		val converter = new OwnedConverter(new StandardTypeReferenceOwner(services, context), false)
-		converter.toLightweightReference(typeRef)
+		new StandardTypeReferenceOwner(services, context).toLightweightTypeReference(typeRef)
 	}
 	
 	// typing: TODO maybe move all of this in a specialization

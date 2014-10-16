@@ -24,13 +24,11 @@ import org.eclipse.xtext.validation.Check
 import org.eclipse.xtext.validation.ComposedChecks
 import org.eclipse.xtext.validation.NamesAreUniqueValidator
 
-/**
- * Custom validation rules. 
- *
- * see http://www.eclipse.org/Xtext/documentation.html#validation
- * 
- */
-@ComposedChecks(validators=#[SpeADLXtendXtextInspiredValidator, SpeADLJvmTypeReferenceValidator, NamesAreUniqueValidator])
+@ComposedChecks(validators=#[
+	SpeADLXtendXtextInspiredValidator,
+	SpeADLJvmTypeReferenceValidator,
+	NamesAreUniqueValidator
+])
 class SpeADLValidator extends AbstractSpeADLValidator {
 	
 	@Inject extension SpeADLUtils

@@ -42,6 +42,8 @@ public class SpeADLUiModule extends	fr.irit.smac.may.speadl.ui.AbstractSpeADLUiM
 	public Class<? extends ReferenceProposalCreator> bindAbstractJavaBasedContentProposalProvider$ReferenceProposalCreator() {
 		return SpeADLReferenceProposalCreator.class;
 	}
+	
+	
 
 	// so that completion is automatically activated after a . or a : is written
 	/*

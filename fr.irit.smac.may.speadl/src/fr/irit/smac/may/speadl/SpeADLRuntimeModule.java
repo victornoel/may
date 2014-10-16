@@ -8,6 +8,7 @@ import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
+import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.validation.INamesAreUniqueValidationHelper;
 import org.eclipse.xtext.xbase.validation.JvmTypeReferencesValidator;
 
@@ -37,6 +38,7 @@ public class SpeADLRuntimeModule extends AbstractSpeADLRuntimeModule {
 	}
 	
 	@Override
+	@SingletonBinding(eager=true)
 	public Class<? extends JvmTypeReferencesValidator> bindJvmTypeReferencesValidator() {
 		return SpeADLJvmTypeReferenceValidator.class;
 	}

@@ -46,11 +46,6 @@ import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
-/**
- * Custom validation rules.
- * 
- * see http://www.eclipse.org/Xtext/documentation.html#validation
- */
 @ComposedChecks(validators = { SpeADLXtendXtextInspiredValidator.class, SpeADLJvmTypeReferenceValidator.class, NamesAreUniqueValidator.class })
 @SuppressWarnings("all")
 public class SpeADLValidator extends AbstractSpeADLValidator {
