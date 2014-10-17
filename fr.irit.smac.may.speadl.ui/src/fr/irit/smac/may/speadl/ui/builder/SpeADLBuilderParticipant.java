@@ -34,19 +34,21 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
+/**
+ * copied from XtendBuilderParticipant to attach the element issue provider
+ * (see MyJvmModelGenerator for the use of this data)
+ * and not listen to the shouldGenerate method
+ */
 public class SpeADLBuilderParticipant extends BuilderParticipant {
 
 	private static Logger LOGGER = Logger.getLogger(SpeADLBuilderParticipant.class);
-	
+
 	@Inject
 	private IStorage2UriMapper mapper;
-		
+
 	@Inject
 	private ElementIssueProvider.Factory elementIssueProviderFactory;
 
-	// copied from XtendBuilderParticipant to attach the element issue provider
-	// (see MyJvmModelGenerator for the use of this data)
-	// and not listen to the shouldGenerate method
 	@Override
 	protected void handleChangedContents(Delta delta, IBuildContext context,
 			EclipseResourceFileSystemAccess2 fileSystemAccess) throws CoreException {
@@ -73,7 +75,7 @@ public class SpeADLBuilderParticipant extends BuilderParticipant {
 			}
 		}
 	}
-	
+
 	protected IFile getFile(Resource resource, IBuildContext context) {
 		Iterable<Pair<IStorage, IProject>> storages = mapper.getStorages(resource.getURI());
 		for (Pair<IStorage, IProject> pair : storages) {
@@ -83,7 +85,10 @@ public class SpeADLBuilderParticipant extends BuilderParticipant {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * @since 2.4
+	 */
 	protected List<IPath> getSourceFolderPathes(IProject project){
 		List<IPath> sourceFolder = Lists.newArrayList();
 		try {
@@ -111,8 +116,12 @@ public class SpeADLBuilderParticipant extends BuilderParticipant {
 			 if (config.isCleanUpDerivedResources()) {
 				List<IContainer> containerToSearchIn = Lists.newArrayList();
 				for(IPath sourceFolder : sourcePath){
-					IContainer sourcePathBasedContainer = builtProject.getWorkspace().getRoot().getFolder(sourceFolder);
-					containerToSearchIn.add(sourcePathBasedContainer);
+					if (sourceFolder.segmentCount() == 1) {
+						containerToSearchIn.add(builtProject);
+					} else {
+						IContainer sourcePathBasedContainer = builtProject.getWorkspace().getRoot().getFolder(sourceFolder);
+						containerToSearchIn.add(sourcePathBasedContainer);
+					}
 				}
 				Collection<IMarker> markers = Lists.newArrayList();
 				for(IContainer container : containerToSearchIn){

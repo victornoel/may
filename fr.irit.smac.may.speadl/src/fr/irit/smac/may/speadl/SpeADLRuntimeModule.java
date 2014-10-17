@@ -15,11 +15,11 @@ import org.eclipse.xtext.xbase.validation.JvmTypeReferencesValidator;
 import com.google.inject.Binder;
 import com.google.inject.name.Names;
 
-import fr.irit.smac.may.speadl.compiler.MyJvmModelGenerator;
+import fr.irit.smac.may.speadl.compiler.SpeADLJvmModelGenerator;
 import fr.irit.smac.may.speadl.compiler.SpeADLOutputConfigurationProvider;
 import fr.irit.smac.may.speadl.scoping.SpeADLImportSectionNamespaceScopeProvider;
 import fr.irit.smac.may.speadl.scoping.SpeADLQualifiedNameProvider;
-import fr.irit.smac.may.speadl.validation.MyNamesAreUniqueValidationHelper;
+import fr.irit.smac.may.speadl.validation.SpeADLNamesAreUniqueValidationHelper;
 import fr.irit.smac.may.speadl.validation.SpeADLJvmTypeReferenceValidator;
 
 /**
@@ -45,11 +45,11 @@ public class SpeADLRuntimeModule extends AbstractSpeADLRuntimeModule {
 	
 	@Override
 	public Class<? extends IGenerator> bindIGenerator() {
-		return MyJvmModelGenerator.class;
+		return SpeADLJvmModelGenerator.class;
 	}
 	
 	public Class<? extends INamesAreUniqueValidationHelper> bindINamesAreUniqueValidationHelper() {
-		return MyNamesAreUniqueValidationHelper.class;
+		return SpeADLNamesAreUniqueValidationHelper.class;
 	}
 	
 	public Class<? extends IOutputConfigurationProvider> bindIOutputConfigurationProvider() {

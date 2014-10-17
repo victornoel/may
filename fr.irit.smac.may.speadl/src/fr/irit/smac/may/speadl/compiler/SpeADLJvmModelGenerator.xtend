@@ -9,7 +9,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.xbase.compiler.IElementIssueProvider
 import org.eclipse.xtext.xbase.compiler.JvmModelGenerator
 
-class MyJvmModelGenerator extends JvmModelGenerator {
+class SpeADLJvmModelGenerator extends JvmModelGenerator {
 	
 	@Inject extension SpeADLUtils
 	@Inject IElementIssueProvider.Factory issueProviderFactory

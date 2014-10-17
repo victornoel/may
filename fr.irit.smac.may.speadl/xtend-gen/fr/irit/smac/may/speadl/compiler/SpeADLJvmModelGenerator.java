@@ -19,7 +19,7 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 @SuppressWarnings("all")
-public class MyJvmModelGenerator extends JvmModelGenerator {
+public class SpeADLJvmModelGenerator extends JvmModelGenerator {
   @Inject
   @Extension
   private SpeADLUtils _speADLUtils;
@@ -63,7 +63,7 @@ public class MyJvmModelGenerator extends JvmModelGenerator {
         EList<EObject> _eContents = e.eContents();
         final Function1<EObject, Boolean> _function_1 = new Function1<EObject, Boolean>() {
           public Boolean apply(final EObject it) {
-            return Boolean.valueOf(MyJvmModelGenerator.this.modelElementHasError(it));
+            return Boolean.valueOf(SpeADLJvmModelGenerator.this.modelElementHasError(it));
           }
         };
         boolean _exists_1 = IterableExtensions.<EObject>exists(_eContents, _function_1);

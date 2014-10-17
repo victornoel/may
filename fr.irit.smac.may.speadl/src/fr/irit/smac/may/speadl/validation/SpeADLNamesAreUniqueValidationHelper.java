@@ -12,7 +12,7 @@ import com.google.common.collect.ImmutableSet;
 
 import fr.irit.smac.may.speadl.speadl.SpeadlPackage;
 
-public class MyNamesAreUniqueValidationHelper extends
+public class SpeADLNamesAreUniqueValidationHelper extends
 		NamesAreUniqueValidationHelper {
 
 	private ImmutableSet<EClass> clusterTypes = ImmutableSet.of(SpeadlPackage.Literals.ABSTRACT_COMPONENT);
