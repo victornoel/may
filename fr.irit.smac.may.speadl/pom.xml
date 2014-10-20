@@ -15,24 +15,23 @@
 
 	<build>
 		<plugins>
-			<!-- Clean the src-gen folders of the ui and test project. The Xtext generator 
-				will create files in those directories during generation. The ui and test 
-				project will *not* clean those directories later. It is disabled because 
-				we want them to be versionned: note that src-gen and model are cleaned by 
-				GenerateSpeADL.mwe2 before generation so it is ok. -->
+			<!-- Clean the src-gen folders of the ui project. The Xtext generator 
+				will create files in those directories during generation. The ui  
+				project will *not* clean those directories later. It is done during
+				generate-sources in order for the file not to be removed on clean but only 
+				prior to code generation from xtend-maven-plugin and exec-maven-plugin.
+				They are not cleaned at clean because we want them to be versionned. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
 				<executions>
 					<execution>
-						<!-- hack in order for the file not to be removed on clean but only 
-							prior to code generation from xtend-maven-plugin
-							and exec-maven-plugin -->
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>clean</goal>
 						</goals>
 						<configuration>
+							<!-- We don't want to do the normal clean at generate-sources obviously -->
 							<excludeDefaultDirectories>true</excludeDefaultDirectories>
 							<filesets>
 								<fileset>
@@ -68,12 +67,12 @@
 				</executions>
 				<configuration>
 					<includeProjectDependencies>false</includeProjectDependencies>
+					<!-- Uses the dependencies of exec-maven-plugin + those below
+					as the classpath of this java process: needed for adding xtext and xbase! -->
 					<includePluginDependencies>true</includePluginDependencies>
 					<mainClass>org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher</mainClass>
 					<arguments>
 						<argument>file://${project.basedir}/src/fr/irit/smac/may/speadl/GenerateSpeADL.mwe2</argument>
-						<!--<argument>-p</argument>
-						<argument>runtimeProject=/${project.basedir}</argument>-->
 					</arguments>
 				</configuration>
 				<dependencies>
@@ -86,27 +85,6 @@
 						<groupId>org.eclipse.xtext</groupId>
 						<artifactId>org.eclipse.xtext.xbase</artifactId>
 						<version>${xtext.version}</version>
-					</dependency>
-					<!-- common.types (dependency of xbase) needs asm5 which conflicts with the following
-						dependencies of maven-plugin-plugin, a dependency of exec-maven-plugin -->
-					<dependency>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-plugin-plugin</artifactId>
-						<version>3.2</version>
-						<exclusions>
-							<exclusion>
-								<groupId>asm</groupId>
-								<artifactId>asm</artifactId>
-							</exclusion>
-							<exclusion>
-								<groupId>asm</groupId>
-								<artifactId>asm-commons</artifactId>
-							</exclusion>
-							<exclusion>
-								<groupId>asm</groupId>
-								<artifactId>asm-tree</artifactId>
-							</exclusion>
-						</exclusions>
 					</dependency>
 				</dependencies>
 			</plugin>
