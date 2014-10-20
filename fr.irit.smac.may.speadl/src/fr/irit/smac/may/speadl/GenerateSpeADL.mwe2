@@ -47,14 +47,9 @@ Workflow {
     	directory = "${runtimeProject}.ui/src-gen"
     }
     
-//    component = DirectoryCleaner {
-//    	directory = "${runtimeProject}.tests/src-gen"
-//    }
-    
     component = Generator {
     	pathRtProject = runtimeProject
     	pathUiProject = "${runtimeProject}.ui"
-//    	pathTestProject = "${runtimeProject}.tests"
     	projectNameRt = projectName
     	projectNameUi = "${projectName}.ui"
     	encoding = encoding
@@ -69,8 +64,8 @@ Workflow {
     
     		// generates Java API for the generated EPackages
     		fragment = ecore.EMFGeneratorFragment auto-inject {
-			javaModelDirectory = "/${projectName}/src-gen"
-		}
+				javaModelDirectory = "/${projectName}/src-gen"
+			}
     
     		// the old serialization component
     		// fragment = parseTreeConstructor.ParseTreeConstructorFragment auto-inject {}    
@@ -125,7 +120,10 @@ Workflow {
     		fragment = contentAssist.ContentAssistFragment auto-inject {}
     
     		// generates a more lightweight Antlr parser and lexer tailored for content assist
-    		fragment = parser.antlr.XtextAntlrUiGeneratorFragment auto-inject {}
+    		fragment = parser.antlr.XtextAntlrUiGeneratorFragment auto-inject {
+    			// domain model example uses it, not sure we should...
+    			//partialParsing = true
+    		}
     
     		// generates junit test support classes into Generator#pathTestProject
 //    		fragment = junit.Junit4Fragment auto-inject {}
