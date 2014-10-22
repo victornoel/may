@@ -16,11 +16,11 @@
 	<build>
 		<plugins>
 			<!-- Clean the src-gen folders of the ui project. The Xtext generator 
-				will create files in those directories during generation. The ui  
-				project will *not* clean those directories later. It is done during
-				generate-sources in order for the file not to be removed on clean but only 
-				prior to code generation from xtend-maven-plugin and exec-maven-plugin.
-				They are not cleaned at clean because we want them to be versionned. -->
+				will create files in those directories during generation. The ui project 
+				will *not* clean those directories later. It is done during generate-sources 
+				in order for the file not to be removed on clean but only prior to code generation 
+				from xtend-maven-plugin and exec-maven-plugin. They are not cleaned at clean 
+				because we want them to be versionned. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
@@ -67,8 +67,8 @@
 				</executions>
 				<configuration>
 					<includeProjectDependencies>false</includeProjectDependencies>
-					<!-- Uses the dependencies of exec-maven-plugin + those below
-					as the classpath of this java process: needed for adding xtext and xbase! -->
+					<!-- Uses the dependencies of exec-maven-plugin + those below as the 
+						classpath of this java process: needed for adding xtext and xbase! -->
 					<includePluginDependencies>true</includePluginDependencies>
 					<mainClass>org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher</mainClass>
 					<arguments>
@@ -91,11 +91,22 @@
 			<plugin>
 				<groupId>org.eclipse.xtend</groupId>
 				<artifactId>xtend-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>xtend-gen</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>

@@ -14,9 +14,12 @@
 	<packaging>pom</packaging>
 
 	<properties>
+		<!-- Used for toolchain
+			See: http://maven.apache.org/guides/mini/guide-using-toolchains.html -->
+		<java-version>1.7</java-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>${java-version}</maven.compiler.source>
+		<maven.compiler.target>${java-version}</maven.compiler.target>
 		<tycho-version>0.21.0</tycho-version>
 		<xtext-version>2.7.2</xtext-version>
 	</properties>
@@ -42,6 +45,7 @@
 	</repositories>
 
 	<build>
+		<!-- Those plugins are applied to all poms that inherit from this parent pom -->
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -49,17 +53,48 @@
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-toolchains-plugin</artifactId>
+				<version>1.0</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>toolchain</goal>
+						</goals>
+					</execution>
+				</executions>
+				<!-- Needed so that xtend stays at the Java 7 level -->
+				<configuration>
+					<toolchains>
+						<jdk>
+							<version>${java-version}</version>
+						</jdk>
+					</toolchains>
+				</configuration>
+			</plugin>
+			<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<extensions>true</extensions>
+					<configuration>
+						<serverId>ossrh</serverId>
+						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+						<autoReleaseAfterClose>false</autoReleaseAfterClose>
+					</configuration>
+				</plugin>
 		</plugins>
-		<extensions>
-			<!-- For deployement of artefacts -->
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ftp</artifactId>
-				<version>2.6</version>
-			</extension>
-		</extensions>
 		<pluginManagement>
+			<!-- These plugins are configured for but automatically used
+				 By the poms that inherit from this parent pom -->
 			<plugins>
+				<!-- Xtend -->
+				<plugin>
+					<groupId>org.eclipse.xtend</groupId>
+					<artifactId>xtend-maven-plugin</artifactId>
+					<version>${xtext-version}</version>
+				</plugin>
 				<!-- TYCHO -->
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
@@ -86,9 +121,8 @@
 					<artifactId>tycho-packaging-plugin</artifactId>
 					<version>${tycho-version}</version>
 					<configuration>
-						<!-- Needed so that we can change the version of POM to
-							a stable number but keep the .qualifier on the eclipse artifacts
-						-->
+						<!-- Needed so that we can change the version of POM to a stable number 
+							but keep the .qualifier on the eclipse artifacts -->
 						<strictVersions>false</strictVersions>
 					</configuration>
 				</plugin>
@@ -119,20 +153,24 @@
 					<version>1.3.2</version>
 				</plugin>
 				<plugin>
-					<groupId>org.eclipse.xtend</groupId>
-					<artifactId>xtend-maven-plugin</artifactId>
-					<version>${xtext-version}</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>compile</goal>
-							</goals>
-							<configuration>
-								<!-- need to prefix by basedir to generate to currently built module -->
-								<outputDirectory>${basedir}/xtend-gen</outputDirectory>
-							</configuration>
-						</execution>
-					</executions>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>1.5</version>
+				</plugin>
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>1.6.3</version>
 				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
@@ -162,6 +200,25 @@
 										<ignore></ignore>
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-toolchains-plugin
+										</artifactId>
+										<versionRange>
+											[1.0,)
+										</versionRange>
+										<goals>
+											<goal>toolchain</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -170,12 +227,59 @@
 		</pluginManagement>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>release</id>
+			<!-- Required to deploy on Central -->
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<distributionManagement>
-		<repository>
-			<id>ftp-repository-irit-vnoel</id>
-			<url>ftp://ftpintra.irit.fr//usr/local/WWW-personnel/Victor.Noel/maven-repos/</url>
-		</repository>
-		<downloadUrl>http://www.irit.fr/~Victor.Noel/maven-repos/</downloadUrl>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
 	</distributionManagement>
 
 	<licenses>

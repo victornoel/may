@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.xtext;bundle-version="[2.7.0,2.8.0)";visibility:=ree
  org.eclipse.xtext.common.types
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: fr.irit.smac.may.speadl.parser.antlr,fr.irit.smac.may.
  speadl.parser.antlr.internal,fr.irit.smac.may.speadl.serializer,fr.ir
  it.smac.may.speadl.services,fr.irit.smac.may.speadl.speadl,fr.irit.sm
