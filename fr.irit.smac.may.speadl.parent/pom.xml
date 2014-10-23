@@ -100,13 +100,6 @@
 					<serverId>ossrh</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 					<autoReleaseAfterClose>false</autoReleaseAfterClose>
-					<!-- Do not do local staging for SNAPSHOT, directly upload them
-						This is needed because with local staging, the artifacts are
-						uploaded with the last artifact, but since here the last artifact
-						is skipping staging, it is breaking the staging feature.
-						See https://issues.sonatype.org/browse/NEXUS-6835
-					-->
-					<skipLocalStaging>true</skipLocalStaging>
 				</configuration>
 			</plugin>
 		</plugins>
