@@ -22,6 +22,44 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<configuration>
+					<skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+				</configuration>
+			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<!-- tycho-p2-extras:publish-features-and-bundles -->
+					<groupId>org.eclipse.tycho.extras</groupId>
+					<artifactId>tycho-p2-extras-plugin</artifactId>
+					<configuration>
+						<sourceLocation>${project.build.directory}/repository</sourceLocation>
+						<artifactRepositoryLocation>${final-update-site}</artifactRepositoryLocation>
+						<metadataRepositoryLocation>${final-update-site}</metadataRepositoryLocation>
+						<append>true</append>
+					</configuration>
+				</plugin>
+				<plugin>
+					<!-- tycho-p2:category-p2-metadata -->
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-plugin</artifactId>
+					<configuration>
+						<categoryDefinition>${project.basedir}/category.xml</categoryDefinition>
+						<target>${final-update-site}</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 </project>

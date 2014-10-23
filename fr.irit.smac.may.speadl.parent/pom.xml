@@ -13,9 +13,27 @@
 	<version>3.4.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>MAY (Make Agents Yourself) is a tool to build architectures usable to support development and execution of multi-agent systems.</description>
+	<url>http://www.irit.fr/MAY-en</url>
+
+	<developers>
+		<developer>
+			<name>Victor Noël</name>
+			<email>victor.noel@irit.fr</email>
+			<organization>IRIT SMAC</organization>
+			<organizationUrl>http://www.irit.fr/SMAC</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:hg:https://anon:anon@wwwsecu.irit.fr/hg/SMAC/victor-noel-phd/may/may-xtext2/</connection>
+		<developerConnection>scm:hg:https://wwwsecu.irit.fr/hg/SMAC/victor-noel-phd/may/may-xtext2/</developerConnection>
+		<url>https://anon:anon@wwwsecu.irit.fr/hg/SMAC/victor-noel-phd/may/may-xtext2/</url>
+	</scm>
+
 	<properties>
-		<!-- Used for toolchain
-			See: http://maven.apache.org/guides/mini/guide-using-toolchains.html -->
+		<!-- Used for toolchain See: http://maven.apache.org/guides/mini/guide-using-toolchains.html -->
 		<java-version>1.7</java-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>${java-version}</maven.compiler.source>
@@ -45,7 +63,8 @@
 	</repositories>
 
 	<build>
-		<!-- Those plugins are applied to all poms that inherit from this parent pom -->
+		<!-- Those plugins are applied to all poms that inherit from this parent 
+			pom -->
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -56,7 +75,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-toolchains-plugin</artifactId>
-				<version>1.0</version>
 				<executions>
 					<execution>
 						<phase>validate</phase>
@@ -75,19 +93,19 @@
 				</configuration>
 			</plugin>
 			<plugin>
-					<groupId>org.sonatype.plugins</groupId>
-					<artifactId>nexus-staging-maven-plugin</artifactId>
-					<extensions>true</extensions>
-					<configuration>
-						<serverId>ossrh</serverId>
-						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-						<autoReleaseAfterClose>false</autoReleaseAfterClose>
-					</configuration>
-				</plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
 		</plugins>
 		<pluginManagement>
-			<!-- These plugins are configured for but automatically used
-				 By the poms that inherit from this parent pom -->
+			<!-- These plugins are configured for but automatically used By the poms 
+				that inherit from this parent pom -->
 			<plugins>
 				<!-- Xtend -->
 				<plugin>
@@ -104,6 +122,11 @@
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-versions-plugin</artifactId>
+					<version>${tycho-version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-plugin</artifactId>
 					<version>${tycho-version}</version>
 				</plugin>
 				<plugin>
@@ -126,7 +149,22 @@
 						<strictVersions>false</strictVersions>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho.extras</groupId>
+					<artifactId>tycho-p2-extras-plugin</artifactId>
+					<version>${tycho-version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho.extras</groupId>
+					<artifactId>tycho-eclipserun-plugin</artifactId>
+					<version>${tycho-version}</version>
+				</plugin>
 				<!-- APACHE MAVEN PLUGINS -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-toolchains-plugin</artifactId>
+					<version>1.0</version>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
@@ -143,16 +181,6 @@
 					<version>2.6</version>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>1.9.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>exec-maven-plugin</artifactId>
-					<version>1.3.2</version>
-				</plugin>
-				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
 					<version>2.4</version>
@@ -167,6 +195,18 @@
 					<artifactId>maven-gpg-plugin</artifactId>
 					<version>1.5</version>
 				</plugin>
+				<!-- OTHER STANDARD PLUGINS -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.9.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.3.2</version>
+				</plugin>
+				<!-- SONATYPE PLUGINS FOR MAVEN CENTRAL -->
 				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-staging-maven-plugin</artifactId>
