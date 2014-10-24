@@ -15,6 +15,7 @@
 
 	<build>
 		<plugins>
+			<!-- Not followed for now... See https://issues.sonatype.org/browse/NEXUS-6835 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
