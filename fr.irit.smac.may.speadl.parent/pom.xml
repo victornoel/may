@@ -33,7 +33,7 @@
 	<properties>
 		<!-- Used for toolchain See: http://maven.apache.org/guides/mini/guide-using-toolchains.html -->
 		<tycho-version>0.21.0</tycho-version>
-		<xtext-version>2.7.2</xtext-version>
+		<xtext-version>2.7.3</xtext-version>
 	</properties>
 
 	<modules>
@@ -45,9 +45,14 @@
 
 	<repositories>
 		<repository>
-			<id>eclipse</id>
+			<id>eclipse-luna</id>
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/releases/luna</url>
+		</repository>
+		<repository>
+			<id>eclipse-luna-updates</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/eclipse/updates/4.4</url>
 		</repository>
 		<repository>
 			<id>xtext</id>

@@ -28,12 +28,12 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.SpeciesReferenceImpl#getPart <em>Part</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.SpeciesReferenceImpl#getSpecies <em>Species</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.SpeciesReferenceImpl#getArguments <em>Arguments</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

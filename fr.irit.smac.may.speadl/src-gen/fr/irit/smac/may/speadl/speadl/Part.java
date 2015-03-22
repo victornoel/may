@@ -11,10 +11,10 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.Part#getBindings <em>Bindings</em>}</li>
  * </ul>
- * </p>
  *
  * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getPart()
  * @model

@@ -22,11 +22,11 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.BindingImpl#getFrom <em>From</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.BindingImpl#getTo <em>To</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

@@ -35,6 +35,7 @@ import org.eclipse.xtext.common.types.JvmTypeParameter;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.AbstractComponentImpl#getName <em>Name</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.AbstractComponentImpl#getParameters <em>Parameters</em>}</li>
@@ -45,7 +46,6 @@ import org.eclipse.xtext.common.types.JvmTypeParameter;
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.AbstractComponentImpl#getParts <em>Parts</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.AbstractComponentImpl#getSpecies <em>Species</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

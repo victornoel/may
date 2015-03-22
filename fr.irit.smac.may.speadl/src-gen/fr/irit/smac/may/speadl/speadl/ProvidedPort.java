@@ -10,10 +10,10 @@ package fr.irit.smac.may.speadl.speadl;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.ProvidedPort#getBound <em>Bound</em>}</li>
  * </ul>
- * </p>
  *
  * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getProvidedPort()
  * @model

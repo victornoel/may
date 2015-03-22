@@ -10,10 +10,10 @@ package fr.irit.smac.may.speadl.speadl;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.SpeciesPart#getSpeciesReference <em>Species Reference</em>}</li>
  * </ul>
- * </p>
  *
  * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getSpeciesPart()
  * @model

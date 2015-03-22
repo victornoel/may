@@ -13,12 +13,12 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.SpeciesReference#getPart <em>Part</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.SpeciesReference#getSpecies <em>Species</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.SpeciesReference#getArguments <em>Arguments</em>}</li>
  * </ul>
- * </p>
  *
  * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getSpeciesReference()
  * @model

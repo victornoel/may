@@ -88,6 +88,12 @@
 						<artifactId>org.eclipse.xtext.xbase</artifactId>
 						<version>${xtext-version}</version>
 					</dependency>
+					<dependency>
+						<!-- Needed by mwe2 -->
+						<groupId>org.eclipse.equinox</groupId>
+						<artifactId>org.eclipse.equinox.common</artifactId>
+						<version>[3.6.0,)</version>
+					</dependency>
 				</dependencies>
 			</plugin>
 			<plugin>

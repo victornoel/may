@@ -27,11 +27,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.NamespaceImpl#getName <em>Name</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.NamespaceImpl#getElements <em>Elements</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

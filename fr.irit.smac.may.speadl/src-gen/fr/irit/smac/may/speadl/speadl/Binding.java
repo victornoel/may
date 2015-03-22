@@ -11,11 +11,11 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.Binding#getFrom <em>From</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.Binding#getTo <em>To</em>}</li>
  * </ul>
- * </p>
  *
  * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getBinding()
  * @model

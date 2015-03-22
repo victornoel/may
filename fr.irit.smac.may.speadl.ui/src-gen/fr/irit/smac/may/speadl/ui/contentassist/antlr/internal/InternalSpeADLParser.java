@@ -25,9 +25,69 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
         "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_STRING", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'namespace'", "'{'", "'}'", "':'", "'ecosystem'", "'['", "']'", "','", "'specializes'", "'component'", "'species'", "'('", "')'", "'provides'", "'requires'", "'part'", "'use'", "'bind'", "'to'", "'instanceof'", "'as'", "'#'", "';'", "'if'", "'else'", "'switch'", "'default'", "'case'", "'for'", "'while'", "'do'", "'new'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'eco'", "'::'", "'?.'", "'|'", "'var'", "'true'"
     };
+    public static final int RULE_ID=4;
+    public static final int T__29=29;
+    public static final int T__28=28;
+    public static final int T__27=27;
+    public static final int T__26=26;
+    public static final int T__25=25;
+    public static final int T__24=24;
+    public static final int T__23=23;
+    public static final int T__22=22;
+    public static final int RULE_ANY_OTHER=12;
+    public static final int T__21=21;
+    public static final int T__20=20;
+    public static final int EOF=-1;
+    public static final int T__93=93;
+    public static final int T__19=19;
+    public static final int T__94=94;
+    public static final int T__91=91;
     public static final int RULE_HEX=5;
-    public static final int T__50=50;
-    public static final int T__59=59;
+    public static final int T__92=92;
+    public static final int T__16=16;
+    public static final int T__15=15;
+    public static final int T__90=90;
+    public static final int T__18=18;
+    public static final int T__17=17;
+    public static final int T__14=14;
+    public static final int T__13=13;
+    public static final int RULE_DECIMAL=7;
+    public static final int T__98=98;
+    public static final int T__97=97;
+    public static final int T__96=96;
+    public static final int T__95=95;
+    public static final int T__80=80;
+    public static final int T__81=81;
+    public static final int T__82=82;
+    public static final int T__83=83;
+    public static final int T__85=85;
+    public static final int T__84=84;
+    public static final int T__87=87;
+    public static final int T__86=86;
+    public static final int T__89=89;
+    public static final int T__88=88;
+    public static final int RULE_ML_COMMENT=9;
+    public static final int RULE_STRING=8;
+    public static final int T__71=71;
+    public static final int T__72=72;
+    public static final int T__70=70;
+    public static final int T__76=76;
+    public static final int T__75=75;
+    public static final int T__74=74;
+    public static final int T__73=73;
+    public static final int T__79=79;
+    public static final int T__78=78;
+    public static final int T__77=77;
+    public static final int T__68=68;
+    public static final int T__69=69;
+    public static final int T__66=66;
+    public static final int T__67=67;
+    public static final int T__64=64;
+    public static final int T__65=65;
+    public static final int T__62=62;
+    public static final int T__63=63;
+    public static final int T__61=61;
+    public static final int T__60=60;
     public static final int T__55=55;
     public static final int T__56=56;
     public static final int T__57=57;
@@ -36,91 +96,31 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
     public static final int T__52=52;
     public static final int T__53=53;
     public static final int T__54=54;
-    public static final int T__60=60;
-    public static final int T__61=61;
-    public static final int RULE_ID=4;
+    public static final int T__59=59;
     public static final int RULE_INT=6;
-    public static final int T__66=66;
-    public static final int RULE_ML_COMMENT=9;
-    public static final int T__67=67;
-    public static final int T__68=68;
-    public static final int T__69=69;
-    public static final int T__62=62;
-    public static final int T__63=63;
-    public static final int T__64=64;
-    public static final int T__65=65;
-    public static final int T__37=37;
-    public static final int T__38=38;
-    public static final int T__39=39;
+    public static final int T__50=50;
+    public static final int T__42=42;
+    public static final int T__43=43;
+    public static final int T__40=40;
+    public static final int T__41=41;
+    public static final int T__46=46;
+    public static final int T__47=47;
+    public static final int T__44=44;
+    public static final int T__45=45;
+    public static final int T__48=48;
+    public static final int T__49=49;
+    public static final int RULE_SL_COMMENT=10;
+    public static final int T__30=30;
+    public static final int T__31=31;
+    public static final int T__32=32;
     public static final int T__33=33;
     public static final int T__34=34;
     public static final int T__35=35;
     public static final int T__36=36;
-    public static final int T__30=30;
-    public static final int T__31=31;
-    public static final int T__32=32;
-    public static final int T__48=48;
-    public static final int T__49=49;
-    public static final int T__44=44;
-    public static final int T__45=45;
-    public static final int T__46=46;
-    public static final int T__47=47;
-    public static final int T__40=40;
-    public static final int T__41=41;
-    public static final int T__42=42;
-    public static final int T__43=43;
-    public static final int T__91=91;
-    public static final int T__92=92;
-    public static final int T__93=93;
-    public static final int T__94=94;
-    public static final int T__90=90;
-    public static final int T__19=19;
-    public static final int T__15=15;
-    public static final int T__16=16;
-    public static final int T__17=17;
-    public static final int T__18=18;
-    public static final int T__13=13;
-    public static final int T__14=14;
-    public static final int T__95=95;
-    public static final int T__96=96;
-    public static final int T__97=97;
-    public static final int T__98=98;
-    public static final int RULE_DECIMAL=7;
-    public static final int T__26=26;
-    public static final int T__27=27;
-    public static final int T__28=28;
-    public static final int T__29=29;
-    public static final int T__22=22;
-    public static final int T__23=23;
-    public static final int T__24=24;
-    public static final int T__25=25;
-    public static final int T__20=20;
-    public static final int T__21=21;
-    public static final int T__70=70;
-    public static final int T__71=71;
-    public static final int T__72=72;
-    public static final int RULE_STRING=8;
-    public static final int RULE_SL_COMMENT=10;
-    public static final int T__77=77;
-    public static final int T__78=78;
-    public static final int T__79=79;
-    public static final int T__73=73;
-    public static final int EOF=-1;
-    public static final int T__74=74;
-    public static final int T__75=75;
-    public static final int T__76=76;
-    public static final int T__80=80;
-    public static final int T__81=81;
-    public static final int T__82=82;
-    public static final int T__83=83;
+    public static final int T__37=37;
+    public static final int T__38=38;
+    public static final int T__39=39;
     public static final int RULE_WS=11;
-    public static final int RULE_ANY_OTHER=12;
-    public static final int T__88=88;
-    public static final int T__89=89;
-    public static final int T__84=84;
-    public static final int T__85=85;
-    public static final int T__86=86;
-    public static final int T__87=87;
 
     // delegates
     // delegators
@@ -8954,11 +8954,11 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
                 {
                 int LA10_2 = input.LA(2);
 
-                if ( (LA10_2==13) ) {
-                    alt10=1;
-                }
-                else if ( (LA10_2==EOF||(LA10_2>=RULE_ID && LA10_2<=RULE_STRING)||(LA10_2>=14 && LA10_2<=50)||(LA10_2>=52 && LA10_2<=54)||(LA10_2>=56 && LA10_2<=58)||(LA10_2>=62 && LA10_2<=63)||(LA10_2>=70 && LA10_2<=90)||(LA10_2>=94 && LA10_2<=95)||(LA10_2>=97 && LA10_2<=98)) ) {
+                if ( (LA10_2==EOF||(LA10_2>=RULE_ID && LA10_2<=RULE_STRING)||(LA10_2>=14 && LA10_2<=50)||(LA10_2>=52 && LA10_2<=54)||(LA10_2>=56 && LA10_2<=58)||(LA10_2>=62 && LA10_2<=63)||(LA10_2>=70 && LA10_2<=90)||(LA10_2>=94 && LA10_2<=95)||(LA10_2>=97 && LA10_2<=98)) ) {
                     alt10=2;
+                }
+                else if ( (LA10_2==13) ) {
+                    alt10=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -8992,11 +8992,11 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
                 {
                 int LA10_4 = input.LA(2);
 
-                if ( (LA10_4==13) ) {
-                    alt10=1;
-                }
-                else if ( (LA10_4==EOF||(LA10_4>=RULE_ID && LA10_4<=RULE_STRING)||(LA10_4>=14 && LA10_4<=50)||(LA10_4>=52 && LA10_4<=54)||(LA10_4>=56 && LA10_4<=58)||(LA10_4>=62 && LA10_4<=63)||(LA10_4>=70 && LA10_4<=90)||(LA10_4>=94 && LA10_4<=95)||(LA10_4>=97 && LA10_4<=98)) ) {
+                if ( (LA10_4==EOF||(LA10_4>=RULE_ID && LA10_4<=RULE_STRING)||(LA10_4>=14 && LA10_4<=50)||(LA10_4>=52 && LA10_4<=54)||(LA10_4>=56 && LA10_4<=58)||(LA10_4>=62 && LA10_4<=63)||(LA10_4>=70 && LA10_4<=90)||(LA10_4>=94 && LA10_4<=95)||(LA10_4>=97 && LA10_4<=98)) ) {
                     alt10=2;
+                }
+                else if ( (LA10_4==13) ) {
+                    alt10=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -9011,11 +9011,11 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
                 {
                 int LA10_5 = input.LA(2);
 
-                if ( (LA10_5==EOF||(LA10_5>=RULE_ID && LA10_5<=RULE_STRING)||(LA10_5>=14 && LA10_5<=50)||(LA10_5>=52 && LA10_5<=54)||(LA10_5>=56 && LA10_5<=58)||(LA10_5>=62 && LA10_5<=63)||(LA10_5>=70 && LA10_5<=90)||(LA10_5>=94 && LA10_5<=95)||(LA10_5>=97 && LA10_5<=98)) ) {
-                    alt10=2;
-                }
-                else if ( (LA10_5==13) ) {
+                if ( (LA10_5==13) ) {
                     alt10=1;
+                }
+                else if ( (LA10_5==EOF||(LA10_5>=RULE_ID && LA10_5<=RULE_STRING)||(LA10_5>=14 && LA10_5<=50)||(LA10_5>=52 && LA10_5<=54)||(LA10_5>=56 && LA10_5<=58)||(LA10_5>=62 && LA10_5<=63)||(LA10_5>=70 && LA10_5<=90)||(LA10_5>=94 && LA10_5<=95)||(LA10_5>=97 && LA10_5<=98)) ) {
+                    alt10=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -9991,11 +9991,11 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
             if ( (LA16_0==26) ) {
                 int LA16_1 = input.LA(2);
 
-                if ( (LA16_1==EOF||(LA16_1>=RULE_ID && LA16_1<=RULE_STRING)||LA16_1==27||(LA16_1>=34 && LA16_1<=35)||LA16_1==40||(LA16_1>=45 && LA16_1<=50)||LA16_1==52||LA16_1==56||LA16_1==62||LA16_1==72||LA16_1==74||LA16_1==76||(LA16_1>=79 && LA16_1<=87)||LA16_1==89||LA16_1==98) ) {
-                    alt16=2;
-                }
-                else if ( (LA16_1==26) ) {
+                if ( (LA16_1==26) ) {
                     alt16=1;
+                }
+                else if ( (LA16_1==EOF||(LA16_1>=RULE_ID && LA16_1<=RULE_STRING)||LA16_1==27||(LA16_1>=34 && LA16_1<=35)||LA16_1==40||(LA16_1>=45 && LA16_1<=50)||LA16_1==52||LA16_1==56||LA16_1==62||LA16_1==72||LA16_1==74||LA16_1==76||(LA16_1>=79 && LA16_1<=87)||LA16_1==89||LA16_1==98) ) {
+                    alt16=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -11725,11 +11725,11 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
             if ( (LA29_0==72) ) {
                 int LA29_1 = input.LA(2);
 
-                if ( (LA29_1==52) ) {
-                    alt29=1;
-                }
-                else if ( (LA29_1==56) ) {
+                if ( (LA29_1==56) ) {
                     alt29=2;
+                }
+                else if ( (LA29_1==52) ) {
+                    alt29=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -66568,39 +66568,11 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
 
     // Delegated rules
 
-    public final boolean synpred127_InternalSpeADL() {
+    public final boolean synpred154_InternalSpeADL() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred127_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred173_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred173_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred135_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred135_InternalSpeADL_fragment(); // can never throw exception
+            synpred154_InternalSpeADL_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -66615,216 +66587,6 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
         int start = input.mark();
         try {
             synpred51_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred130_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred130_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred131_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred131_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred182_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred182_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred77_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred77_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred60_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred60_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred128_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred128_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred122_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred122_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred73_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred73_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred126_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred126_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred132_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred132_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred174_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred174_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred179_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred179_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred144_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred144_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred136_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred136_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred78_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred78_InternalSpeADL_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -66862,11 +66624,11 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred37_InternalSpeADL() {
+    public final boolean synpred168_InternalSpeADL() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred37_InternalSpeADL_fragment(); // can never throw exception
+            synpred168_InternalSpeADL_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -66876,11 +66638,151 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred38_InternalSpeADL() {
+    public final boolean synpred78_InternalSpeADL() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred38_InternalSpeADL_fragment(); // can never throw exception
+            synpred78_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred131_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred131_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred125_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred125_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred132_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred132_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred179_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred179_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred77_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred77_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred60_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred60_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred130_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred130_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred122_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred122_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred144_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred144_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred172_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred172_InternalSpeADL_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -66895,6 +66797,160 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
         int start = input.mark();
         try {
             synpred84_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred37_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred37_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred128_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred128_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred126_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred126_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred181_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred181_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred174_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred174_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred127_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred127_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred180_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred180_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred59_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred59_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred136_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred136_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred129_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred129_InternalSpeADL_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred73_InternalSpeADL() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred73_InternalSpeADL_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -66932,11 +66988,11 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred154_InternalSpeADL() {
+    public final boolean synpred38_InternalSpeADL() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred154_InternalSpeADL_fragment(); // can never throw exception
+            synpred38_InternalSpeADL_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -66946,11 +67002,11 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred180_InternalSpeADL() {
+    public final boolean synpred135_InternalSpeADL() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred180_InternalSpeADL_fragment(); // can never throw exception
+            synpred135_InternalSpeADL_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -66960,11 +67016,11 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred172_InternalSpeADL() {
+    public final boolean synpred182_InternalSpeADL() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred172_InternalSpeADL_fragment(); // can never throw exception
+            synpred182_InternalSpeADL_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -66974,39 +67030,11 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred168_InternalSpeADL() {
+    public final boolean synpred173_InternalSpeADL() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred168_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred129_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred129_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred59_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred59_InternalSpeADL_fragment(); // can never throw exception
+            synpred173_InternalSpeADL_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -67021,34 +67049,6 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
         int start = input.mark();
         try {
             synpred151_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred181_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred181_InternalSpeADL_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred125_InternalSpeADL() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred125_InternalSpeADL_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -67090,14 +67090,14 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
     static final String DFA15_maxS =
         "\1\41\2\uffff\1\36\7\uffff";
     static final String DFA15_acceptS =
-        "\1\uffff\1\1\1\2\1\uffff\1\4\1\5\1\7\1\10\1\11\1\6\1\3";
+        "\1\uffff\1\1\1\2\1\uffff\1\4\1\5\1\7\1\10\1\11\1\3\1\6";
     static final String DFA15_specialS =
         "\13\uffff}>";
     static final String[] DFA15_transitionS = {
             "\1\3\1\6\1\1\1\2\1\4\1\5\1\7\1\10",
             "",
             "",
-            "\1\11\3\uffff\1\12",
+            "\1\12\3\uffff\1\11",
             "",
             "",
             "",
@@ -67739,23 +67739,23 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
     static final String DFA46_eotS =
         "\7\uffff";
     static final String DFA46_eofS =
-        "\2\uffff\1\4\3\uffff\1\4";
+        "\2\uffff\1\4\2\uffff\1\4\1\uffff";
     static final String DFA46_minS =
-        "\1\4\1\uffff\1\53\1\4\2\uffff\1\53";
+        "\1\4\1\uffff\1\53\1\4\1\uffff\1\53\1\uffff";
     static final String DFA46_maxS =
-        "\1\56\1\uffff\1\111\1\44\2\uffff\1\111";
+        "\1\56\1\uffff\1\111\1\44\1\uffff\1\111\1\uffff";
     static final String DFA46_acceptS =
-        "\1\uffff\1\1\2\uffff\1\2\1\3\1\uffff";
+        "\1\uffff\1\1\2\uffff\1\2\1\uffff\1\3";
     static final String DFA46_specialS =
         "\7\uffff}>";
     static final String[] DFA46_transitionS = {
             "\1\2\51\uffff\1\1",
             "",
             "\1\3\3\uffff\1\4\3\uffff\1\4\25\uffff\1\4",
-            "\1\6\37\uffff\1\5",
+            "\1\5\37\uffff\1\6",
             "",
-            "",
-            "\1\3\3\uffff\1\4\3\uffff\1\4\25\uffff\1\4"
+            "\1\3\3\uffff\1\4\3\uffff\1\4\25\uffff\1\4",
+            ""
     };
 
     static final short[] DFA46_eot = DFA.unpackEncodedString(DFA46_eotS);
@@ -67961,7 +67961,7 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
     static final String DFA75_acceptS =
         "\10\uffff\1\2\1\1";
     static final String DFA75_specialS =
-        "\1\uffff\1\0\1\3\1\5\1\6\1\1\1\4\1\2\2\uffff}>";
+        "\1\uffff\1\6\1\3\1\2\1\4\1\0\1\5\1\1\2\uffff}>";
     static final String[] DFA75_transitionS = {
             "\5\10\5\uffff\2\10\1\1\1\2\1\3\1\4\1\5\5\10\1\7\1\6\27\10\1\uffff\3\10\1\uffff\3\10\3\uffff\2\10\6\uffff\25\10\3\uffff\2\10\1\uffff\2\10",
             "\1\uffff",
@@ -68012,21 +68012,6 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA75_1 = input.LA(1);
-
-                         
-                        int index75_1 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred122_InternalSpeADL()) ) {s = 9;}
-
-                        else if ( (true) ) {s = 8;}
-
-                         
-                        input.seek(index75_1);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 1 : 
                         int LA75_5 = input.LA(1);
 
                          
@@ -68041,7 +68026,7 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
                         input.seek(index75_5);
                         if ( s>=0 ) return s;
                         break;
-                    case 2 : 
+                    case 1 : 
                         int LA75_7 = input.LA(1);
 
                          
@@ -68054,6 +68039,21 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
 
                          
                         input.seek(index75_7);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 2 : 
+                        int LA75_3 = input.LA(1);
+
+                         
+                        int index75_3 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred122_InternalSpeADL()) ) {s = 9;}
+
+                        else if ( (true) ) {s = 8;}
+
+                         
+                        input.seek(index75_3);
                         if ( s>=0 ) return s;
                         break;
                     case 3 : 
@@ -68072,6 +68072,21 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
                         if ( s>=0 ) return s;
                         break;
                     case 4 : 
+                        int LA75_4 = input.LA(1);
+
+                         
+                        int index75_4 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred122_InternalSpeADL()) ) {s = 9;}
+
+                        else if ( (true) ) {s = 8;}
+
+                         
+                        input.seek(index75_4);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 5 : 
                         int LA75_6 = input.LA(1);
 
                          
@@ -68086,26 +68101,11 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
                         input.seek(index75_6);
                         if ( s>=0 ) return s;
                         break;
-                    case 5 : 
-                        int LA75_3 = input.LA(1);
-
-                         
-                        int index75_3 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred122_InternalSpeADL()) ) {s = 9;}
-
-                        else if ( (true) ) {s = 8;}
-
-                         
-                        input.seek(index75_3);
-                        if ( s>=0 ) return s;
-                        break;
                     case 6 : 
-                        int LA75_4 = input.LA(1);
+                        int LA75_1 = input.LA(1);
 
                          
-                        int index75_4 = input.index();
+                        int index75_1 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred122_InternalSpeADL()) ) {s = 9;}
@@ -68113,7 +68113,7 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
                         else if ( (true) ) {s = 8;}
 
                          
-                        input.seek(index75_4);
+                        input.seek(index75_1);
                         if ( s>=0 ) return s;
                         break;
             }
@@ -68135,7 +68135,7 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
     static final String DFA81_acceptS =
         "\1\uffff\1\2\10\uffff\1\1";
     static final String DFA81_specialS =
-        "\2\uffff\1\4\1\3\1\1\1\6\1\5\1\2\1\0\1\7\1\uffff}>";
+        "\2\uffff\1\5\1\1\1\0\1\6\1\3\1\4\1\2\1\7\1\uffff}>";
     static final String[] DFA81_transitionS = {
             "\5\1\5\uffff\14\1\1\3\1\2\1\4\1\5\1\6\1\7\1\10\1\11\21\1\1\uffff\3\1\1\uffff\3\1\3\uffff\2\1\6\uffff\25\1\3\uffff\2\1\1\uffff\2\1",
             "",
@@ -68187,21 +68187,6 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA81_8 = input.LA(1);
-
-                         
-                        int index81_8 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred128_InternalSpeADL()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index81_8);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 1 : 
                         int LA81_4 = input.LA(1);
 
                          
@@ -68216,22 +68201,7 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
                         input.seek(index81_4);
                         if ( s>=0 ) return s;
                         break;
-                    case 2 : 
-                        int LA81_7 = input.LA(1);
-
-                         
-                        int index81_7 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred128_InternalSpeADL()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index81_7);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 3 : 
+                    case 1 : 
                         int LA81_3 = input.LA(1);
 
                          
@@ -68246,11 +68216,11 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
                         input.seek(index81_3);
                         if ( s>=0 ) return s;
                         break;
-                    case 4 : 
-                        int LA81_2 = input.LA(1);
+                    case 2 : 
+                        int LA81_8 = input.LA(1);
 
                          
-                        int index81_2 = input.index();
+                        int index81_8 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred128_InternalSpeADL()) ) {s = 10;}
@@ -68258,10 +68228,10 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
                         else if ( (true) ) {s = 1;}
 
                          
-                        input.seek(index81_2);
+                        input.seek(index81_8);
                         if ( s>=0 ) return s;
                         break;
-                    case 5 : 
+                    case 3 : 
                         int LA81_6 = input.LA(1);
 
                          
@@ -68274,6 +68244,36 @@ public class InternalSpeADLParser extends AbstractInternalContentAssistParser {
 
                          
                         input.seek(index81_6);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 4 : 
+                        int LA81_7 = input.LA(1);
+
+                         
+                        int index81_7 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred128_InternalSpeADL()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index81_7);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 5 : 
+                        int LA81_2 = input.LA(1);
+
+                         
+                        int index81_2 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred128_InternalSpeADL()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index81_2);
                         if ( s>=0 ) return s;
                         break;
                     case 6 : 

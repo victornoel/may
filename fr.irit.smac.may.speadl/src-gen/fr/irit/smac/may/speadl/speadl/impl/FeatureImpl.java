@@ -22,11 +22,11 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.FeatureImpl#getName <em>Name</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.FeatureImpl#getParameterType <em>Parameter Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

@@ -321,8 +321,8 @@ public class SpeADLUtils {
    * (WITHOUT substituting parameters)
    */
   public Iterable<RequiredPort> getAllRequires(final AbstractComponent i) {
-    final Function1<AbstractComponent, EList<RequiredPort>> _function = new Function1<AbstractComponent, EList<RequiredPort>>() {
-      public EList<RequiredPort> apply(final AbstractComponent it) {
+    final Function1<AbstractComponent, Iterable<RequiredPort>> _function = new Function1<AbstractComponent, Iterable<RequiredPort>>() {
+      public Iterable<RequiredPort> apply(final AbstractComponent it) {
         return it.getRequires();
       }
     };
@@ -335,8 +335,8 @@ public class SpeADLUtils {
    * (WITHOUT substituting parameters)
    */
   public Iterable<ProvidedPort> getAllProvides(final AbstractComponent i) {
-    final Function1<AbstractComponent, EList<ProvidedPort>> _function = new Function1<AbstractComponent, EList<ProvidedPort>>() {
-      public EList<ProvidedPort> apply(final AbstractComponent it) {
+    final Function1<AbstractComponent, Iterable<ProvidedPort>> _function = new Function1<AbstractComponent, Iterable<ProvidedPort>>() {
+      public Iterable<ProvidedPort> apply(final AbstractComponent it) {
         return it.getProvides();
       }
     };

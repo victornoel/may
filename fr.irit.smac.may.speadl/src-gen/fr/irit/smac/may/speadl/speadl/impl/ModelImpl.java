@@ -30,11 +30,11 @@ import org.eclipse.xtext.xtype.XImportSection;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.ModelImpl#getImports <em>Imports</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.ModelImpl#getElements <em>Elements</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

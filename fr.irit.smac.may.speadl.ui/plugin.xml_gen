@@ -478,7 +478,7 @@
    </extension>
    <extension point="org.eclipse.ui.editorActions">
       <editorContribution targetID="fr.irit.smac.may.speadl.SpeADL" 
-                          id="fr.irit.smac.may.speadl.SpeADL.ide.rulerActions">
+                          id="fr.irit.smac.may.speadl.SpeADL.rulerActions">
 	     <action
 	             label="Not Used"
 	             class="fr.irit.smac.may.speadl.ui.SpeADLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
@@ -489,26 +489,26 @@
    </extension>
    <extension point="org.eclipse.ui.popupMenus">
       <viewerContribution
-         targetID="fr.irit.smac.may.speadl.SpeADL.ide.rulerContextMenu"
-         id="fr.irit.smac.may.speadl.SpeADL.ide.RulerPopupActions">
+         targetID="fr.irit.smac.may.speadl.SpeADL.RulerContext"
+         id="fr.irit.smac.may.speadl.SpeADL.RulerPopupActions">
          <action
             label="Toggle Breakpoint"
             class="fr.irit.smac.may.speadl.ui.SpeADLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
             menubarPath="debug"
-            id="fr.irit.smac.may.speadl.SpeADL.ide.rulerContextMenu.toggleBreakpointAction">
+            id="fr.irit.smac.may.speadl.SpeADL.rulerContextMenu.toggleBreakpointAction">
          </action>
          <action
             label="Not used"
             class="fr.irit.smac.may.speadl.ui.SpeADLExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
             menubarPath="debug"
-            id="fr.irit.smac.may.speadl.SpeADL.ide.rulerContextMenu.enableDisableBreakpointAction">
+            id="fr.irit.smac.may.speadl.SpeADL.rulerContextMenu.enableDisableBreakpointAction">
          </action>
          <action
            label="Breakpoint Properties"
            helpContextId="breakpoint_properties_action_context"
            class="fr.irit.smac.may.speadl.ui.SpeADLExecutableExtensionFactory:org.eclipse.jdt.debug.ui.actions.JavaBreakpointPropertiesRulerActionDelegate"
            menubarPath="group.properties"
-           id="fr.irit.smac.may.speadl.SpeADL.ide.rulerContextMenu.openBreapointPropertiesAction">
+           id="fr.irit.smac.may.speadl.SpeADL.rulerContextMenu.openBreapointPropertiesAction">
          </action>
       </viewerContribution>
    </extension>

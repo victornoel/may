@@ -11,10 +11,10 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.Port#getTypeReference <em>Type Reference</em>}</li>
  * </ul>
- * </p>
  *
  * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getPort()
  * @model

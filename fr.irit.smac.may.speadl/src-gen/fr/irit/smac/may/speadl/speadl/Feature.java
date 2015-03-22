@@ -13,11 +13,11 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.Feature#getName <em>Name</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.Feature#getParameterType <em>Parameter Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getFeature()
  * @model

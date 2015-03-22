@@ -15,11 +15,11 @@ import org.eclipse.xtext.xtype.XImportSection;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.Model#getImports <em>Imports</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.Model#getElements <em>Elements</em>}</li>
  * </ul>
- * </p>
  *
  * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getModel()
  * @model

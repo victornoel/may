@@ -16,6 +16,7 @@ import org.eclipse.xtext.common.types.JvmTypeParameter;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.AbstractComponent#getName <em>Name</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.AbstractComponent#getParameters <em>Parameters</em>}</li>
@@ -26,7 +27,6 @@ import org.eclipse.xtext.common.types.JvmTypeParameter;
  *   <li>{@link fr.irit.smac.may.speadl.speadl.AbstractComponent#getParts <em>Parts</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.AbstractComponent#getSpecies <em>Species</em>}</li>
  * </ul>
- * </p>
  *
  * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getAbstractComponent()
  * @model

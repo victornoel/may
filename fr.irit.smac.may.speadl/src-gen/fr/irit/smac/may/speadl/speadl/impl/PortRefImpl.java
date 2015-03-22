@@ -21,12 +21,12 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.PortRefImpl#isEcosystem <em>Ecosystem</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.PortRefImpl#getPart <em>Part</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.PortRefImpl#getPort <em>Port</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

@@ -35,6 +35,7 @@ import org.eclipse.xtext.common.types.JvmTypeParameter;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.EcosystemImpl#getName <em>Name</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.EcosystemImpl#getParameters <em>Parameters</em>}</li>
@@ -45,7 +46,6 @@ import org.eclipse.xtext.common.types.JvmTypeParameter;
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.EcosystemImpl#getParts <em>Parts</em>}</li>
  *   <li>{@link fr.irit.smac.may.speadl.speadl.impl.EcosystemImpl#getSpecies <em>Species</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
