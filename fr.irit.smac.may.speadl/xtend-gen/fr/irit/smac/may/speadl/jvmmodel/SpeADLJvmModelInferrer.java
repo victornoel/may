@@ -38,7 +38,6 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
-import org.eclipse.xtext.xbase.compiler.IAppendable;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor;
@@ -1293,98 +1292,89 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
       final Procedure1<JvmOperation> _function_4 = new Procedure1<JvmOperation>() {
         public void apply(final JvmOperation it) {
           it.setVisibility(JvmVisibility.PRIVATE);
-          final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-            public void apply(final ITreeAppendable it) {
-              StringConcatenation _builder = new StringConcatenation();
+          StringConcatenationClient _client = new StringConcatenationClient() {
+            @Override
+            protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
               _builder.append("assert this.");
               String _name = part.getName();
               _builder.append(_name, "");
               _builder.append(" == null: \"This is a bug.\";");
               _builder.newLineIfNotEmpty();
-              it.append(_builder);
-              boolean _matched = false;
-              if (!_matched) {
-                if (part instanceof ComponentPart) {
-                  _matched=true;
-                  StringConcatenation _builder_1 = new StringConcatenation();
-                  _builder_1.append("assert this.implem_");
+              {
+                if ((part instanceof ComponentPart)) {
+                  _builder.append("assert this.implem_");
                   String _name_1 = ((ComponentPart)part).getName();
-                  _builder_1.append(_name_1, "");
-                  _builder_1.append(" == null: \"This is a bug.\";");
-                  _builder_1.newLineIfNotEmpty();
-                  _builder_1.append("this.implem_");
+                  _builder.append(_name_1, "");
+                  _builder.append(" == null: \"This is a bug.\";");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("this.implem_");
                   String _name_2 = ((ComponentPart)part).getName();
-                  _builder_1.append(_name_2, "");
-                  _builder_1.append(" = this.implementation.make_");
+                  _builder.append(_name_2, "");
+                  _builder.append(" = this.implementation.make_");
                   String _name_3 = ((ComponentPart)part).getName();
-                  _builder_1.append(_name_3, "");
-                  _builder_1.append("();");
-                  _builder_1.newLineIfNotEmpty();
-                  _builder_1.append("if (this.implem_");
+                  _builder.append(_name_3, "");
+                  _builder.append("();");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("if (this.implem_");
                   String _name_4 = ((ComponentPart)part).getName();
-                  _builder_1.append(_name_4, "");
-                  _builder_1.append(" == null) {");
-                  _builder_1.newLineIfNotEmpty();
-                  _builder_1.append("\t");
-                  _builder_1.append("throw new RuntimeException(\"make_");
+                  _builder.append(_name_4, "");
+                  _builder.append(" == null) {");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("throw new RuntimeException(\"make_");
                   String _name_5 = ((ComponentPart)part).getName();
-                  _builder_1.append(_name_5, "\t");
-                  _builder_1.append("() in ");
+                  _builder.append(_name_5, "\t");
+                  _builder.append("() in ");
                   String _qualifiedName = clazzRef.getQualifiedName();
-                  _builder_1.append(_qualifiedName, "\t");
-                  _builder_1.append(" should not return null.\");");
-                  _builder_1.newLineIfNotEmpty();
-                  _builder_1.append("}");
-                  _builder_1.newLine();
-                  _builder_1.append("this.");
+                  _builder.append(_qualifiedName, "\t");
+                  _builder.append(" should not return null.\");");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("}");
+                  _builder.newLine();
+                  _builder.append("this.");
                   String _name_6 = ((ComponentPart)part).getName();
-                  _builder_1.append(_name_6, "");
-                  _builder_1.append(" = this.implem_");
+                  _builder.append(_name_6, "");
+                  _builder.append(" = this.implem_");
                   String _name_7 = ((ComponentPart)part).getName();
-                  _builder_1.append(_name_7, "");
-                  _builder_1.append("._newComponent(new ");
-                  _builder_1.append(SpeADLJvmModelInferrer.REQUIRES_CLASS_PREFIX, "");
-                  _builder_1.append("_");
+                  _builder.append(_name_7, "");
+                  _builder.append("._newComponent(new ");
+                  _builder.append(SpeADLJvmModelInferrer.REQUIRES_CLASS_PREFIX, "");
+                  _builder.append("_");
                   String _name_8 = ((ComponentPart)part).getName();
-                  _builder_1.append(_name_8, "");
-                  _builder_1.append("(), false);");
-                  _builder_1.newLineIfNotEmpty();
-                  it.append(_builder_1);
-                }
-              }
-              if (!_matched) {
-                if (part instanceof SpeciesPart) {
-                  _matched=true;
-                  StringConcatenation _builder_1 = new StringConcatenation();
-                  _builder_1.append("assert this.implementation.use_");
-                  String _name_1 = ((SpeciesPart)part).getName();
-                  _builder_1.append(_name_1, "");
-                  _builder_1.append(" != null: \"This is a bug.\";");
-                  _builder_1.newLineIfNotEmpty();
-                  _builder_1.append("this.");
-                  String _name_2 = ((SpeciesPart)part).getName();
-                  _builder_1.append(_name_2, "");
-                  _builder_1.append(" = this.implementation.use_");
-                  String _name_3 = ((SpeciesPart)part).getName();
-                  _builder_1.append(_name_3, "");
-                  _builder_1.append("._newComponent(new ");
-                  _builder_1.append(SpeADLJvmModelInferrer.REQUIRES_CLASS_PREFIX, "");
-                  _builder_1.append("_");
-                  SpeciesReference _speciesReference = ((SpeciesPart)part).getSpeciesReference();
-                  ComponentPart _part = _speciesReference.getPart();
-                  String _name_4 = _part.getName();
-                  _builder_1.append(_name_4, "");
-                  _builder_1.append("_");
-                  String _name_5 = ((SpeciesPart)part).getName();
-                  _builder_1.append(_name_5, "");
-                  _builder_1.append("(), false);");
-                  _builder_1.newLineIfNotEmpty();
-                  it.append(_builder_1);
+                  _builder.append(_name_8, "");
+                  _builder.append("(), false);");
+                  _builder.newLineIfNotEmpty();
+                } else {
+                  if ((part instanceof SpeciesPart)) {
+                    _builder.append("assert this.implementation.use_");
+                    String _name_9 = part.getName();
+                    _builder.append(_name_9, "");
+                    _builder.append(" != null: \"This is a bug.\";");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("this.");
+                    String _name_10 = part.getName();
+                    _builder.append(_name_10, "");
+                    _builder.append(" = this.implementation.use_");
+                    String _name_11 = part.getName();
+                    _builder.append(_name_11, "");
+                    _builder.append("._newComponent(new ");
+                    _builder.append(SpeADLJvmModelInferrer.REQUIRES_CLASS_PREFIX, "");
+                    _builder.append("_");
+                    SpeciesReference _speciesReference = ((SpeciesPart) part).getSpeciesReference();
+                    ComponentPart _part = _speciesReference.getPart();
+                    String _name_12 = _part.getName();
+                    _builder.append(_name_12, "");
+                    _builder.append("_");
+                    String _name_13 = part.getName();
+                    _builder.append(_name_13, "");
+                    _builder.append("(), false);");
+                    _builder.newLineIfNotEmpty();
+                  }
                 }
               }
             }
           };
-          SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+          SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
         }
       };
       JvmOperation _method_1 = this._speADLJvmTypesBuilder.toMethod(part, _plus, _typeRef_1, _function_4);
@@ -1431,73 +1421,79 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
     JvmOperation _method_2 = this._speADLJvmTypesBuilder.toMethod(comp, "initParts", _typeRef_2, _function_5);
     this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_4, _method_2);
     EList<ProvidedPort> _provides = comp.getProvides();
-    final Function1<ProvidedPort, Boolean> _function_6 = new Function1<ProvidedPort, Boolean>() {
-      public Boolean apply(final ProvidedPort it) {
-        boolean _and = false;
-        PortRef _bound = it.getBound();
-        boolean _tripleEquals = (_bound == null);
-        if (!_tripleEquals) {
-          _and = false;
-        } else {
-          LightweightTypeReference _overridenPortTypeRef = SpeADLJvmModelInferrer.this._speADLUtils.getOverridenPortTypeRef(it);
-          boolean _tripleEquals_1 = (_overridenPortTypeRef == null);
-          _and = _tripleEquals_1;
-        }
-        return Boolean.valueOf(_and);
-      }
-    };
-    final Iterable<ProvidedPort> providesToInit = IterableExtensions.<ProvidedPort>filter(_provides, _function_6);
-    for (final ProvidedPort port : providesToInit) {
-      EList<JvmMember> _members_5 = componentClass.getMembers();
-      String _name_1 = port.getName();
-      String _plus_1 = ("init_" + _name_1);
-      JvmTypeReference _typeRef_3 = this._typeReferenceBuilder.typeRef(void.class);
-      final Procedure1<JvmOperation> _function_7 = new Procedure1<JvmOperation>() {
-        public void apply(final JvmOperation it) {
-          it.setVisibility(JvmVisibility.PRIVATE);
-          StringConcatenationClient _client = new StringConcatenationClient() {
-            @Override
-            protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-              _builder.append("assert this.");
-              String _name = port.getName();
-              _builder.append(_name, "");
-              _builder.append(" == null: \"This is a bug.\";");
-              _builder.newLineIfNotEmpty();
-              _builder.append("this.");
-              String _name_1 = port.getName();
-              _builder.append(_name_1, "");
-              _builder.append(" = this.implementation.make_");
-              String _name_2 = port.getName();
-              _builder.append(_name_2, "");
-              _builder.append("();");
-              _builder.newLineIfNotEmpty();
-              _builder.append("if (this.");
-              String _name_3 = port.getName();
-              _builder.append(_name_3, "");
-              _builder.append(" == null) {");
-              _builder.newLineIfNotEmpty();
-              _builder.append("\t");
-              _builder.append("throw new RuntimeException(\"make_");
-              String _name_4 = port.getName();
-              _builder.append(_name_4, "\t");
-              _builder.append("() in ");
-              String _qualifiedName = clazzRef.getQualifiedName();
-              _builder.append(_qualifiedName, "\t");
-              _builder.append(" should not return null.\");");
-              _builder.newLineIfNotEmpty();
-              _builder.append("}");
-              _builder.newLine();
+    for (final ProvidedPort port : _provides) {
+      {
+        LightweightTypeReference _overridenPortTypeRef = this._speADLUtils.getOverridenPortTypeRef(port);
+        final boolean isOverride = (_overridenPortTypeRef != null);
+        EList<JvmMember> _members_5 = componentClass.getMembers();
+        String _name_1 = port.getName();
+        String _plus_1 = ("init_" + _name_1);
+        JvmTypeReference _typeRef_3 = this._typeReferenceBuilder.typeRef(void.class);
+        final Procedure1<JvmOperation> _function_6 = new Procedure1<JvmOperation>() {
+          public void apply(final JvmOperation it) {
+            it.setVisibility(JvmVisibility.PROTECTED);
+            if (isOverride) {
+              EList<JvmAnnotationReference> _annotations = it.getAnnotations();
+              JvmAnnotationReference _annotationRef = SpeADLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Override.class);
+              SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotationRef);
             }
-          };
-          SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
-        }
-      };
-      JvmOperation _method_3 = this._speADLJvmTypesBuilder.toMethod(port, _plus_1, _typeRef_3, _function_7);
-      this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_5, _method_3);
+            PortRef _bound = port.getBound();
+            boolean _tripleEquals = (_bound == null);
+            if (_tripleEquals) {
+              StringConcatenationClient _client = new StringConcatenationClient() {
+                @Override
+                protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                  _builder.append("assert this.");
+                  String _name = port.getName();
+                  _builder.append(_name, "");
+                  _builder.append(" == null: \"This is a bug.\";");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("this.");
+                  String _name_1 = port.getName();
+                  _builder.append(_name_1, "");
+                  _builder.append(" = this.implementation.make_");
+                  String _name_2 = port.getName();
+                  _builder.append(_name_2, "");
+                  _builder.append("();");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("if (this.");
+                  String _name_3 = port.getName();
+                  _builder.append(_name_3, "");
+                  _builder.append(" == null) {");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("\t");
+                  _builder.append("throw new RuntimeException(\"make_");
+                  String _name_4 = port.getName();
+                  _builder.append(_name_4, "\t");
+                  _builder.append("() in ");
+                  String _qualifiedName = clazzRef.getQualifiedName();
+                  _builder.append(_qualifiedName, "\t");
+                  _builder.append(" shall not return null.\");");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("}");
+                  _builder.newLine();
+                }
+              };
+              SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
+            } else {
+              StringConcatenationClient _client_1 = new StringConcatenationClient() {
+                @Override
+                protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                  _builder.append("// nothing to do here");
+                  _builder.newLine();
+                }
+              };
+              SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client_1);
+            }
+          }
+        };
+        JvmOperation _method_3 = this._speADLJvmTypesBuilder.toMethod(port, _plus_1, _typeRef_3, _function_6);
+        this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_5, _method_3);
+      }
     }
-    EList<JvmMember> _members_6 = componentClass.getMembers();
-    JvmTypeReference _typeRef_4 = this._typeReferenceBuilder.typeRef(void.class);
-    final Procedure1<JvmOperation> _function_8 = new Procedure1<JvmOperation>() {
+    EList<JvmMember> _members_5 = componentClass.getMembers();
+    JvmTypeReference _typeRef_3 = this._typeReferenceBuilder.typeRef(void.class);
+    final Procedure1<JvmOperation> _function_6 = new Procedure1<JvmOperation>() {
       public void apply(final JvmOperation it) {
         JvmParameterizedTypeReference _specializes = comp.getSpecializes();
         boolean _tripleNotEquals = (_specializes != null);
@@ -1519,7 +1515,15 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
               }
             }
             {
-              for(final ProvidedPort port : providesToInit) {
+              EList<ProvidedPort> _provides = comp.getProvides();
+              final Function1<ProvidedPort, Boolean> _function = new Function1<ProvidedPort, Boolean>() {
+                public Boolean apply(final ProvidedPort it) {
+                  LightweightTypeReference _overridenPortTypeRef = SpeADLJvmModelInferrer.this._speADLUtils.getOverridenPortTypeRef(it);
+                  return Boolean.valueOf((_overridenPortTypeRef == null));
+                }
+              };
+              Iterable<ProvidedPort> _filter = IterableExtensions.<ProvidedPort>filter(_provides, _function);
+              for(final ProvidedPort port : _filter) {
                 _builder.append("init_");
                 String _name = port.getName();
                 _builder.append(_name, "");
@@ -1532,10 +1536,10 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
       }
     };
-    JvmOperation _method_4 = this._speADLJvmTypesBuilder.toMethod(comp, "initProvidedPorts", _typeRef_4, _function_8);
-    this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_6, _method_4);
-    EList<JvmMember> _members_7 = componentClass.getMembers();
-    final Procedure1<JvmConstructor> _function_9 = new Procedure1<JvmConstructor>() {
+    JvmOperation _method_3 = this._speADLJvmTypesBuilder.toMethod(comp, "initProvidedPorts", _typeRef_3, _function_6);
+    this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_5, _method_3);
+    EList<JvmMember> _members_6 = componentClass.getMembers();
+    final Procedure1<JvmConstructor> _function_7 = new Procedure1<JvmConstructor>() {
       public void apply(final JvmConstructor it) {
         EList<JvmFormalParameter> _parameters = it.getParameters();
         JvmFormalParameter _newParameter = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.newParameter("implem", clazzRef);
@@ -1589,8 +1593,8 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
       }
     };
-    JvmConstructor _newConstructor = this._speADLJvmTypesBuilder.newConstructor(_function_9);
-    this._speADLJvmTypesBuilder.<JvmConstructor>operator_add(_members_7, _newConstructor);
+    JvmConstructor _newConstructor = this._speADLJvmTypesBuilder.newConstructor(_function_7);
+    this._speADLJvmTypesBuilder.<JvmConstructor>operator_add(_members_6, _newConstructor);
     EList<ProvidedPort> _provides_1 = comp.getProvides();
     for (final ProvidedPort port_1 : _provides_1) {
       {
@@ -1599,76 +1603,48 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         final JvmTypeReference ptr = this._speADLUtils.substituteWith(_typeReference, substitutor);
         LightweightTypeReference _overridenPortTypeRef = this._speADLUtils.getOverridenPortTypeRef(port_1);
         final boolean isOverride = (_overridenPortTypeRef != null);
-        boolean _and = false;
-        boolean _tripleEquals = (bound == null);
-        if (!_tripleEquals) {
-          _and = false;
-        } else {
-          _and = (!isOverride);
-        }
-        if (_and) {
-          EList<JvmMember> _members_8 = componentClass.getMembers();
-          String _name_2 = port_1.getName();
-          final Procedure1<JvmField> _function_10 = new Procedure1<JvmField>() {
+        final boolean isBound = (bound != null);
+        if ((!isBound)) {
+          EList<JvmMember> _members_7 = componentClass.getMembers();
+          String _name_1 = port_1.getName();
+          final Procedure1<JvmField> _function_8 = new Procedure1<JvmField>() {
             public void apply(final JvmField it) {
             }
           };
-          JvmField _newField_2 = this._speADLJvmTypesBuilder.newField(_name_2, ptr, _function_10);
-          this._speADLJvmTypesBuilder.<JvmField>operator_add(_members_8, _newField_2);
+          JvmField _newField_2 = this._speADLJvmTypesBuilder.newField(_name_1, ptr, _function_8);
+          this._speADLJvmTypesBuilder.<JvmField>operator_add(_members_7, _newField_2);
         }
-        EList<JvmMember> _members_9 = componentClass.getMembers();
-        String _name_3 = port_1.getName();
-        final Procedure1<JvmOperation> _function_11 = new Procedure1<JvmOperation>() {
+        EList<JvmMember> _members_8 = componentClass.getMembers();
+        String _name_2 = port_1.getName();
+        final Procedure1<JvmOperation> _function_9 = new Procedure1<JvmOperation>() {
           public void apply(final JvmOperation it) {
             if (isOverride) {
               EList<JvmAnnotationReference> _annotations = it.getAnnotations();
               JvmAnnotationReference _annotationRef = SpeADLJvmModelInferrer.this._annotationTypesBuilder.annotationRef(Override.class);
               SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.<JvmAnnotationReference>operator_add(_annotations, _annotationRef);
-              StringConcatenationClient _client = new StringConcatenationClient() {
-                @Override
-                protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                  _builder.append("// it\'s ok to cast because make_");
-                  String _name = port_1.getName();
-                  _builder.append(_name, "");
-                  _builder.append("()");
-                  _builder.newLineIfNotEmpty();
-                  _builder.append("// fill the parent class ");
-                  String _name_1 = port_1.getName();
-                  _builder.append(_name_1, "");
-                  _builder.append(" field with the correct type");
-                  _builder.newLineIfNotEmpty();
-                  _builder.append("return (");
-                  _builder.append(ptr, "");
-                  _builder.append(") super.");
-                  String _name_2 = port_1.getName();
-                  _builder.append(_name_2, "");
-                  _builder.append("();");
-                  _builder.newLineIfNotEmpty();
-                }
-              };
-              SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
-            } else {
-              final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-                public void apply(final ITreeAppendable it) {
-                  StringConcatenation _builder = new StringConcatenation();
-                  _builder.append("return this.");
-                  it.append(_builder);
-                  boolean _tripleEquals = (bound == null);
-                  if (_tripleEquals) {
-                    String _name = port_1.getName();
-                    it.append(_name);
-                  } else {
-                    SpeADLJvmModelInferrer.this.appendPortRefCall(it, bound, (comp instanceof Species));
-                  }
-                  it.append(";");
-                }
-              };
-              SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
             }
+            StringConcatenationClient _client = new StringConcatenationClient() {
+              @Override
+              protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                _builder.append("return this.");
+                {
+                  if (isBound) {
+                    CharSequence _portRefCall = SpeADLJvmModelInferrer.this.portRefCall(bound, (comp instanceof Species));
+                    _builder.append(_portRefCall, "");
+                  } else {
+                    String _name = port_1.getName();
+                    _builder.append(_name, "");
+                  }
+                }
+                _builder.append(";");
+                _builder.newLineIfNotEmpty();
+              }
+            };
+            SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
           }
         };
-        JvmOperation _method_5 = this._speADLJvmTypesBuilder.toMethod(port_1, _name_3, ptr, _function_11);
-        this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_9, _method_5);
+        JvmOperation _method_4 = this._speADLJvmTypesBuilder.toMethod(port_1, _name_2, ptr, _function_9);
+        this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_8, _method_4);
       }
     }
     EList<Part> _parts_1 = comp.getParts();
@@ -1677,27 +1653,27 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
         final JvmParameterizedTypeReference tr = this._speADLUtils.typeReference(part_1);
         final JvmTypeReference nptr = this._speADLUtils.substituteWith(tr, substitutor);
         final JvmParameterizedTypeReference ctr = this._speADLUtils.getInnerTypeReference(nptr, SpeADLJvmModelInferrer.COMPONENT_INTERFACE);
-        EList<JvmMember> _members_8 = componentClass.getMembers();
-        String _name_2 = part_1.getName();
-        final Procedure1<JvmField> _function_10 = new Procedure1<JvmField>() {
+        EList<JvmMember> _members_7 = componentClass.getMembers();
+        String _name_1 = part_1.getName();
+        final Procedure1<JvmField> _function_8 = new Procedure1<JvmField>() {
           public void apply(final JvmField it) {
           }
         };
-        JvmField _newField_2 = this._speADLJvmTypesBuilder.newField(_name_2, ctr, _function_10);
-        this._speADLJvmTypesBuilder.<JvmField>operator_add(_members_8, _newField_2);
+        JvmField _newField_2 = this._speADLJvmTypesBuilder.newField(_name_1, ctr, _function_8);
+        this._speADLJvmTypesBuilder.<JvmField>operator_add(_members_7, _newField_2);
         boolean _matched = false;
         if (!_matched) {
           if (part_1 instanceof ComponentPart) {
             _matched=true;
-            EList<JvmMember> _members_9 = componentClass.getMembers();
-            String _name_3 = ((ComponentPart)part_1).getName();
-            String _plus_2 = ("implem_" + _name_3);
-            final Procedure1<JvmField> _function_11 = new Procedure1<JvmField>() {
+            EList<JvmMember> _members_8 = componentClass.getMembers();
+            String _name_2 = ((ComponentPart)part_1).getName();
+            String _plus_1 = ("implem_" + _name_2);
+            final Procedure1<JvmField> _function_9 = new Procedure1<JvmField>() {
               public void apply(final JvmField it) {
               }
             };
-            JvmField _newField_3 = this._speADLJvmTypesBuilder.newField(_plus_2, nptr, _function_11);
-            this._speADLJvmTypesBuilder.<JvmField>operator_add(_members_9, _newField_3);
+            JvmField _newField_3 = this._speADLJvmTypesBuilder.newField(_plus_1, nptr, _function_9);
+            this._speADLJvmTypesBuilder.<JvmField>operator_add(_members_8, _newField_3);
           }
         }
         String _switchResult_1 = null;
@@ -1713,15 +1689,15 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             _matched_1=true;
             SpeciesReference _speciesReference = ((SpeciesPart)part_1).getSpeciesReference();
             ComponentPart _part = _speciesReference.getPart();
-            String _name_3 = _part.getName();
-            String _plus_2 = (_name_3 + "_");
-            String _name_4 = ((SpeciesPart)part_1).getName();
-            _switchResult_1 = (_plus_2 + _name_4);
+            String _name_2 = _part.getName();
+            String _plus_1 = (_name_2 + "_");
+            String _name_3 = ((SpeciesPart)part_1).getName();
+            _switchResult_1 = (_plus_1 + _name_3);
           }
         }
         final String bridgePartName = _switchResult_1;
-        EList<JvmMember> _members_9 = componentClass.getMembers();
-        final Procedure1<JvmGenericType> _function_11 = new Procedure1<JvmGenericType>() {
+        EList<JvmMember> _members_8 = componentClass.getMembers();
+        final Procedure1<JvmGenericType> _function_9 = new Procedure1<JvmGenericType>() {
           public void apply(final JvmGenericType it) {
             it.setVisibility(JvmVisibility.PRIVATE);
             it.setFinal(true);
@@ -1742,16 +1718,19 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                 final Procedure1<JvmOperation> _function = new Procedure1<JvmOperation>() {
                   public void apply(final JvmOperation it) {
                     it.setFinal(true);
-                    final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
-                      public void apply(final ITreeAppendable it) {
-                        it.append("return ");
-                        it.append(componentClass);
-                        it.append(".this.");
-                        SpeADLJvmModelInferrer.this.appendPortRefCall(it, bound, (comp instanceof Species));
-                        it.append(";");
+                    StringConcatenationClient _client = new StringConcatenationClient() {
+                      @Override
+                      protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                        _builder.append("return ");
+                        _builder.append(componentClass, "");
+                        _builder.append(".this.");
+                        CharSequence _portRefCall = SpeADLJvmModelInferrer.this.portRefCall(bound, (comp instanceof Species));
+                        _builder.append(_portRefCall, "");
+                        _builder.append(";");
+                        _builder.newLineIfNotEmpty();
                       }
                     };
-                    SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _function);
+                    SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
                   }
                 };
                 JvmOperation _method = SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.toMethod(binding, _name, rt, _function);
@@ -1760,11 +1739,11 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             }
           }
         };
-        JvmGenericType _newClass = this._speADLJvmTypesBuilder.newClass(((SpeADLJvmModelInferrer.REQUIRES_CLASS_PREFIX + "_") + bridgePartName), _function_11);
-        this._speADLJvmTypesBuilder.<JvmGenericType>operator_add(_members_9, _newClass);
-        EList<JvmMember> _members_10 = componentClass.getMembers();
-        String _name_3 = part_1.getName();
-        final Procedure1<JvmOperation> _function_12 = new Procedure1<JvmOperation>() {
+        JvmGenericType _newClass = this._speADLJvmTypesBuilder.newClass(((SpeADLJvmModelInferrer.REQUIRES_CLASS_PREFIX + "_") + bridgePartName), _function_9);
+        this._speADLJvmTypesBuilder.<JvmGenericType>operator_add(_members_8, _newClass);
+        EList<JvmMember> _members_9 = componentClass.getMembers();
+        String _name_2 = part_1.getName();
+        final Procedure1<JvmOperation> _function_10 = new Procedure1<JvmOperation>() {
           public void apply(final JvmOperation it) {
             it.setFinal(true);
             StringConcatenationClient _client = new StringConcatenationClient() {
@@ -1780,66 +1759,68 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
             SpeADLJvmModelInferrer.this._speADLJvmTypesBuilder.setBody(it, _client);
           }
         };
-        JvmOperation _method_5 = this._speADLJvmTypesBuilder.toMethod(part_1, _name_3, ctr, _function_12);
-        this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_10, _method_5);
+        JvmOperation _method_4 = this._speADLJvmTypesBuilder.toMethod(part_1, _name_2, ctr, _function_10);
+        this._speADLJvmTypesBuilder.<JvmOperation>operator_add(_members_9, _method_4);
       }
     }
   }
   
-  private void appendPortRefCall(final IAppendable it, final PortRef bound, final boolean inSpecies) {
-    Part _part = bound.getPart();
-    boolean _tripleNotEquals = (_part != null);
-    if (_tripleNotEquals) {
-      boolean _and = false;
-      if (!inSpecies) {
-        _and = false;
-      } else {
-        Part _part_1 = bound.getPart();
-        EObject _eContainer = _part_1.eContainer();
-        _and = (_eContainer instanceof Ecosystem);
-      }
-      if (_and) {
-        StringConcatenation _builder = new StringConcatenation();
-        _builder.append("implementation.ecosystemComponent.");
-        it.append(_builder);
-      }
-      StringConcatenation _builder_1 = new StringConcatenation();
-      Part _part_2 = bound.getPart();
-      String _name = _part_2.getName();
-      _builder_1.append(_name, "");
-      _builder_1.append("().");
-      it.append(_builder_1);
-    } else {
-      boolean _and_1 = false;
-      if (!inSpecies) {
-        _and_1 = false;
-      } else {
-        Port _port = bound.getPort();
-        EObject _eContainer_1 = _port.eContainer();
-        _and_1 = (_eContainer_1 instanceof Ecosystem);
-      }
-      if (_and_1) {
-        StringConcatenation _builder_2 = new StringConcatenation();
-        _builder_2.append("implementation.ecosystemComponent.");
-        it.append(_builder_2);
-      }
-      Port _port_1 = bound.getPort();
-      boolean _matched = false;
-      if (!_matched) {
-        if (_port_1 instanceof RequiredPort) {
-          _matched=true;
-          StringConcatenation _builder_3 = new StringConcatenation();
-          _builder_3.append("bridge.");
-          it.append(_builder_3);
+  private CharSequence portRefCall(final PortRef bound, final boolean inSpecies) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      Part _part = bound.getPart();
+      boolean _tripleNotEquals = (_part != null);
+      if (_tripleNotEquals) {
+        {
+          boolean _and = false;
+          if (!inSpecies) {
+            _and = false;
+          } else {
+            Part _part_1 = bound.getPart();
+            EObject _eContainer = _part_1.eContainer();
+            _and = (_eContainer instanceof Ecosystem);
+          }
+          if (_and) {
+            _builder.append("implementation.ecosystemComponent.");
+            _builder.newLine();
+          }
         }
+        Part _part_2 = bound.getPart();
+        String _name = _part_2.getName();
+        _builder.append(_name, "");
+        _builder.append("().");
+        _builder.newLineIfNotEmpty();
+      } else {
+        {
+          boolean _and_1 = false;
+          if (!inSpecies) {
+            _and_1 = false;
+          } else {
+            Port _port = bound.getPort();
+            EObject _eContainer_1 = _port.eContainer();
+            _and_1 = (_eContainer_1 instanceof Ecosystem);
+          }
+          if (_and_1) {
+            _builder.append("implementation.ecosystemComponent.");
+            _builder.newLine();
+            _builder.append("\t\t\t");
+          }
+        }
+        {
+          Port _port_1 = bound.getPort();
+          if ((_port_1 instanceof RequiredPort)) {
+            _builder.append("bridge.");
+          }
+        }
+        _builder.newLineIfNotEmpty();
       }
     }
-    StringConcatenation _builder_3 = new StringConcatenation();
     Port _port_2 = bound.getPort();
     String _name_1 = _port_2.getName();
-    _builder_3.append(_name_1, "");
-    _builder_3.append("()");
-    it.append(_builder_3);
+    _builder.append(_name_1, "");
+    _builder.append("()");
+    _builder.newLineIfNotEmpty();
+    return _builder;
   }
   
   public void infer(final EObject ecosystem, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {

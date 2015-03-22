@@ -12,7 +12,6 @@ import fr.irit.smac.may.speadl.speadl.SpeciesPart
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.naming.IQualifiedNameProvider
-import org.eclipse.xtext.xbase.compiler.IAppendable
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 
@@ -588,29 +587,20 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		for (part : comp.parts) {
 			componentClass.members += part.toMethod("init_"+part.name, typeRef(void)) [
 				visibility = JvmVisibility.PRIVATE
-				body = [
-					append('''
+				body = '''
 					assert this.«part.name» == null: "This is a bug.";
-					''')
-					switch part {
-						ComponentPart: {
-							append('''
-								assert this.implem_«part.name» == null: "This is a bug.";
-								this.implem_«part.name» = this.implementation.make_«part.name»();
-								if (this.implem_«part.name» == null) {
-									throw new RuntimeException("make_«part.name»() in «clazzRef.qualifiedName» should not return null.");
-								}
-								this.«part.name» = this.implem_«part.name»._newComponent(new «REQUIRES_CLASS_PREFIX»_«part.name»(), false);
-							''')
+					«IF part instanceof ComponentPart»
+						assert this.implem_«part.name» == null: "This is a bug.";
+						this.implem_«part.name» = this.implementation.make_«part.name»();
+						if (this.implem_«part.name» == null) {
+							throw new RuntimeException("make_«part.name»() in «clazzRef.qualifiedName» should not return null.");
 						}
-						SpeciesPart: {
-							append('''
-								assert this.implementation.use_«part.name» != null: "This is a bug.";
-								this.«part.name» = this.implementation.use_«part.name»._newComponent(new «REQUIRES_CLASS_PREFIX»_«part.speciesReference.part.name»_«part.name»(), false);
-							''')
-						}
-					}
-				]
+						this.«part.name» = this.implem_«part.name»._newComponent(new «REQUIRES_CLASS_PREFIX»_«part.name»(), false);
+					«ELSEIF part instanceof SpeciesPart»
+						assert this.implementation.use_«part.name» != null: "This is a bug.";
+						this.«part.name» = this.implementation.use_«part.name»._newComponent(new «REQUIRES_CLASS_PREFIX»_«(part as SpeciesPart).speciesReference.part.name»_«part.name»(), false);
+					«ENDIF»
+				'''
 			]
 		}
 		
@@ -629,18 +619,27 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			'''
 		]
 		
-		val providesToInit = comp.provides.filter[bound === null && overridenPortTypeRef === null]
-		
-		for(port: providesToInit) {
+		// we redefine everything in case of override
+		for(port: comp.provides) {
+			val isOverride = port.overridenPortTypeRef !== null
 			componentClass.members += port.toMethod("init_"+port.name, typeRef(void)) [
-				visibility = JvmVisibility.PRIVATE
-				body = '''
-					assert this.«port.name» == null: "This is a bug.";
-					this.«port.name» = this.implementation.make_«port.name»();
-					if (this.«port.name» == null) {
-						throw new RuntimeException("make_«port.name»() in «clazzRef.qualifiedName» should not return null.");
-					}
-				'''
+				visibility = JvmVisibility.PROTECTED
+				if (isOverride) {
+					annotations += annotationRef(Override)
+				}
+				if (port.bound === null) {
+					body = '''
+						assert this.«port.name» == null: "This is a bug.";
+						this.«port.name» = this.implementation.make_«port.name»();
+						if (this.«port.name» == null) {
+							throw new RuntimeException("make_«port.name»() in «clazzRef.qualifiedName» shall not return null.");
+						}
+					'''
+				} else {
+					body = '''
+						// nothing to do here
+					'''
+				}
 			]
 		}
 		
@@ -653,7 +652,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				«IF comp.specializes !== null»
 					super.initProvidedPorts();
 				«ENDIF»
-				«FOR port : providesToInit»
+				«FOR port : comp.provides.filter[overridenPortTypeRef === null]»
 					init_«port.name»();
 				«ENDFOR»
 			'''
@@ -689,31 +688,20 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			val ptr = port.typeReference.substituteWith(substitutor)
 			
 			val isOverride = port.overridenPortTypeRef !== null
+			val isBound = bound !== null
 			
-			if (bound === null && !isOverride) {
+			if (!isBound) {
+				// we don't reuse those of the super class in case of override
 				componentClass.members += newField(port.name, ptr) []
 			}
 			
 			componentClass.members += port.toMethod(port.name, ptr) [
 				if (isOverride) {
 					annotations += annotationRef(Override)
-					body = '''
-						// it's ok to cast because make_«port.name»()
-						// fill the parent class «port.name» field with the correct type
-						return («ptr») super.«port.name»();
-					'''
-					
-				} else {
-					body = [
-						append('''return this.''')
-						if (bound === null) {
-							append(port.name)
-						} else {
-							appendPortRefCall(bound, comp instanceof Species)
-						}
-						append(";")
-					]
 				}
+				body = '''
+					return this.«IF isBound»«portRefCall(bound, comp instanceof Species)»«ELSE»«port.name»«ENDIF»;
+				'''
 			]
 		}
 		
@@ -745,13 +733,9 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 					val rt = binding.resolveTypeFrom.substituteWith(substitutor).toJavaCompliantTypeReference
 					members += binding.toMethod(binding.from.name, rt) [
 						final = true
-						body = [
-							append("return ")
-							append(componentClass)
-							append(".this.")
-							appendPortRefCall(bound, comp instanceof Species)
-							append(";")
-						]
+						body = '''
+							return «componentClass».this.«portRefCall(bound, comp instanceof Species)»;
+						'''
 					]
 				}
 			]
@@ -765,20 +749,17 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		}
 	}
 	
-	private def void appendPortRefCall(IAppendable it, PortRef bound, boolean inSpecies) {
-		if (bound.part !== null) {
-			if (inSpecies && bound.part.eContainer instanceof Ecosystem) {
-				append('''implementation.ecosystemComponent.''')
-			}
-			append('''«bound.part.name»().''')
-		} else {
-			if (inSpecies && bound.port.eContainer instanceof Ecosystem) {
-				append('''implementation.ecosystemComponent.''')
-			}
-			switch bound.port {
-				RequiredPort: append('''bridge.''')
-			}
-		}
-		append('''«bound.port.name»()''')
-	}
+	private def CharSequence portRefCall(PortRef bound, boolean inSpecies) '''
+		«IF bound.part !== null»
+			«IF inSpecies && bound.part.eContainer instanceof Ecosystem»
+				implementation.ecosystemComponent.
+			«ENDIF»
+			«bound.part.name»().
+		«ELSE»
+			«IF inSpecies && bound.port.eContainer instanceof Ecosystem»
+				implementation.ecosystemComponent.
+			«ENDIF»«IF bound.port instanceof RequiredPort»bridge.«ENDIF»
+		«ENDIF»
+		«bound.port.name»()
+	'''
 }
