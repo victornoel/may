@@ -1,0 +1,7 @@
+/*/target/
+.*._trace
+/fr.irit.smac.may.speadl/.antlr-generator-*.jar
+/*/pom.xml.versionsBackup
+/*/.classpath
+/*/.project
+/*/.settings/
