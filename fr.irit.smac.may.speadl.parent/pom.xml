@@ -32,7 +32,7 @@
 
 	<properties>
 		<!-- Used for toolchain See: http://maven.apache.org/guides/mini/guide-using-toolchains.html -->
-		<tycho-version>0.21.0</tycho-version>
+		<tycho-version>0.23.1</tycho-version>
 		<xtext-version>2.7.3</xtext-version>
 	</properties>
 
