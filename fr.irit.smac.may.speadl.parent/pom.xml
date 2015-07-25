@@ -41,25 +41,8 @@
 		<module>../fr.irit.smac.may.speadl.ui</module>
 		<module>../fr.irit.smac.may.speadl.feature</module>
 		<module>../fr.irit.smac.may.speadl.updatesite</module>
+		<module>../fr.irit.smac.may.speadl.target-definition</module>
 	</modules>
-
-	<repositories>
-		<repository>
-			<id>eclipse-luna</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/luna</url>
-		</repository>
-		<repository>
-			<id>eclipse-luna-updates</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/eclipse/updates/4.4</url>
-		</repository>
-		<repository>
-			<id>xtext</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/</url>
-		</repository>
-	</repositories>
 
 	<build>
 		<!-- Those plugins are applied to all poms that inherit from this parent 
@@ -70,6 +53,20 @@
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<target>
+						<artifact>
+							<groupId>fr.irit.smac.may</groupId>
+							<artifactId>fr.irit.smac.may.speadl.target-definition</artifactId>
+							<version>${project.version}</version>
+						</artifact>
+					</target>
+				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>
