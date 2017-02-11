@@ -5,7 +5,7 @@ Don't forget that tycho needs the Eclipse files in the various modules, so impor
 
 Important point:
 - follow the tycho build type
-- the parent is fr.irit.smac.may.speadl.parent
+- the parent is in the fr.irit.smac.may.speadl.parent folder, not at the root
 
 To deploy the update site, follow these instructions:
 1) Checkout this repository gh-pages in a folder next to this one:
