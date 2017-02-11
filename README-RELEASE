@@ -3,6 +3,10 @@ Release procedure:
 To release a new version of MAY, follow the instructions in the README of https://github.com/victornoel/smac-poms for a Tycho build.
 Don't forget that tycho needs the Eclipse files in the various modules, so import them at least once with Eclipse.
 
+Important point:
+- follow the tycho build type
+- the parent is fr.irit.smac.may.speadl.parent
+
 To deploy the update site, follow these instructions:
 1) Checkout this repository gh-pages in a folder next to this one:
 $ cd ../
