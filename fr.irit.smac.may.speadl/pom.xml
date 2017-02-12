@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>fr.irit.smac.may</groupId>
 		<artifactId>fr.irit.smac.may.speadl.parent</artifactId>
-		<version>3.5.0</version>
+		<version>3.5.1-SNAPSHOT</version>
 		<relativePath>../fr.irit.smac.may.speadl.parent/pom.xml</relativePath>
 	</parent>
 
