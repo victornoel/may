@@ -1,11 +1,14 @@
 Release procedure:
 
-To release a new version of MAY, follow the instructions in the README of https://github.com/victornoel/smac-poms for a Tycho build.
-Don't forget that tycho needs the Eclipse files in the various modules, so import them at least once with Eclipse.
+To release a new version of MAY, follow the instructions in the README of https://github.com/victornoel/smac-poms as well as the important points below.
 
 Important point:
-- follow the tycho build type
-- the parent is in the fr.irit.smac.may.speadl.parent folder, not at the root
+1) Tycho needs the Eclipse files in the various modules, so import them at least once with Eclipse
+2) The parent is in the fr.irit.smac.may.speadl.parent folder, not at the root
+3) The versioning with Tycho is particular (and not usual): released OSGI artefact still have a qualifier (the date at the end of the version number) while the maven artefacts do not.
+So it is needed to replace the step 4) with with the following:
+$ mvn versions:set -DnewVersion=1.2.1-SNAPSHOT
+$ mvn -Dtycho.mode=maven org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=1.2.2-SNAPSHOT
 
 To deploy the update site, follow these instructions:
 1) Checkout this repository gh-pages in a folder next to this one:
