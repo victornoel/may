@@ -23,5 +23,4 @@ $ mvn -Dtycho.mode=maven -Dfinal-update-site=../../may-gh-pages/update-may-3 tyc
 $ cd ../may-gh-pages/
 $ git add .
 $ git commit -m "v1.2.1 release"
-$ git tag -as -u 88E33689 v1.2.1 -m "v1.2.1 release"
 $ git push
