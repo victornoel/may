@@ -7,7 +7,7 @@ Important point:
 2) The parent is in the fr.irit.smac.may.speadl.parent folder, not at the root
 3) The versioning with Tycho is particular (and not usual): released OSGI artefact still have a qualifier (the date at the end of the version number) while the maven artefacts do not.
 So it is needed to replace the step 4) with with the following:
-$ mvn versions:set -DnewVersion=1.2.1-SNAPSHOT
+$ mvn -Dtycho.mode=maven versions:set -DnewVersion=1.2.1-SNAPSHOT
 $ mvn -Dtycho.mode=maven org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=1.2.2-SNAPSHOT
 
 To deploy the update site, follow these instructions:
