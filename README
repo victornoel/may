@@ -17,7 +17,7 @@ $ git clone -b gh-pages https://github.com/victornoel/may.git may-gh-pages
 $ cd ../may/fr.irit.smac.may.speadl.updatesite/
 
 2) Merge the release into the repository:
-$ mvn -Dtycho.mode=maven -Dfinal-update-site=../may-gh-pages/update-may-3 tycho-p2-extras:publish-features-and-bundles tycho-p2:category-p2-metadata
+$ mvn -Dtycho.mode=maven -Dfinal-update-site=../../may-gh-pages/update-may-3 tycho-p2-extras:publish-features-and-bundles tycho-p2:category-p2-metadata
 
 3) Commit, tag and release the version
 $ cd ../may-gh-pages/
