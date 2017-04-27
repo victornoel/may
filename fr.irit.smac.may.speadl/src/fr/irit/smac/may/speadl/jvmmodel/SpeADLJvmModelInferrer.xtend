@@ -233,19 +233,30 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 		]
 		
 		for (port : comp.provides) {
-			if (port.bound === null) {
+			val isOverride = port.overridenPortTypeRef !== null
+			if (port.bound === null || isOverride) {
 				clazz.members += port.toMethod("make_" + port.name, port.typeReference.substituteWith(substitutor)) [
-					//val ov = port.overridenPortTypeRef
-					//if (ov != null) {
-						// TODO check that actually there is a make_ in the extended class…
-						//annotations += clazz.toAnnotation(Override)
-					//}
-					abstract = true
 					visibility = JvmVisibility.PROTECTED
-					documentation = '''
-						This should be overridden by the implementation to define the provided port.
-						This will be called once during the construction of the component to initialize the port.
-					'''
+
+					if (isOverride) {
+						annotations += annotationRef(Override);
+					}
+
+					if (port.bound !== null) {
+						final = true;
+						body = '''
+							throw new AssertionError("This is a bug");
+						'''
+						documentation = '''
+							This will never be called because this component bind the provided port.
+						'''
+					} else {
+						abstract = true
+						documentation = '''
+							This should be overridden by the implementation to define the provided port.
+							This will be called once during the construction of the component to initialize the port.
+						'''
+					}
 				]
 			}
 		}
