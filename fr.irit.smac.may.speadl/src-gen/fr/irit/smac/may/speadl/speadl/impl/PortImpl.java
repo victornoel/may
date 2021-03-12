@@ -66,6 +66,7 @@ public class PortImpl extends ContentElementImpl implements Port
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public JvmParameterizedTypeReference getTypeReference()
   {
     return typeReference;
@@ -93,6 +94,7 @@ public class PortImpl extends ContentElementImpl implements Port
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void setTypeReference(JvmParameterizedTypeReference newTypeReference)
   {
     if (newTypeReference != typeReference)

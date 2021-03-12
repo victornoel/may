@@ -17,7 +17,7 @@
 
 	<groupId>fr.irit.smac.may</groupId>
 	<artifactId>fr.irit.smac.may.speadl.parent</artifactId>
-	<version>3.5.1-SNAPSHOT</version>
+	<version>3.6.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -25,15 +25,18 @@
 	<url>http://www.irit.fr/MAY-en</url>
 
 	<scm>
-		<connection>scm:hg:https://anon:anon@wwwsecu.irit.fr/hg/SMAC/victor-noel-phd/may/may-xtext2/</connection>
-		<developerConnection>scm:hg:https://wwwsecu.irit.fr/hg/SMAC/victor-noel-phd/may/may-xtext2/</developerConnection>
-		<url>https://anon:anon@wwwsecu.irit.fr/hg/SMAC/victor-noel-phd/may/may-xtext2/</url>
+		<connection>scm:git:https://github.com/victornoel/may-lib.git</connection>
+		<developerConnection>scm:git:git@github.com:victornoel/may.git</developerConnection>
+		<url>https://github.com/victornoel/may</url>
 	</scm>
 
 	<properties>
 		<!-- Used for toolchain See: http://maven.apache.org/guides/mini/guide-using-toolchains.html -->
-		<tycho-version>0.26.0</tycho-version>
-		<xtext-version>2.7.3</xtext-version>
+		<java-version>11</java-version>
+		<maven.compiler.source>${java-version}</maven.compiler.source>
+		<maven.compiler.target>${java-version}</maven.compiler.target>
+		<tycho-version>2.1.0</tycho-version>
+		<xtext-version>2.24.0</xtext-version>
 	</properties>
 
 	<modules>

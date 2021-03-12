@@ -29,10 +29,6 @@ public interface SpeciesReference extends EObject
   /**
    * Returns the value of the '<em><b>Part</b></em>' reference.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Part</em>' reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Part</em>' reference.
    * @see #setPart(ComponentPart)
@@ -55,10 +51,6 @@ public interface SpeciesReference extends EObject
   /**
    * Returns the value of the '<em><b>Species</b></em>' reference.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Species</em>' reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Species</em>' reference.
    * @see #setSpecies(Species)
@@ -82,10 +74,6 @@ public interface SpeciesReference extends EObject
    * Returns the value of the '<em><b>Arguments</b></em>' reference list.
    * The list contents are of type {@link fr.irit.smac.may.speadl.speadl.Feature}.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Arguments</em>' reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Arguments</em>' reference list.
    * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getSpeciesReference_Arguments()

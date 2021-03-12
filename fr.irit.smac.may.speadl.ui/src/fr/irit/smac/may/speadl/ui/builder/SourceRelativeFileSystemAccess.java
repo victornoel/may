@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.builder.JDTAwareEclipseResourceFileSystemAccess2;
 import org.eclipse.xtext.generator.OutputConfiguration;
+import org.eclipse.xtext.generator.trace.SourceRelativeURI;
 import org.eclipse.xtext.util.RuntimeIOException;
 import org.eclipse.xtext.util.Strings;
 
@@ -61,15 +62,15 @@ public class SourceRelativeFileSystemAccess extends JDTAwareEclipseResourceFileS
 	//TODO this fixes relative URIs for Xtend only, but what about all other languages?
 	@Override
 	public void flushSourceTraces(String generatorName) throws CoreException {
-		Multimap<URI, IPath> sourceTraces = getSourceTraces();
+		Multimap<SourceRelativeURI, IPath> sourceTraces = getSourceTraces();
 		if (sourceTraces != null) {
-			Set<URI> keys = sourceTraces.keySet();
+			Set<SourceRelativeURI> keys = sourceTraces.keySet();
 			String source = getCurrentSource();
 			IContainer container = Strings.isEmpty(source) ? getProject() : getProject().getFolder(source);
-			for (URI uri : keys) {
+			for (SourceRelativeURI uri : keys) {
 				if (uri != null && source != null) {
 					Collection<IPath> paths = sourceTraces.get(uri);
-					IFile sourceFile = container.getFile(new Path(uri.toFileString()));
+					IFile sourceFile = container.getFile(new Path(uri.getURI().toFileString()));
 					if (sourceFile.exists()) {
 						IPath[] tracePathArray = paths.toArray(new IPath[paths.size()]);
 						getTraceMarkers().installMarker(sourceFile, generatorName, tracePathArray);

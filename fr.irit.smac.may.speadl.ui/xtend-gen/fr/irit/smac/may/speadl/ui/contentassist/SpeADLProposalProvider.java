@@ -1,6 +1,5 @@
 package fr.irit.smac.may.speadl.ui.contentassist;
 
-import com.google.common.base.Predicate;
 import fr.irit.smac.may.speadl.speadl.ComponentPart;
 import fr.irit.smac.may.speadl.speadl.Ecosystem;
 import fr.irit.smac.may.speadl.speadl.SpeadlPackage;
@@ -12,41 +11,23 @@ import org.eclipse.xtext.AbstractElement;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.CrossReference;
 import org.eclipse.xtext.common.types.TypesPackage;
-import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
-import org.eclipse.xtext.xbase.ui.contentassist.XbaseReferenceProposalCreator;
 
 /**
  * see http://www.eclipse.org/Xtext/documentation.html#contentAssist on how to customize content assistant
  */
 @SuppressWarnings("all")
 public class SpeADLProposalProvider extends AbstractSpeADLProposalProvider {
+  @Override
   public void completeJvmParameterizedTypeReference_Type(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    boolean _or = false;
-    if ((model instanceof Ecosystem)) {
-      _or = true;
-    } else {
-      _or = (model instanceof ComponentPart);
-    }
-    if (_or) {
+    if (((model instanceof Ecosystem) || (model instanceof ComponentPart))) {
       final EReference eref = EcoreFactory.eINSTANCE.createEReference();
       eref.setEType(SpeadlPackage.Literals.ECOSYSTEM);
       AbstractElement _terminal = assignment.getTerminal();
-      Predicate<IEObjectDescription> _featureDescriptionPredicate = this.getFeatureDescriptionPredicate(context);
-      this.lookupCrossReference(((CrossReference) _terminal), eref, context, acceptor, _featureDescriptionPredicate);
+      this.lookupCrossReference(((CrossReference) _terminal), eref, context, acceptor, this.getFeatureDescriptionPredicate(context));
     } else {
-      boolean _or_1 = false;
-      XbaseReferenceProposalCreator _xbaseCrossReferenceProposalCreator = this.getXbaseCrossReferenceProposalCreator();
-      boolean _isShowTypeProposals = _xbaseCrossReferenceProposalCreator.isShowTypeProposals();
-      if (_isShowTypeProposals) {
-        _or_1 = true;
-      } else {
-        XbaseReferenceProposalCreator _xbaseCrossReferenceProposalCreator_1 = this.getXbaseCrossReferenceProposalCreator();
-        boolean _isShowSmartProposals = _xbaseCrossReferenceProposalCreator_1.isShowSmartProposals();
-        _or_1 = _isShowSmartProposals;
-      }
-      if (_or_1) {
+      if ((this.getXbaseCrossReferenceProposalCreator().isShowTypeProposals() || this.getXbaseCrossReferenceProposalCreator().isShowSmartProposals())) {
         this.completeJavaTypes(context, TypesPackage.Literals.JVM_PARAMETERIZED_TYPE_REFERENCE__TYPE, acceptor);
       }
     }

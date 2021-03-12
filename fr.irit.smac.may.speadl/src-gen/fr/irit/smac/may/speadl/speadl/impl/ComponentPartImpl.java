@@ -66,6 +66,7 @@ public class ComponentPartImpl extends PartImpl implements ComponentPart
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public JvmParameterizedTypeReference getComponentReference()
   {
     return componentReference;
@@ -93,6 +94,7 @@ public class ComponentPartImpl extends PartImpl implements ComponentPart
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void setComponentReference(JvmParameterizedTypeReference newComponentReference)
   {
     if (newComponentReference != componentReference)

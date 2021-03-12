@@ -197,7 +197,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
 
   /**
    * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-   * 
+   *
    * <p>This method is used to initialize {@link SpeadlPackage#eINSTANCE} when that field is accessed.
    * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
    * <!-- begin-user-doc -->
@@ -212,11 +212,13 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
     if (isInited) return (SpeadlPackage)EPackage.Registry.INSTANCE.getEPackage(SpeadlPackage.eNS_URI);
 
     // Obtain or create and register package
-    SpeadlPackageImpl theSpeadlPackage = (SpeadlPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof SpeadlPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new SpeadlPackageImpl());
+    Object registeredSpeadlPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+    SpeadlPackageImpl theSpeadlPackage = registeredSpeadlPackage instanceof SpeadlPackageImpl ? (SpeadlPackageImpl)registeredSpeadlPackage : new SpeadlPackageImpl();
 
     isInited = true;
 
     // Initialize simple dependencies
+    TypesPackage.eINSTANCE.eClass();
     XtypePackage.eINSTANCE.eClass();
 
     // Create package meta-data objects
@@ -228,7 +230,6 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
     // Mark meta-data to indicate it can't be changed
     theSpeadlPackage.freeze();
 
-  
     // Update the registry and return the package
     EPackage.Registry.INSTANCE.put(SpeadlPackage.eNS_URI, theSpeadlPackage);
     return theSpeadlPackage;
@@ -239,6 +240,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getModel()
   {
     return modelEClass;
@@ -249,6 +251,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getModel_Imports()
   {
     return (EReference)modelEClass.getEStructuralFeatures().get(0);
@@ -259,6 +262,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getModel_Elements()
   {
     return (EReference)modelEClass.getEStructuralFeatures().get(1);
@@ -269,6 +273,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getNamespace()
   {
     return namespaceEClass;
@@ -279,6 +284,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EAttribute getNamespace_Name()
   {
     return (EAttribute)namespaceEClass.getEStructuralFeatures().get(0);
@@ -289,6 +295,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getNamespace_Elements()
   {
     return (EReference)namespaceEClass.getEStructuralFeatures().get(1);
@@ -299,6 +306,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getModelElement()
   {
     return modelElementEClass;
@@ -309,6 +317,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getElement()
   {
     return elementEClass;
@@ -319,6 +328,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getAbstractComponent()
   {
     return abstractComponentEClass;
@@ -329,6 +339,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EAttribute getAbstractComponent_Name()
   {
     return (EAttribute)abstractComponentEClass.getEStructuralFeatures().get(0);
@@ -339,6 +350,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getAbstractComponent_Parameters()
   {
     return (EReference)abstractComponentEClass.getEStructuralFeatures().get(1);
@@ -349,6 +361,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getAbstractComponent_TypeParameters()
   {
     return (EReference)abstractComponentEClass.getEStructuralFeatures().get(2);
@@ -359,6 +372,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getAbstractComponent_Specializes()
   {
     return (EReference)abstractComponentEClass.getEStructuralFeatures().get(3);
@@ -369,6 +383,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getAbstractComponent_Provides()
   {
     return (EReference)abstractComponentEClass.getEStructuralFeatures().get(4);
@@ -379,6 +394,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getAbstractComponent_Requires()
   {
     return (EReference)abstractComponentEClass.getEStructuralFeatures().get(5);
@@ -389,6 +405,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getAbstractComponent_Parts()
   {
     return (EReference)abstractComponentEClass.getEStructuralFeatures().get(6);
@@ -399,6 +416,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getAbstractComponent_Species()
   {
     return (EReference)abstractComponentEClass.getEStructuralFeatures().get(7);
@@ -409,6 +427,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getPort()
   {
     return portEClass;
@@ -419,6 +438,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getPort_TypeReference()
   {
     return (EReference)portEClass.getEStructuralFeatures().get(0);
@@ -429,6 +449,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getContentElement()
   {
     return contentElementEClass;
@@ -439,6 +460,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EAttribute getContentElement_Name()
   {
     return (EAttribute)contentElementEClass.getEStructuralFeatures().get(0);
@@ -449,6 +471,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getPart()
   {
     return partEClass;
@@ -459,6 +482,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getPart_Bindings()
   {
     return (EReference)partEClass.getEStructuralFeatures().get(0);
@@ -469,6 +493,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getFeature()
   {
     return featureEClass;
@@ -479,6 +504,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EAttribute getFeature_Name()
   {
     return (EAttribute)featureEClass.getEStructuralFeatures().get(0);
@@ -489,6 +515,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getFeature_ParameterType()
   {
     return (EReference)featureEClass.getEStructuralFeatures().get(1);
@@ -499,6 +526,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getEcosystem()
   {
     return ecosystemEClass;
@@ -509,6 +537,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getSpecies()
   {
     return speciesEClass;
@@ -519,6 +548,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getProvidedPort()
   {
     return providedPortEClass;
@@ -529,6 +559,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getProvidedPort_Bound()
   {
     return (EReference)providedPortEClass.getEStructuralFeatures().get(0);
@@ -539,6 +570,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getRequiredPort()
   {
     return requiredPortEClass;
@@ -549,6 +581,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getComponentPart()
   {
     return componentPartEClass;
@@ -559,6 +592,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getComponentPart_ComponentReference()
   {
     return (EReference)componentPartEClass.getEStructuralFeatures().get(0);
@@ -569,6 +603,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getSpeciesPart()
   {
     return speciesPartEClass;
@@ -579,6 +614,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getSpeciesPart_SpeciesReference()
   {
     return (EReference)speciesPartEClass.getEStructuralFeatures().get(0);
@@ -589,6 +625,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getBinding()
   {
     return bindingEClass;
@@ -599,6 +636,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getBinding_From()
   {
     return (EReference)bindingEClass.getEStructuralFeatures().get(0);
@@ -609,6 +647,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getBinding_To()
   {
     return (EReference)bindingEClass.getEStructuralFeatures().get(1);
@@ -619,6 +658,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getPortRef()
   {
     return portRefEClass;
@@ -629,6 +669,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EAttribute getPortRef_Ecosystem()
   {
     return (EAttribute)portRefEClass.getEStructuralFeatures().get(0);
@@ -639,6 +680,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getPortRef_Part()
   {
     return (EReference)portRefEClass.getEStructuralFeatures().get(1);
@@ -649,6 +691,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getPortRef_Port()
   {
     return (EReference)portRefEClass.getEStructuralFeatures().get(2);
@@ -659,6 +702,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EClass getSpeciesReference()
   {
     return speciesReferenceEClass;
@@ -669,6 +713,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getSpeciesReference_Part()
   {
     return (EReference)speciesReferenceEClass.getEStructuralFeatures().get(0);
@@ -679,6 +724,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getSpeciesReference_Species()
   {
     return (EReference)speciesReferenceEClass.getEStructuralFeatures().get(1);
@@ -689,6 +735,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EReference getSpeciesReference_Arguments()
   {
     return (EReference)speciesReferenceEClass.getEStructuralFeatures().get(2);
@@ -699,6 +746,7 @@ public class SpeadlPackageImpl extends EPackageImpl implements SpeadlPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public SpeadlFactory getSpeadlFactory()
   {
     return (SpeadlFactory)getEFactoryInstance();

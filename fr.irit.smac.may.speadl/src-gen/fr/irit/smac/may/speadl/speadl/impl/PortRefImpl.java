@@ -98,6 +98,7 @@ public class PortRefImpl extends MinimalEObjectImpl.Container implements PortRef
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public boolean isEcosystem()
   {
     return ecosystem;
@@ -108,6 +109,7 @@ public class PortRefImpl extends MinimalEObjectImpl.Container implements PortRef
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void setEcosystem(boolean newEcosystem)
   {
     boolean oldEcosystem = ecosystem;
@@ -121,6 +123,7 @@ public class PortRefImpl extends MinimalEObjectImpl.Container implements PortRef
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public Part getPart()
   {
     if (part != null && part.eIsProxy())
@@ -151,6 +154,7 @@ public class PortRefImpl extends MinimalEObjectImpl.Container implements PortRef
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void setPart(Part newPart)
   {
     Part oldPart = part;
@@ -164,6 +168,7 @@ public class PortRefImpl extends MinimalEObjectImpl.Container implements PortRef
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public Port getPort()
   {
     if (port != null && port.eIsProxy())
@@ -194,6 +199,7 @@ public class PortRefImpl extends MinimalEObjectImpl.Container implements PortRef
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void setPort(Port newPort)
   {
     Port oldPort = port;
@@ -300,7 +306,7 @@ public class PortRefImpl extends MinimalEObjectImpl.Container implements PortRef
   {
     if (eIsProxy()) return super.toString();
 
-    StringBuffer result = new StringBuffer(super.toString());
+    StringBuilder result = new StringBuilder(super.toString());
     result.append(" (ecosystem: ");
     result.append(ecosystem);
     result.append(')');

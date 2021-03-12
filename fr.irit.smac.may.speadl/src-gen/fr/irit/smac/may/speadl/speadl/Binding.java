@@ -26,10 +26,6 @@ public interface Binding extends EObject
   /**
    * Returns the value of the '<em><b>From</b></em>' reference.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>From</em>' reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>From</em>' reference.
    * @see #setFrom(RequiredPort)
@@ -52,10 +48,6 @@ public interface Binding extends EObject
   /**
    * Returns the value of the '<em><b>To</b></em>' containment reference.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>To</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>To</em>' containment reference.
    * @see #setTo(PortRef)

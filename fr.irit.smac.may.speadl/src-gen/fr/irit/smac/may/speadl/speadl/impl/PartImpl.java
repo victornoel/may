@@ -69,6 +69,7 @@ public class PartImpl extends ContentElementImpl implements Part
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EList<Binding> getBindings()
   {
     if (bindings == null)

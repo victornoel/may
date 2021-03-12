@@ -474,6 +474,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				documentation = '''
 					This can be called by the implementation to access this required port.
 				'''
+				abstract = true
 			]
 		}
 	}
@@ -497,6 +498,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				documentation = '''
 					This can be called to access the provided port.
 				'''
+				abstract = true
 			]
 		}
 	}
@@ -522,6 +524,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 					This can be called by the implementation to access the part and its provided ports.
 					It will be initialized after the required ports are initialized and before the provided ports are initialized.
 				'''
+				abstract = true
 			]
 		}
 	}

@@ -65,6 +65,7 @@ public class SpeciesPartImpl extends PartImpl implements SpeciesPart
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public SpeciesReference getSpeciesReference()
   {
     return speciesReference;
@@ -92,6 +93,7 @@ public class SpeciesPartImpl extends PartImpl implements SpeciesPart
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void setSpeciesReference(SpeciesReference newSpeciesReference)
   {
     if (newSpeciesReference != speciesReference)

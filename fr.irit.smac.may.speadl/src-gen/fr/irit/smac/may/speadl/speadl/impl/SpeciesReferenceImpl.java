@@ -95,6 +95,7 @@ public class SpeciesReferenceImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public ComponentPart getPart()
   {
     if (part != null && part.eIsProxy())
@@ -125,6 +126,7 @@ public class SpeciesReferenceImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void setPart(ComponentPart newPart)
   {
     ComponentPart oldPart = part;
@@ -138,6 +140,7 @@ public class SpeciesReferenceImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public Species getSpecies()
   {
     if (species != null && species.eIsProxy())
@@ -168,6 +171,7 @@ public class SpeciesReferenceImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void setSpecies(Species newSpecies)
   {
     Species oldSpecies = species;
@@ -181,6 +185,7 @@ public class SpeciesReferenceImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EList<Feature> getArguments()
   {
     if (arguments == null)

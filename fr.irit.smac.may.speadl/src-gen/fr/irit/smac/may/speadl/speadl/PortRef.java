@@ -27,10 +27,6 @@ public interface PortRef extends EObject
   /**
    * Returns the value of the '<em><b>Ecosystem</b></em>' attribute.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Ecosystem</em>' attribute isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Ecosystem</em>' attribute.
    * @see #setEcosystem(boolean)
@@ -53,10 +49,6 @@ public interface PortRef extends EObject
   /**
    * Returns the value of the '<em><b>Part</b></em>' reference.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Part</em>' reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Part</em>' reference.
    * @see #setPart(Part)
@@ -79,10 +71,6 @@ public interface PortRef extends EObject
   /**
    * Returns the value of the '<em><b>Port</b></em>' reference.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Port</em>' reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Port</em>' reference.
    * @see #setPort(Port)

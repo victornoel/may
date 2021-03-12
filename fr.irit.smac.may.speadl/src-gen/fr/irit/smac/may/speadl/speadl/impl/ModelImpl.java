@@ -86,6 +86,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public XImportSection getImports()
   {
     return imports;
@@ -113,6 +114,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void setImports(XImportSection newImports)
   {
     if (newImports != imports)
@@ -134,6 +136,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EList<Namespace> getElements()
   {
     if (elements == null)

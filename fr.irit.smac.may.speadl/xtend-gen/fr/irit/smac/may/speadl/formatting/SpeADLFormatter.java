@@ -5,16 +5,12 @@ package fr.irit.smac.may.speadl.formatting;
 
 import com.google.inject.Inject;
 import fr.irit.smac.may.speadl.services.SpeADLGrammarAccess;
-import java.util.List;
+import java.util.function.Consumer;
 import org.eclipse.xtext.Keyword;
-import org.eclipse.xtext.ParserRule;
-import org.eclipse.xtext.TerminalRule;
 import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter;
 import org.eclipse.xtext.formatting.impl.FormattingConfig;
 import org.eclipse.xtext.util.Pair;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.services.XbaseGrammarAccess;
 
 /**
@@ -34,116 +30,51 @@ public class SpeADLFormatter extends AbstractDeclarativeFormatter {
   @Inject
   private XbaseGrammarAccess xbase;
   
+  @Override
   protected void configureFormatting(final FormattingConfig c) {
-    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(0, 1, 2);
-    TerminalRule _sL_COMMENTRule = this._speADLGrammarAccess.getSL_COMMENTRule();
-    _setLinewrap.before(_sL_COMMENTRule);
-    FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap(0, 1, 2);
-    TerminalRule _mL_COMMENTRule = this._speADLGrammarAccess.getML_COMMENTRule();
-    _setLinewrap_1.before(_mL_COMMENTRule);
-    FormattingConfig.LinewrapLocator _setLinewrap_2 = c.setLinewrap(0, 1, 1);
-    TerminalRule _mL_COMMENTRule_1 = this._speADLGrammarAccess.getML_COMMENTRule();
-    _setLinewrap_2.after(_mL_COMMENTRule_1);
-    List<Pair<Keyword, Keyword>> _findKeywordPairs = this._speADLGrammarAccess.findKeywordPairs("(", ")");
-    final Procedure1<Pair<Keyword, Keyword>> _function = new Procedure1<Pair<Keyword, Keyword>>() {
-      public void apply(final Pair<Keyword, Keyword> p) {
-        FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
-        Keyword _first = p.getFirst();
-        _setNoSpace.around(_first);
-        FormattingConfig.NoSpaceLocator _setNoSpace_1 = c.setNoSpace();
-        Keyword _second = p.getSecond();
-        _setNoSpace_1.before(_second);
-      }
+    c.setLinewrap(0, 1, 2).before(this._speADLGrammarAccess.getSL_COMMENTRule());
+    c.setLinewrap(0, 1, 2).before(this._speADLGrammarAccess.getML_COMMENTRule());
+    c.setLinewrap(0, 1, 1).after(this._speADLGrammarAccess.getML_COMMENTRule());
+    final Consumer<Pair<Keyword, Keyword>> _function = (Pair<Keyword, Keyword> p) -> {
+      c.setNoSpace().around(p.getFirst());
+      c.setNoSpace().before(p.getSecond());
     };
-    IterableExtensions.<Pair<Keyword, Keyword>>forEach(_findKeywordPairs, _function);
-    List<Pair<Keyword, Keyword>> _findKeywordPairs_1 = this._speADLGrammarAccess.findKeywordPairs("[", "]");
-    final Procedure1<Pair<Keyword, Keyword>> _function_1 = new Procedure1<Pair<Keyword, Keyword>>() {
-      public void apply(final Pair<Keyword, Keyword> p) {
-        FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
-        Keyword _first = p.getFirst();
-        _setNoSpace.around(_first);
-        FormattingConfig.NoSpaceLocator _setNoSpace_1 = c.setNoSpace();
-        Keyword _second = p.getSecond();
-        _setNoSpace_1.before(_second);
-      }
+    this._speADLGrammarAccess.findKeywordPairs("(", ")").forEach(_function);
+    final Consumer<Pair<Keyword, Keyword>> _function_1 = (Pair<Keyword, Keyword> p) -> {
+      c.setNoSpace().around(p.getFirst());
+      c.setNoSpace().before(p.getSecond());
     };
-    IterableExtensions.<Pair<Keyword, Keyword>>forEach(_findKeywordPairs_1, _function_1);
-    List<Pair<Keyword, Keyword>> _findKeywordPairs_2 = this._speADLGrammarAccess.findKeywordPairs("{", "}");
-    final Procedure1<Pair<Keyword, Keyword>> _function_2 = new Procedure1<Pair<Keyword, Keyword>>() {
-      public void apply(final Pair<Keyword, Keyword> p) {
-        FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap();
-        Keyword _first = p.getFirst();
-        _setLinewrap.after(_first);
-        FormattingConfig.IndentationLocatorStart _setIndentationIncrement = c.setIndentationIncrement();
-        Keyword _first_1 = p.getFirst();
-        _setIndentationIncrement.after(_first_1);
-        FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap();
-        Keyword _second = p.getSecond();
-        _setLinewrap_1.before(_second);
-        FormattingConfig.IndentationLocatorEnd _setIndentationDecrement = c.setIndentationDecrement();
-        Keyword _second_1 = p.getSecond();
-        _setIndentationDecrement.before(_second_1);
-      }
+    this._speADLGrammarAccess.findKeywordPairs("[", "]").forEach(_function_1);
+    final Consumer<Pair<Keyword, Keyword>> _function_2 = (Pair<Keyword, Keyword> p) -> {
+      c.setLinewrap().after(p.getFirst());
+      c.setIndentationIncrement().after(p.getFirst());
+      c.setLinewrap().before(p.getSecond());
+      c.setIndentationDecrement().before(p.getSecond());
     };
-    IterableExtensions.<Pair<Keyword, Keyword>>forEach(_findKeywordPairs_2, _function_2);
-    List<Keyword> _findKeywords = this._speADLGrammarAccess.findKeywords(",");
-    final Procedure1<Keyword> _function_3 = new Procedure1<Keyword>() {
-      public void apply(final Keyword k) {
-        FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
-        _setNoSpace.before(k);
-      }
+    this._speADLGrammarAccess.findKeywordPairs("{", "}").forEach(_function_2);
+    final Consumer<Keyword> _function_3 = (Keyword k) -> {
+      c.setNoSpace().before(k);
     };
-    IterableExtensions.<Keyword>forEach(_findKeywords, _function_3);
-    List<Keyword> _findKeywords_1 = this._speADLGrammarAccess.findKeywords(".");
-    final Procedure1<Keyword> _function_4 = new Procedure1<Keyword>() {
-      public void apply(final Keyword k) {
-        FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
-        _setNoSpace.around(k);
-      }
+    this._speADLGrammarAccess.findKeywords(",").forEach(_function_3);
+    final Consumer<Keyword> _function_4 = (Keyword k) -> {
+      c.setNoSpace().around(k);
     };
-    IterableExtensions.<Keyword>forEach(_findKeywords_1, _function_4);
-    List<Keyword> _findKeywords_2 = this._speADLGrammarAccess.findKeywords(":");
-    final Procedure1<Keyword> _function_5 = new Procedure1<Keyword>() {
-      public void apply(final Keyword k) {
-        FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
-        _setNoSpace.before(k);
-        FormattingConfig.SpaceLocator _setSpace = c.setSpace(" ");
-        _setSpace.after(k);
-      }
+    this._speADLGrammarAccess.findKeywords(".").forEach(_function_4);
+    final Consumer<Keyword> _function_5 = (Keyword k) -> {
+      c.setNoSpace().before(k);
+      c.setSpace(" ").after(k);
     };
-    IterableExtensions.<Keyword>forEach(_findKeywords_2, _function_5);
-    FormattingConfig.LinewrapLocator _setLinewrap_3 = c.setLinewrap(1, 1, 2);
-    ParserRule _ecosystemRule = this._speADLGrammarAccess.getEcosystemRule();
-    _setLinewrap_3.around(_ecosystemRule);
-    FormattingConfig.LinewrapLocator _setLinewrap_4 = c.setLinewrap(1, 1, 2);
-    ParserRule _componentRule = this._speADLGrammarAccess.getComponentRule();
-    _setLinewrap_4.around(_componentRule);
-    FormattingConfig.LinewrapLocator _setLinewrap_5 = c.setLinewrap(1, 1, 2);
-    ParserRule _namespaceRule = this._speADLGrammarAccess.getNamespaceRule();
-    _setLinewrap_5.around(_namespaceRule);
-    FormattingConfig.LinewrapLocator _setLinewrap_6 = c.setLinewrap(1, 1, 2);
-    ParserRule _providedPortRule = this._speADLGrammarAccess.getProvidedPortRule();
-    _setLinewrap_6.around(_providedPortRule);
-    FormattingConfig.LinewrapLocator _setLinewrap_7 = c.setLinewrap(1, 1, 2);
-    ParserRule _requiredPortRule = this._speADLGrammarAccess.getRequiredPortRule();
-    _setLinewrap_7.around(_requiredPortRule);
-    FormattingConfig.LinewrapLocator _setLinewrap_8 = c.setLinewrap(1, 1, 2);
-    ParserRule _componentPartRule = this._speADLGrammarAccess.getComponentPartRule();
-    _setLinewrap_8.around(_componentPartRule);
-    FormattingConfig.LinewrapLocator _setLinewrap_9 = c.setLinewrap(1, 1, 2);
-    ParserRule _speciesPartRule = this._speADLGrammarAccess.getSpeciesPartRule();
-    _setLinewrap_9.around(_speciesPartRule);
-    FormattingConfig.LinewrapLocator _setLinewrap_10 = c.setLinewrap(1, 1, 2);
-    ParserRule _speciesRule = this._speADLGrammarAccess.getSpeciesRule();
-    _setLinewrap_10.around(_speciesRule);
-    FormattingConfig.LinewrapLocator _setLinewrap_11 = c.setLinewrap(1, 1, 2);
-    ParserRule _bindingRule = this._speADLGrammarAccess.getBindingRule();
-    _setLinewrap_11.around(_bindingRule);
-    FormattingConfig.LinewrapLocator _setLinewrap_12 = c.setLinewrap();
-    ParserRule _xImportDeclarationRule = this.xbase.getXImportDeclarationRule();
-    _setLinewrap_12.around(_xImportDeclarationRule);
-    FormattingConfig.LinewrapLocator _setLinewrap_13 = c.setLinewrap(2, 2, 2);
-    ParserRule _xImportSectionRule = this.xbase.getXImportSectionRule();
-    _setLinewrap_13.after(_xImportSectionRule);
+    this._speADLGrammarAccess.findKeywords(":").forEach(_function_5);
+    c.setLinewrap(1, 1, 2).around(this._speADLGrammarAccess.getEcosystemRule());
+    c.setLinewrap(1, 1, 2).around(this._speADLGrammarAccess.getComponentRule());
+    c.setLinewrap(1, 1, 2).around(this._speADLGrammarAccess.getNamespaceRule());
+    c.setLinewrap(1, 1, 2).around(this._speADLGrammarAccess.getProvidedPortRule());
+    c.setLinewrap(1, 1, 2).around(this._speADLGrammarAccess.getRequiredPortRule());
+    c.setLinewrap(1, 1, 2).around(this._speADLGrammarAccess.getComponentPartRule());
+    c.setLinewrap(1, 1, 2).around(this._speADLGrammarAccess.getSpeciesPartRule());
+    c.setLinewrap(1, 1, 2).around(this._speADLGrammarAccess.getSpeciesRule());
+    c.setLinewrap(1, 1, 2).around(this._speADLGrammarAccess.getBindingRule());
+    c.setLinewrap().around(this.xbase.getXImportDeclarationRule());
+    c.setLinewrap(2, 2, 2).after(this.xbase.getXImportSectionRule());
   }
 }

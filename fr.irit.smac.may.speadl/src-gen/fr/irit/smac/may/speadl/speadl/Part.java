@@ -26,10 +26,6 @@ public interface Part extends ContentElement
    * Returns the value of the '<em><b>Bindings</b></em>' containment reference list.
    * The list contents are of type {@link fr.irit.smac.may.speadl.speadl.Binding}.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Bindings</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Bindings</em>' containment reference list.
    * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getPart_Bindings()

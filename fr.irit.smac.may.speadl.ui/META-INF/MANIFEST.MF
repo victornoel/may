@@ -2,30 +2,31 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Make Agents Yourself UI
 Bundle-Vendor: IRIT SMAC
-Bundle-Version: 3.5.1.qualifier
+Bundle-Version: 3.6.0.qualifier
 Bundle-SymbolicName: fr.irit.smac.may.speadl.ui;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: fr.irit.smac.may.speadl;visibility:=reexport,
- org.eclipse.xtext.ui;bundle-version="[2.7.3,2.8.0)",
+ org.eclipse.xtext.ui;bundle-version="[2.24.0,2.25.0)",
  org.eclipse.ui.ide,
- org.eclipse.xtext.ui.shared;bundle-version="[2.7.3,2.8.0)",
- org.eclipse.xtext.xbase.ui;bundle-version="[2.7.3,2.8.0)",
+ org.eclipse.xtext.ui.shared;bundle-version="[2.24.0,2.25.0)",
+ org.eclipse.xtext.xbase.ui;bundle-version="[2.24.0,2.25.0)",
  org.eclipse.ui,
  org.eclipse.jdt.core,
  org.eclipse.jdt.ui,
- org.eclipse.xtext.builder;bundle-version="[2.7.3,2.8.0)",
+ org.eclipse.xtext.builder;bundle-version="[2.24.0,2.25.0)",
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
- org.eclipse.xtext.common.types.ui;bundle-version="[2.7.3,2.8.0)",
- org.eclipse.xtext.ui.codetemplates.ui;bundle-version="[2.7.3,2.8.0)",
+ org.eclipse.xtext.common.types.ui;bundle-version="[2.24.0,2.25.0)",
+ org.eclipse.xtext.ui.codetemplates.ui;bundle-version="[2.24.0,2.25.0)",
  org.eclipse.compare,
  org.eclipse.ui.editors,
- org.eclipse.xtext.xbase.lib;bundle-version="[2.7.3,2.8.0)",
+ org.eclipse.xtext.xbase.lib;bundle-version="[2.24.0,2.25.0)",
  org.eclipse.jdt.debug.ui
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: fr.irit.smac.may.speadl.ui.contentassist.antlr,
  fr.irit.smac.may.speadl.ui.internal,
  fr.irit.smac.may.speadl.ui.contentassist,
- fr.irit.smac.may.speadl.ui.quickfix
+ fr.irit.smac.may.speadl.ui.quickfix,
+ fr.irit.smac.may.speadl.ui.contentassist.antlr.internal
 Bundle-Activator: fr.irit.smac.may.speadl.ui.internal.SpeADLActivator

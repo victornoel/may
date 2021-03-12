@@ -78,6 +78,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public RequiredPort getFrom()
   {
     if (from != null && from.eIsProxy())
@@ -108,6 +109,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void setFrom(RequiredPort newFrom)
   {
     RequiredPort oldFrom = from;
@@ -121,6 +123,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public PortRef getTo()
   {
     return to;
@@ -148,6 +151,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void setTo(PortRef newTo)
   {
     if (newTo != to)

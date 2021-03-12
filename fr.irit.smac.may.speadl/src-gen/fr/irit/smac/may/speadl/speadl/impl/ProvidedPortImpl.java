@@ -65,6 +65,7 @@ public class ProvidedPortImpl extends PortImpl implements ProvidedPort
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public PortRef getBound()
   {
     return bound;
@@ -92,6 +93,7 @@ public class ProvidedPortImpl extends PortImpl implements ProvidedPort
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void setBound(PortRef newBound)
   {
     if (newBound != bound)

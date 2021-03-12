@@ -167,6 +167,7 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public String getName()
   {
     return name;
@@ -177,6 +178,7 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void setName(String newName)
   {
     String oldName = name;
@@ -190,6 +192,7 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EList<Feature> getParameters()
   {
     if (parameters == null)
@@ -204,6 +207,7 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EList<JvmTypeParameter> getTypeParameters()
   {
     if (typeParameters == null)
@@ -218,6 +222,7 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public JvmParameterizedTypeReference getSpecializes()
   {
     return specializes;
@@ -245,6 +250,7 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void setSpecializes(JvmParameterizedTypeReference newSpecializes)
   {
     if (newSpecializes != specializes)
@@ -266,6 +272,7 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EList<ProvidedPort> getProvides()
   {
     if (provides == null)
@@ -280,6 +287,7 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EList<RequiredPort> getRequires()
   {
     if (requires == null)
@@ -294,6 +302,7 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EList<Part> getParts()
   {
     if (parts == null)
@@ -308,6 +317,7 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EList<Species> getSpecies()
   {
     if (species == null)
@@ -550,7 +560,7 @@ public class EcosystemImpl extends ElementImpl implements Ecosystem
   {
     if (eIsProxy()) return super.toString();
 
-    StringBuffer result = new StringBuffer(super.toString());
+    StringBuilder result = new StringBuilder(super.toString());
     result.append(" (name: ");
     result.append(name);
     result.append(')');

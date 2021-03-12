@@ -10,12 +10,9 @@ import fr.irit.smac.may.speadl.speadl.ProvidedPort;
 import fr.irit.smac.may.speadl.speadl.RequiredPort;
 import fr.irit.smac.may.speadl.speadl.Species;
 import fr.irit.smac.may.speadl.speadl.SpeciesPart;
-import fr.irit.smac.may.speadl.speadl.SpeciesReference;
 import fr.irit.smac.may.speadl.ui.labeling.SpeADLImages;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
-import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider;
 
@@ -61,17 +58,14 @@ public class SpeADLLabelProvider extends XbaseLabelProvider {
   public String text(final Port p) {
     String _name = p.getName();
     String _plus = (_name + ": ");
-    JvmParameterizedTypeReference _typeReference = p.getTypeReference();
-    String _simpleName = _typeReference.getSimpleName();
+    String _simpleName = p.getTypeReference().getSimpleName();
     return (_plus + _simpleName);
   }
   
   public String text(final ComponentPart p) {
     String _name = p.getName();
     String _plus = (_name + ": ");
-    JvmParameterizedTypeReference _componentReference = p.getComponentReference();
-    JvmType _type = _componentReference.getType();
-    String _simpleName = _type.getSimpleName();
+    String _simpleName = p.getComponentReference().getType().getSimpleName();
     return (_plus + _simpleName);
   }
   
@@ -80,13 +74,9 @@ public class SpeADLLabelProvider extends XbaseLabelProvider {
     {
       String _name = p.getName();
       /* (_name + ": "); */
-      SpeciesReference _speciesReference = p.getSpeciesReference();
-      ComponentPart _part = _speciesReference.getPart();
-      String _name_1 = _part.getName();
+      String _name_1 = p.getSpeciesReference().getPart().getName();
       String _plus = (_name_1 + ".");
-      SpeciesReference _speciesReference_1 = p.getSpeciesReference();
-      Species _species = _speciesReference_1.getSpecies();
-      String _name_2 = _species.getName();
+      String _name_2 = p.getSpeciesReference().getSpecies().getName();
       _xblockexpression = (_plus + _name_2);
     }
     return _xblockexpression;

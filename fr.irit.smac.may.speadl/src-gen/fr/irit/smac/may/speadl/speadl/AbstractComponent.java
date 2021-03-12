@@ -37,10 +37,6 @@ public interface AbstractComponent extends EObject
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Name</em>' attribute isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
@@ -64,10 +60,6 @@ public interface AbstractComponent extends EObject
    * Returns the value of the '<em><b>Parameters</b></em>' containment reference list.
    * The list contents are of type {@link fr.irit.smac.may.speadl.speadl.Feature}.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Parameters</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Parameters</em>' containment reference list.
    * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getAbstractComponent_Parameters()
@@ -80,10 +72,6 @@ public interface AbstractComponent extends EObject
    * Returns the value of the '<em><b>Type Parameters</b></em>' containment reference list.
    * The list contents are of type {@link org.eclipse.xtext.common.types.JvmTypeParameter}.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Type Parameters</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Type Parameters</em>' containment reference list.
    * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getAbstractComponent_TypeParameters()
@@ -95,10 +83,6 @@ public interface AbstractComponent extends EObject
   /**
    * Returns the value of the '<em><b>Specializes</b></em>' containment reference.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Specializes</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Specializes</em>' containment reference.
    * @see #setSpecializes(JvmParameterizedTypeReference)
@@ -122,10 +106,6 @@ public interface AbstractComponent extends EObject
    * Returns the value of the '<em><b>Provides</b></em>' containment reference list.
    * The list contents are of type {@link fr.irit.smac.may.speadl.speadl.ProvidedPort}.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Provides</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Provides</em>' containment reference list.
    * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getAbstractComponent_Provides()
@@ -138,10 +118,6 @@ public interface AbstractComponent extends EObject
    * Returns the value of the '<em><b>Requires</b></em>' containment reference list.
    * The list contents are of type {@link fr.irit.smac.may.speadl.speadl.RequiredPort}.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Requires</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Requires</em>' containment reference list.
    * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getAbstractComponent_Requires()
@@ -154,10 +130,6 @@ public interface AbstractComponent extends EObject
    * Returns the value of the '<em><b>Parts</b></em>' containment reference list.
    * The list contents are of type {@link fr.irit.smac.may.speadl.speadl.Part}.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Parts</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Parts</em>' containment reference list.
    * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getAbstractComponent_Parts()
@@ -170,10 +142,6 @@ public interface AbstractComponent extends EObject
    * Returns the value of the '<em><b>Species</b></em>' containment reference list.
    * The list contents are of type {@link fr.irit.smac.may.speadl.speadl.Species}.
    * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Species</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Species</em>' containment reference list.
    * @see fr.irit.smac.may.speadl.speadl.SpeadlPackage#getAbstractComponent_Species()

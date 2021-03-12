@@ -92,6 +92,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public Model createModel()
   {
     ModelImpl model = new ModelImpl();
@@ -103,6 +104,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public Namespace createNamespace()
   {
     NamespaceImpl namespace = new NamespaceImpl();
@@ -114,6 +116,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public ModelElement createModelElement()
   {
     ModelElementImpl modelElement = new ModelElementImpl();
@@ -125,6 +128,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public Element createElement()
   {
     ElementImpl element = new ElementImpl();
@@ -136,6 +140,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public AbstractComponent createAbstractComponent()
   {
     AbstractComponentImpl abstractComponent = new AbstractComponentImpl();
@@ -147,6 +152,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public Port createPort()
   {
     PortImpl port = new PortImpl();
@@ -158,6 +164,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public ContentElement createContentElement()
   {
     ContentElementImpl contentElement = new ContentElementImpl();
@@ -169,6 +176,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public Part createPart()
   {
     PartImpl part = new PartImpl();
@@ -180,6 +188,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public Feature createFeature()
   {
     FeatureImpl feature = new FeatureImpl();
@@ -191,6 +200,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public Ecosystem createEcosystem()
   {
     EcosystemImpl ecosystem = new EcosystemImpl();
@@ -202,6 +212,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public Species createSpecies()
   {
     SpeciesImpl species = new SpeciesImpl();
@@ -213,6 +224,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public ProvidedPort createProvidedPort()
   {
     ProvidedPortImpl providedPort = new ProvidedPortImpl();
@@ -224,6 +236,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public RequiredPort createRequiredPort()
   {
     RequiredPortImpl requiredPort = new RequiredPortImpl();
@@ -235,6 +248,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public ComponentPart createComponentPart()
   {
     ComponentPartImpl componentPart = new ComponentPartImpl();
@@ -246,6 +260,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public SpeciesPart createSpeciesPart()
   {
     SpeciesPartImpl speciesPart = new SpeciesPartImpl();
@@ -257,6 +272,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public Binding createBinding()
   {
     BindingImpl binding = new BindingImpl();
@@ -268,6 +284,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public PortRef createPortRef()
   {
     PortRefImpl portRef = new PortRefImpl();
@@ -279,6 +296,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public SpeciesReference createSpeciesReference()
   {
     SpeciesReferenceImpl speciesReference = new SpeciesReferenceImpl();
@@ -290,6 +308,7 @@ public class SpeadlFactoryImpl extends EFactoryImpl implements SpeadlFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public SpeadlPackage getSpeadlPackage()
   {
     return (SpeadlPackage)getEPackage();
