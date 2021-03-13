@@ -6,14 +6,9 @@
 	<parent>
 		<groupId>fr.irit.smac</groupId>
 		<artifactId>parent-central</artifactId>
-		<version>0.0.2</version>
+		<version>0.0.3</version>
 		<relativePath></relativePath>
 	</parent>
-
-	<!-- Tycho requires Maven 3 -->
-	<prerequisites>
-		<maven>3.0</maven>
-	</prerequisites>
 
 	<groupId>fr.irit.smac.may</groupId>
 	<artifactId>fr.irit.smac.may.speadl.parent</artifactId>
@@ -25,16 +20,12 @@
 	<url>http://www.irit.fr/MAY-en</url>
 
 	<scm>
-		<connection>scm:git:https://github.com/victornoel/may-lib.git</connection>
+		<connection>scm:git:https://github.com/victornoel/may.git</connection>
 		<developerConnection>scm:git:git@github.com:victornoel/may.git</developerConnection>
 		<url>https://github.com/victornoel/may</url>
 	</scm>
 
 	<properties>
-		<!-- Used for toolchain See: http://maven.apache.org/guides/mini/guide-using-toolchains.html -->
-		<java-version>11</java-version>
-		<maven.compiler.source>${java-version}</maven.compiler.source>
-		<maven.compiler.target>${java-version}</maven.compiler.target>
 		<tycho-version>2.1.0</tycho-version>
 		<xtext-version>2.24.0</xtext-version>
 	</properties>
@@ -54,13 +45,11 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
-				<version>${tycho-version}</version>
 				<extensions>true</extensions>
 			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
-				<version>${tycho-version}</version>
 				<configuration>
 					<target>
 						<artifact>
@@ -90,12 +79,27 @@
 				</plugin>
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-maven-plugin</artifactId>
+					<version>${tycho-version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>target-platform-configuration</artifactId>
+					<version>${tycho-version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-versions-plugin</artifactId>
 					<version>${tycho-version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-p2-plugin</artifactId>
+					<version>${tycho-version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-publisher-plugin</artifactId>
 					<version>${tycho-version}</version>
 				</plugin>
 				<plugin>
@@ -128,58 +132,11 @@
 					<artifactId>tycho-eclipserun-plugin</artifactId>
 					<version>${tycho-version}</version>
 				</plugin>
-				<!-- APACHE MAVEN PLUGINS -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-install-plugin</artifactId>
-					<version>2.5.2</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.0.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.8.2</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>3.0.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.4</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>1.6</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-toolchains-plugin</artifactId>
-					<version>1.1</version>
-				</plugin>
-				<!-- SONATYPE PLUGINS FOR MAVEN CENTRAL -->
-				<plugin>
-					<groupId>org.sonatype.plugins</groupId>
-					<artifactId>nexus-staging-maven-plugin</artifactId>
-					<version>1.6.7</version>
-				</plugin>
 				<!-- OTHER STANDARD PLUGINS -->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>3.0.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>exec-maven-plugin</artifactId>
-					<version>1.5.0</version>
+					<version>3.0.0</version>
 				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->

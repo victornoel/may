@@ -37,6 +37,7 @@
 					<!-- tycho-p2-extras:publish-features-and-bundles -->
 					<groupId>org.eclipse.tycho.extras</groupId>
 					<artifactId>tycho-p2-extras-plugin</artifactId>
+					<version>${tycho-version}</version>
 					<configuration>
 						<sourceLocation>${project.build.directory}/repository</sourceLocation>
 						<artifactRepositoryLocation>${final-update-site}</artifactRepositoryLocation>
@@ -48,6 +49,7 @@
 					<!-- tycho-p2:category-p2-metadata -->
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-p2-plugin</artifactId>
+					<version>${tycho-version}</version>
 					<configuration>
 						<categoryDefinition>${project.basedir}/category.xml</categoryDefinition>
 						<target>${final-update-site}</target>
