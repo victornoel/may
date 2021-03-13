@@ -1,3 +1,7 @@
+Installation
+
+See https://www.irit.fr/redmine/projects/may/wiki/MAY_Install
+
 Release procedure:
 
 To release a new version of MAY, follow the instructions in the README of https://github.com/victornoel/smac-poms as well as the important points below.
@@ -20,7 +24,7 @@ $ cd ../may/fr.irit.smac.may.speadl.updatesite/
 $ mvn -Dtycho.mode=maven -Dfinal-update-site=../../may-gh-pages/update-may-3 tycho-p2-extras:publish-features-and-bundles tycho-p2:category-p2-metadata
 
 3) Commit, tag and release the version
-$ cd ../may-gh-pages/
+$ cd ../../may-gh-pages/
 $ git add .
 $ git commit -m "v1.2.1 release"
 $ git push
