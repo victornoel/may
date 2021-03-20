@@ -2,7 +2,7 @@
 <feature
       id="fr.irit.smac.may.speadl.feature"
       label="%featureName"
-      version="3.6.1.qualifier"
+      version="3.6.2.qualifier"
       provider-name="%providerName">
 
    <description>
