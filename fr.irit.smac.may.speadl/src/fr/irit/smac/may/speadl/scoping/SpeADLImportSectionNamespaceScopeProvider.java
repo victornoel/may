@@ -36,9 +36,9 @@ public class SpeADLImportSectionNamespaceScopeProvider extends XImportSectionNam
 	public IScope getScope(EObject context, EReference reference) {
 		IScope scope = null;
 		
-		if(scope == null && reference.getEContainingClass() != null) {
-			// the second test prevent the declarative scope to be called
-			// on an incomplete reference... (because we use them in fr.irit.smac.may.juno.spead.ui.contentassist.SpeADLProposalProvider)
+		if(reference.getEContainingClass() != null) {
+			// this prevent the declarative scope to be called
+			// on an incomplete reference... (because we use them in fr.irit.smac.may.speadl.ui.contentassist.SpeADLProposalProvider)
 			scope = myScopeProvider.getScope(context, reference);
 		}
 		

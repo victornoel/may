@@ -6,9 +6,12 @@ import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.xbase.scoping.XbaseQualifiedNameProvider;
 
 public class SpeADLQualifiedNameProvider extends XbaseQualifiedNameProvider {
-	
-	/* avoid to show JvmTypeParameter in completion
-	 * because they are shown as global and appears everywhere (see TODOList)
+
+	/*
+	 * avoid to show JvmTypeParameter in completion because they are shown as global
+	 * and appears everywhere See
+	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=413582 and
+	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=413567
 	 */
 	@Override
 	public QualifiedName getFullyQualifiedName(EObject obj) {

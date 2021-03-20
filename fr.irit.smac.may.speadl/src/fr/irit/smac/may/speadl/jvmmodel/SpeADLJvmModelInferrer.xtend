@@ -14,6 +14,7 @@ import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -33,7 +34,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 	/**
      * convenience API to build and initialize JVM types and their members.
      */
-	@Inject extension SpeADLJvmTypesBuilder
+	@Inject extension JvmTypesBuilder
 
 	@Inject extension IQualifiedNameProvider
 
@@ -179,7 +180,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			clazzRef
 		}).getInnerTypeReference(REQUIRES_INTERFACE)
 		
-		clazz.members += newField("init", typeRef(boolean)) [
+		clazz.members += comp.toField("init", typeRef(boolean)) [
 			initializer = '''false;'''
 			visibility = JvmVisibility.PRIVATE
 			documentation = '''
@@ -189,7 +190,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			'''
 		]
 		
-		clazz.members += newField("started", typeRef(boolean)) [
+		clazz.members += comp.toField("started", typeRef(boolean)) [
 			initializer = '''false;'''
 			visibility = JvmVisibility.PRIVATE
 			documentation = '''
@@ -197,7 +198,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			'''
 		]
 		
-		clazz.members += newField("selfComponent", componentClassRef)[]
+		clazz.members += comp.toField("selfComponent", componentClassRef)[]
 		
 		clazz.members += comp.toMethod("start", typeRef(void)) [
 			if (comp.specializes !== null) {
@@ -309,7 +310,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 					]
 				}
 				SpeciesPart: {
-					clazz.members += newField("use_"+part.name, ptr) []
+					clazz.members += part.toField("use_"+part.name, ptr) []
 				}
 			}
 		}
@@ -318,8 +319,8 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			if (comp.specializes !== null) {
 				annotations += annotationRef(Override)
 			}
-			parameters += newParameter("b", requiresRef)
-			parameters += newParameter("start", typeRef(boolean))
+			parameters += comp.toParameter("b", requiresRef)
+			parameters += comp.toParameter("start", typeRef(boolean))
 			
 			synchronized = true
 			documentation = '''
@@ -348,7 +349,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 					// here it is ok, because we are in c and the reference to type params
 					// are to those of the inferred class which is c
 					clazz.members += species.toMethod("make_"+species.name, str) [
-						parameters += species.parameters.map[p|newParameter(p.name, p.parameterType)]
+						parameters += species.parameters.map[p|p.toParameter(p.name, p.parameterType)]
 						visibility = JvmVisibility.PROTECTED
 						abstract = isAbstract
 						documentation = '''
@@ -362,7 +363,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 					]
 					
 					clazz.members += species.toMethod("_createImplementationOf"+species.name, str) [
-						parameters += species.parameters.map[p|newParameter(p.name, p.parameterType)]
+						parameters += species.parameters.map[p|p.toParameter(p.name, p.parameterType)]
 						documentation = '''
 							Do not call, used by generated code.
 						'''
@@ -392,7 +393,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 					
 					if (species.allRequires.empty) {
 						clazz.members += species.toMethod("new"+species.name, str.getInnerTypeReference(COMPONENT_INTERFACE)) [
-							parameters += species.parameters.map[p|newParameter(p.name, p.parameterType)]
+							parameters += species.parameters.map[p|p.toParameter(p.name, p.parameterType)]
 							visibility = JvmVisibility.PROTECTED
 							documentation = '''
 								This can be called to create an instance of the species from inside the implementation of the ecosystem.
@@ -424,7 +425,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				val parentEco = comp.parentEcosystem
 				val parentRef = parentEco.associatedJvmClass.getParameterizedTypeRefWith(myTypeParameters)
 				
-				clazz.members += newField("ecosystemComponent", parentRef.getInnerTypeReference(COMPONENT_CLASS)) []
+				clazz.members += comp.toField("ecosystemComponent", parentRef.getInnerTypeReference(COMPONENT_CLASS)) []
 				clazz.members += parentEco.toMethod("eco_provides", parentRef.getInnerTypeReference(PROVIDES_INTERFACE)) [
 					visibility = JvmVisibility.PROTECTED
 					documentation = '''
@@ -572,11 +573,11 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			clazzRef
 		}).getInnerTypeReference(REQUIRES_INTERFACE)
 		
-		componentClass.members += newField("bridge", requiresRef) [
+		componentClass.members += comp.toField("bridge", requiresRef) [
 			final = true
 		]
 		
-		componentClass.members += newField("implementation", clazzRef) [
+		componentClass.members += comp.toField("implementation", clazzRef) [
 			final = true
 		]
 		
@@ -672,10 +673,10 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			'''
 		]
 		
-		componentClass.members += newConstructor() [
-			parameters += newParameter("implem", clazzRef)
-			parameters += newParameter("b", requiresRef)
-			parameters += newParameter("doInits", typeRef(boolean))
+		componentClass.members += comp.toConstructor() [
+			parameters += comp.toParameter("implem", clazzRef)
+			parameters += comp.toParameter("b", requiresRef)
+			parameters += comp.toParameter("doInits", typeRef(boolean))
 			body = '''
 				«IF comp.specializes !== null»
 					super(implem, b, false);
@@ -706,7 +707,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			
 			if (!isBound) {
 				// we don't reuse those of the super class in case of override
-				componentClass.members += newField(port.name, ptr) []
+				componentClass.members += port.toField(port.name, ptr) []
 			}
 			
 			componentClass.members += port.toMethod(port.name, ptr) [
@@ -724,12 +725,12 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 			val nptr = tr.substituteWith(substitutor)
 			val ctr = nptr.getInnerTypeReference(COMPONENT_INTERFACE)
 			
-			componentClass.members += newField(part.name, ctr) []
+			componentClass.members += part.toField(part.name, ctr) []
 			
 			// used to initialize species from other species
 			switch part {
 				ComponentPart : {
-					componentClass.members += newField("implem_" + part.name, nptr) []
+					componentClass.members += part.toField("implem_" + part.name, nptr) []
 				}
 			}
 			
@@ -738,7 +739,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 				SpeciesPart: part.speciesReference.part.name+"_"+part.name
 			}
 			
-			componentClass.members += newClass(REQUIRES_CLASS_PREFIX+"_"+bridgePartName) [
+			componentClass.members += part.toClass(REQUIRES_CLASS_PREFIX+"_"+bridgePartName) [
 				visibility = JvmVisibility.PRIVATE
 				final = true
 				superTypes += nptr.rootSupertype.getInnerTypeReference(REQUIRES_INTERFACE)

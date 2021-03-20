@@ -33,8 +33,8 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator;
 import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations;
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -59,11 +59,10 @@ public class SpeADLUtils {
   private IJvmModelAssociations _iJvmModelAssociations;
   
   @Inject
-  @Extension
-  private TypeReferences _typeReferences;
+  private CommonTypeComputationServices services;
   
   @Inject
-  private CommonTypeComputationServices services;
+  private JvmTypeReferenceBuilder.Factory typeRefBuilderFactory;
   
   public boolean notAbstract(final AbstractComponent c) {
     return ((IterableExtensions.isEmpty(Iterables.<ComponentPart>filter(c.getParts(), ComponentPart.class)) && IterableExtensions.<ProvidedPort>forall(c.getProvides(), ((Function1<ProvidedPort, Boolean>) (ProvidedPort it) -> {
@@ -146,16 +145,16 @@ public class SpeADLUtils {
     return part.getSpeciesReference().getSpecies();
   }
   
-  protected JvmParameterizedTypeReference _typeReference(final ComponentPart part) {
+  protected JvmTypeReference _typeReference(final ComponentPart part) {
     return part.getComponentReference();
   }
   
-  protected JvmParameterizedTypeReference _typeReference(final SpeciesPart part) {
+  protected JvmTypeReference _typeReference(final SpeciesPart part) {
     return this.getInnerTypeReference(part.getSpeciesReference().getPart().getComponentReference(), part.getSpeciesReference().getSpecies().getName());
   }
   
-  public JvmParameterizedTypeReference getInnerTypeReference(final JvmTypeReference r, final String simpleName) {
-    JvmParameterizedTypeReference _xblockexpression = null;
+  public JvmTypeReference getInnerTypeReference(final JvmTypeReference r, final String simpleName) {
+    JvmTypeReference _xblockexpression = null;
     {
       if ((r == null)) {
         return null;
@@ -164,7 +163,8 @@ public class SpeADLUtils {
       if ((iType == null)) {
         return null;
       }
-      JvmParameterizedTypeReference _switchResult = null;
+      final JvmTypeReferenceBuilder trb = this.typeRefBuilderFactory.create(r.getType().eResource().getResourceSet());
+      JvmTypeReference _switchResult = null;
       boolean _matched = false;
       if (r instanceof JvmParameterizedTypeReference) {
         int _size = iType.getTypeParameters().size();
@@ -172,11 +172,11 @@ public class SpeADLUtils {
         boolean _equals = (_size == _size_1);
         if (_equals) {
           _matched=true;
-          _switchResult = this._typeReferences.createTypeRef(iType, ((JvmTypeReference[])Conversions.unwrapArray(((JvmParameterizedTypeReference)r).getArguments(), JvmTypeReference.class)));
+          _switchResult = trb.typeRef(iType, ((JvmTypeReference[])Conversions.unwrapArray(((JvmParameterizedTypeReference)r).getArguments(), JvmTypeReference.class)));
         }
       }
       if (!_matched) {
-        _switchResult = this._typeReferences.createTypeRef(iType);
+        _switchResult = trb.typeRef(iType);
       }
       _xblockexpression = _switchResult;
     }
@@ -204,17 +204,18 @@ public class SpeADLUtils {
     return _xblockexpression;
   }
   
-  public JvmParameterizedTypeReference getParameterizedTypeRefWith(final JvmType type, final List<JvmTypeParameter> typeParameters) {
-    JvmParameterizedTypeReference _xifexpression = null;
+  public JvmTypeReference getParameterizedTypeRefWith(final JvmType type, final List<JvmTypeParameter> typeParameters) {
+    JvmTypeReference _xifexpression = null;
     if ((type == null)) {
       _xifexpression = null;
     } else {
-      JvmParameterizedTypeReference _xblockexpression = null;
+      JvmTypeReference _xblockexpression = null;
       {
-        final Function1<JvmTypeParameter, JvmParameterizedTypeReference> _function = (JvmTypeParameter it) -> {
-          return this._typeReferences.createTypeRef(it);
+        final JvmTypeReferenceBuilder trb = this.typeRefBuilderFactory.create(type.eResource().getResourceSet());
+        final Function1<JvmTypeParameter, JvmTypeReference> _function = (JvmTypeParameter it) -> {
+          return trb.typeRef(it);
         };
-        final JvmParameterizedTypeReference tr = this._typeReferences.createTypeRef(type, ((JvmTypeReference[])Conversions.unwrapArray(ListExtensions.<JvmTypeParameter, JvmParameterizedTypeReference>map(typeParameters, _function), JvmTypeReference.class)));
+        final JvmTypeReference tr = trb.typeRef(type, ((JvmTypeReference[])Conversions.unwrapArray(ListExtensions.<JvmTypeParameter, JvmTypeReference>map(typeParameters, _function), JvmTypeReference.class)));
         _xblockexpression = tr;
       }
       _xifexpression = _xblockexpression;
@@ -469,6 +470,14 @@ public class SpeADLUtils {
     return null;
   }
   
+  protected LightweightTypeReference _getOverridenPortTypeRef(final Species c, final Void p) {
+    return null;
+  }
+  
+  protected LightweightTypeReference _getOverridenPortTypeRef(final Ecosystem c, final Void p) {
+    return null;
+  }
+  
   protected LightweightTypeReference _getOverridenPortTypeRef(final Ecosystem c, final ProvidedPort p) {
     final Function1<Ecosystem, EList<ProvidedPort>> _function = (Ecosystem it) -> {
       return it.getProvides();
@@ -538,20 +547,20 @@ public class SpeADLUtils {
     return _xblockexpression;
   }
   
-  public StandardTypeParameterSubstitutor getSubstitutor(final JvmGenericType parametersHolder, final JvmTypeParameterDeclarator to, final Resource context) {
+  private StandardTypeParameterSubstitutor getSubstitutor(final JvmGenericType parametersHolder, final JvmTypeParameterDeclarator to, final Resource context) {
     StandardTypeParameterSubstitutor _xblockexpression = null;
     {
-      final JvmParameterizedTypeReference containerRef = this.getParameterizedTypeRefWith(parametersHolder, to.getTypeParameters());
+      final JvmTypeReference containerRef = this.getParameterizedTypeRefWith(parametersHolder, to.getTypeParameters());
       _xblockexpression = this.getSubstitutor(containerRef, context);
     }
     return _xblockexpression;
   }
   
-  public StandardTypeParameterSubstitutor getSubstitutor(final JvmTypeReference containerRef, final Resource context) {
+  private StandardTypeParameterSubstitutor getSubstitutor(final JvmTypeReference containerRef, final Resource context) {
     return this.getSubstitutor(this.toLightweightTypeReference(containerRef, context));
   }
   
-  public StandardTypeParameterSubstitutor getSubstitutor(final LightweightTypeReference containerRef) {
+  private StandardTypeParameterSubstitutor getSubstitutor(final LightweightTypeReference containerRef) {
     StandardTypeParameterSubstitutor _xblockexpression = null;
     {
       ITypeReferenceOwner _owner = containerRef.getOwner();
@@ -581,7 +590,7 @@ public class SpeADLUtils {
     }
   }
   
-  public JvmParameterizedTypeReference typeReference(final Part part) {
+  public JvmTypeReference typeReference(final Part part) {
     if (part instanceof ComponentPart) {
       return _typeReference((ComponentPart)part);
     } else if (part instanceof SpeciesPart) {
@@ -610,9 +619,15 @@ public class SpeADLUtils {
     } else if (c instanceof Ecosystem
          && p instanceof RequiredPort) {
       return _getOverridenPortTypeRef((Ecosystem)c, (RequiredPort)p);
+    } else if (c instanceof Ecosystem
+         && p == null) {
+      return _getOverridenPortTypeRef((Ecosystem)c, (Void)null);
     } else if (c instanceof Species
          && p != null) {
       return _getOverridenPortTypeRef((Species)c, p);
+    } else if (c instanceof Species
+         && p == null) {
+      return _getOverridenPortTypeRef((Species)c, (Void)null);
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
         Arrays.<Object>asList(c, p).toString());

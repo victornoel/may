@@ -1141,7 +1141,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "fr.irit.smac.may.speadl.SpeADL.JvmTypeReference");
 		private final RuleCall cJvmParameterizedTypeReferenceParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//// override JvmTypeReference definition
+		//@Override
 		//JvmTypeReference:
 		//	JvmParameterizedTypeReference;
 		@Override public ParserRule getRule() { return rule; }
@@ -1165,15 +1165,34 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cArgumentsAssignment_1_2_1 = (Assignment)cGroup_1_2.eContents().get(1);
 		private final RuleCall cArgumentsJvmArgumentTypeReferenceParserRuleCall_1_2_1_0 = (RuleCall)cArgumentsAssignment_1_2_1.eContents().get(0);
 		private final Keyword cRightSquareBracketKeyword_1_3 = (Keyword)cGroup_1.eContents().get(3);
+		private final Group cGroup_1_4 = (Group)cGroup_1.eContents().get(4);
+		private final Group cGroup_1_4_0 = (Group)cGroup_1_4.eContents().get(0);
+		private final Group cGroup_1_4_0_0 = (Group)cGroup_1_4_0.eContents().get(0);
+		private final Action cJvmInnerTypeReferenceOuterAction_1_4_0_0_0 = (Action)cGroup_1_4_0_0.eContents().get(0);
+		private final Keyword cFullStopKeyword_1_4_0_0_1 = (Keyword)cGroup_1_4_0_0.eContents().get(1);
+		private final Assignment cTypeAssignment_1_4_1 = (Assignment)cGroup_1_4.eContents().get(1);
+		private final CrossReference cTypeJvmTypeCrossReference_1_4_1_0 = (CrossReference)cTypeAssignment_1_4_1.eContents().get(0);
+		private final RuleCall cTypeJvmTypeValidIDParserRuleCall_1_4_1_0_1 = (RuleCall)cTypeJvmTypeCrossReference_1_4_1_0.eContents().get(1);
+		private final Group cGroup_1_4_2 = (Group)cGroup_1_4.eContents().get(2);
+		private final Keyword cLeftSquareBracketKeyword_1_4_2_0 = (Keyword)cGroup_1_4_2.eContents().get(0);
+		private final Assignment cArgumentsAssignment_1_4_2_1 = (Assignment)cGroup_1_4_2.eContents().get(1);
+		private final RuleCall cArgumentsJvmArgumentTypeReferenceParserRuleCall_1_4_2_1_0 = (RuleCall)cArgumentsAssignment_1_4_2_1.eContents().get(0);
+		private final Group cGroup_1_4_2_2 = (Group)cGroup_1_4_2.eContents().get(2);
+		private final Keyword cCommaKeyword_1_4_2_2_0 = (Keyword)cGroup_1_4_2_2.eContents().get(0);
+		private final Assignment cArgumentsAssignment_1_4_2_2_1 = (Assignment)cGroup_1_4_2_2.eContents().get(1);
+		private final RuleCall cArgumentsJvmArgumentTypeReferenceParserRuleCall_1_4_2_2_1_0 = (RuleCall)cArgumentsAssignment_1_4_2_2_1.eContents().get(0);
+		private final Keyword cRightSquareBracketKeyword_1_4_2_3 = (Keyword)cGroup_1_4_2.eContents().get(3);
 		
-		//// override JvmParameterizedTypeReference definition
+		//@Override
 		//JvmParameterizedTypeReference:
 		//	type=[JvmType|QualifiedName] (=>'[' arguments+=JvmArgumentTypeReference (',' arguments+=JvmArgumentTypeReference)*
-		//	']')?;
+		//	']' (=> ({JvmInnerTypeReference.outer=current} '.') type=[JvmType|ValidID] (=>'[' arguments+=JvmArgumentTypeReference
+		//	(',' arguments+=JvmArgumentTypeReference)* ']')?)*)?;
 		@Override public ParserRule getRule() { return rule; }
 
 		//type=[JvmType|QualifiedName] (=>'[' arguments+=JvmArgumentTypeReference (',' arguments+=JvmArgumentTypeReference)*
-		//']')?
+		//']' (=> ({JvmInnerTypeReference.outer=current} '.') type=[JvmType|ValidID] (=>'[' arguments+=JvmArgumentTypeReference (
+		//',' arguments+=JvmArgumentTypeReference)* ']')?)*)?
 		public Group getGroup() { return cGroup; }
 
 		//type=[JvmType|QualifiedName]
@@ -1185,7 +1204,9 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		//QualifiedName
 		public RuleCall getTypeJvmTypeQualifiedNameParserRuleCall_0_0_1() { return cTypeJvmTypeQualifiedNameParserRuleCall_0_0_1; }
 
-		//(=>'[' arguments+=JvmArgumentTypeReference (',' arguments+=JvmArgumentTypeReference)* ']')?
+		//(=>'[' arguments+=JvmArgumentTypeReference (',' arguments+=JvmArgumentTypeReference)* ']' (=> (
+		//{JvmInnerTypeReference.outer=current} '.') type=[JvmType|ValidID] (=>'[' arguments+=JvmArgumentTypeReference (','
+		//arguments+=JvmArgumentTypeReference)* ']')?)*)?
 		public Group getGroup_1() { return cGroup_1; }
 
 		//=>'['
@@ -1211,6 +1232,58 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 
 		//']'
 		public Keyword getRightSquareBracketKeyword_1_3() { return cRightSquareBracketKeyword_1_3; }
+
+		//(=> ({JvmInnerTypeReference.outer=current} '.') type=[JvmType|ValidID] (=>'[' arguments+=JvmArgumentTypeReference (','
+		//arguments+=JvmArgumentTypeReference)* ']')?)*
+		public Group getGroup_1_4() { return cGroup_1_4; }
+
+		//=> ({JvmInnerTypeReference.outer=current} '.')
+		public Group getGroup_1_4_0() { return cGroup_1_4_0; }
+
+		//({JvmInnerTypeReference.outer=current} '.')
+		public Group getGroup_1_4_0_0() { return cGroup_1_4_0_0; }
+
+		//{JvmInnerTypeReference.outer=current}
+		public Action getJvmInnerTypeReferenceOuterAction_1_4_0_0_0() { return cJvmInnerTypeReferenceOuterAction_1_4_0_0_0; }
+
+		//'.'
+		public Keyword getFullStopKeyword_1_4_0_0_1() { return cFullStopKeyword_1_4_0_0_1; }
+
+		//type=[JvmType|ValidID]
+		public Assignment getTypeAssignment_1_4_1() { return cTypeAssignment_1_4_1; }
+
+		//[JvmType|ValidID]
+		public CrossReference getTypeJvmTypeCrossReference_1_4_1_0() { return cTypeJvmTypeCrossReference_1_4_1_0; }
+
+		//ValidID
+		public RuleCall getTypeJvmTypeValidIDParserRuleCall_1_4_1_0_1() { return cTypeJvmTypeValidIDParserRuleCall_1_4_1_0_1; }
+
+		//(=>'[' arguments+=JvmArgumentTypeReference (',' arguments+=JvmArgumentTypeReference)* ']')?
+		public Group getGroup_1_4_2() { return cGroup_1_4_2; }
+
+		//=>'['
+		public Keyword getLeftSquareBracketKeyword_1_4_2_0() { return cLeftSquareBracketKeyword_1_4_2_0; }
+
+		//arguments+=JvmArgumentTypeReference
+		public Assignment getArgumentsAssignment_1_4_2_1() { return cArgumentsAssignment_1_4_2_1; }
+
+		//JvmArgumentTypeReference
+		public RuleCall getArgumentsJvmArgumentTypeReferenceParserRuleCall_1_4_2_1_0() { return cArgumentsJvmArgumentTypeReferenceParserRuleCall_1_4_2_1_0; }
+
+		//(',' arguments+=JvmArgumentTypeReference)*
+		public Group getGroup_1_4_2_2() { return cGroup_1_4_2_2; }
+
+		//','
+		public Keyword getCommaKeyword_1_4_2_2_0() { return cCommaKeyword_1_4_2_2_0; }
+
+		//arguments+=JvmArgumentTypeReference
+		public Assignment getArgumentsAssignment_1_4_2_2_1() { return cArgumentsAssignment_1_4_2_2_1; }
+
+		//JvmArgumentTypeReference
+		public RuleCall getArgumentsJvmArgumentTypeReferenceParserRuleCall_1_4_2_2_1_0() { return cArgumentsJvmArgumentTypeReferenceParserRuleCall_1_4_2_2_1_0; }
+
+		//']'
+		public Keyword getRightSquareBracketKeyword_1_4_2_3() { return cRightSquareBracketKeyword_1_4_2_3; }
 	}
 	
 	
@@ -1566,7 +1639,7 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		return getSpeciesReferenceAccess().getRule();
 	}
 
-	//// override JvmTypeReference definition
+	//@Override
 	//JvmTypeReference:
 	//	JvmParameterizedTypeReference;
 	public JvmTypeReferenceElements getJvmTypeReferenceAccess() {
@@ -1577,10 +1650,11 @@ public class SpeADLGrammarAccess extends AbstractGrammarElementFinder {
 		return getJvmTypeReferenceAccess().getRule();
 	}
 
-	//// override JvmParameterizedTypeReference definition
+	//@Override
 	//JvmParameterizedTypeReference:
 	//	type=[JvmType|QualifiedName] (=>'[' arguments+=JvmArgumentTypeReference (',' arguments+=JvmArgumentTypeReference)*
-	//	']')?;
+	//	']' (=> ({JvmInnerTypeReference.outer=current} '.') type=[JvmType|ValidID] (=>'[' arguments+=JvmArgumentTypeReference
+	//	(',' arguments+=JvmArgumentTypeReference)* ']')?)*)?;
 	public JvmParameterizedTypeReferenceElements getJvmParameterizedTypeReferenceAccess() {
 		return pJvmParameterizedTypeReference;
 	}

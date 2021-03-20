@@ -25,8 +25,8 @@ import org.eclipse.xtext.common.types.JvmType
 import org.eclipse.xtext.common.types.JvmTypeParameter
 import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator
 import org.eclipse.xtext.common.types.JvmTypeReference
-import org.eclipse.xtext.common.types.util.TypeReferences
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices
@@ -37,8 +37,8 @@ import org.eclipse.xtext.xbase.typesystem.util.TypeParameterSubstitutor
 class SpeADLUtils {
 
 	@Inject extension IJvmModelAssociations
-	@Inject extension TypeReferences
 	@Inject CommonTypeComputationServices services
+	@Inject JvmTypeReferenceBuilder.Factory typeRefBuilderFactory
 	
 	// Methods for exploring the model
 	// and the inferred model
@@ -99,11 +99,13 @@ class SpeADLUtils {
 		if(r === null) return null
 		val iType = r.type.getInnerType(simpleName)
 		if(iType === null) return null
+		val trb = typeRefBuilderFactory.create(r.type.eResource.resourceSet)
 		switch r {
 			JvmParameterizedTypeReference case iType.typeParameters.size == r.arguments.size: {
-				iType.createTypeRef(r.arguments)
+				trb.typeRef(iType, r.arguments)
 			}
-			default: iType.createTypeRef
+			default:
+				trb.typeRef(iType)
 		}
 	}
 
@@ -120,7 +122,8 @@ class SpeADLUtils {
 		if(type === null) {
 			null
 		} else {
-			val tr = type.createTypeRef(typeParameters.map[createTypeRef])
+			val trb = typeRefBuilderFactory.create(type.eResource.resourceSet)
+			val tr = trb.typeRef(type, typeParameters.map[trb.typeRef(it)])
 			// disabled for now, it is usefull for calling toLightweightTypeReference
 			// without passing a Resource, but I'm wondering what are the drawback of
 			// adding all these temporary type refs to the resource...
@@ -287,6 +290,14 @@ class SpeADLUtils {
 		null
 	}
 	
+	dispatch def LightweightTypeReference getOverridenPortTypeRef(Species c, Void p) {
+		null
+	}
+	
+	dispatch def LightweightTypeReference getOverridenPortTypeRef(Ecosystem c, Void p) {
+		null
+	}
+	
 	dispatch def LightweightTypeReference getOverridenPortTypeRef(Ecosystem c, ProvidedPort p) {
 		c.getOverridenPortTypeRef([provides], p.name)
 	}
@@ -320,16 +331,16 @@ class SpeADLUtils {
 		realParameterHolder.getSubstitutor(to, context)
 	}
 
-	def getSubstitutor(JvmGenericType parametersHolder, JvmTypeParameterDeclarator to, Resource context) {
+	private def getSubstitutor(JvmGenericType parametersHolder, JvmTypeParameterDeclarator to, Resource context) {
 		val containerRef = parametersHolder.getParameterizedTypeRefWith(to.typeParameters)
 		containerRef.getSubstitutor(context)
 	}
-	
-	def getSubstitutor(JvmTypeReference containerRef, Resource context) {
+
+	private def getSubstitutor(JvmTypeReference containerRef, Resource context) {
 		containerRef.toLightweightTypeReference(context).substitutor
 	}
 
-	def getSubstitutor(LightweightTypeReference containerRef) {
+	private def getSubstitutor(LightweightTypeReference containerRef) {
 		val mapping = new ConstraintAwareTypeArgumentCollector(containerRef.owner).getTypeParameterMapping(containerRef)
 		new StandardTypeParameterSubstitutor(mapping, containerRef.owner)
 	}

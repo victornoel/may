@@ -2,8 +2,6 @@ grammar fr.irit.smac.may.speadl.SpeADL with org.eclipse.xtext.xbase.Xbase
 
 generate speadl "http://www.irit.fr/smac/may/speadl/SpeADL"
 
-import 'http://www.eclipse.org/xtext/xbase/Xbase'
-import 'http://www.eclipse.org/xtext/xbase/Xtype'
 import 'http://www.eclipse.org/xtext/common/JavaVMTypes'
 
 Model:
@@ -109,10 +107,15 @@ PortRef :
 SpeciesReference:
 	part=[ComponentPart|ValidID] "." species=[Species|ValidID] ("(" (arguments+=[Feature|ValidID] ("," arguments+=[Feature|ValidID])*)? ")")? ;
 
-// override JvmTypeReference definition
+// override JvmTypeReference definition to use the JvmParameterizedTypeReference below and no array nor function type form xtypes
+@Override
 JvmTypeReference:
 	JvmParameterizedTypeReference;
 
-// override JvmParameterizedTypeReference definition
+// override JvmParameterizedTypeReference definition to use [ ] instead of < >
+@Override
 JvmParameterizedTypeReference:
-	type=[JvmType|QualifiedName] (=>'[' arguments+=JvmArgumentTypeReference (',' arguments+=JvmArgumentTypeReference)* ']')?;
+	type=[JvmType|QualifiedName] (
+		=>'[' arguments+=JvmArgumentTypeReference (',' arguments+=JvmArgumentTypeReference)* ']'
+		(=>({JvmInnerTypeReference.outer=current} '.') type=[JvmType|ValidID] (=>'[' arguments+=JvmArgumentTypeReference (',' arguments+=JvmArgumentTypeReference)* ']')?)*
+	)?;

@@ -4,15 +4,7 @@
 package fr.irit.smac.may.speadl.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.xtext.builder.EclipseResourceFileSystemAccess2;
-import org.eclipse.xtext.builder.IXtextBuilderParticipant;
-import org.eclipse.xtext.ui.editor.IXtextEditorCallback;
-import org.eclipse.xtext.ui.editor.contentassist.AbstractJavaBasedContentProposalProvider.ReferenceProposalCreator;
 
-import fr.irit.smac.may.speadl.ui.builder.SourceRelativeFileSystemAccess;
-import fr.irit.smac.may.speadl.ui.builder.SpeADLBuilderParticipant;
-import fr.irit.smac.may.speadl.ui.contentassist.SpeADLReferenceProposalCreator;
-import fr.irit.smac.may.speadl.ui.editor.SpeADLNatureAddingEditorCallback;
 import fr.irit.smac.may.speadl.ui.hover.SpeADLHoverDocumentationProvider;
 
 /**
@@ -22,41 +14,7 @@ public class SpeADLUiModule extends	fr.irit.smac.may.speadl.ui.AbstractSpeADLUiM
 	public SpeADLUiModule(AbstractUIPlugin plugin) {
 		super(plugin);
 	}
-	
-	// used by SpeADLBuilderParticipant
-	public Class<? extends EclipseResourceFileSystemAccess2> bindEclipseResourceFileSystemAccess2() {
-		return SourceRelativeFileSystemAccess.class;
-	}
-	
-	@Override
-	public Class<? extends IXtextBuilderParticipant> bindIXtextBuilderParticipant() {
-		return SpeADLBuilderParticipant.class;
-	}
-	
-	@Override
-	public Class<? extends IXtextEditorCallback> bindIXtextEditorCallback() {
-		return SpeADLNatureAddingEditorCallback.class;
-	}
-	
-	@Override
-	public Class<? extends ReferenceProposalCreator> bindAbstractJavaBasedContentProposalProvider$ReferenceProposalCreator() {
-		return SpeADLReferenceProposalCreator.class;
-	}
-	
-	
 
-	// so that completion is automatically activated after a . or a : is written
-	/*
-	 * disabled because it is not so nice to use for now...
-	 *
-	@Override
-	public void configure(Binder binder) {
-		super.configure(binder);
-		binder.bind(String.class)
-			.annotatedWith(com.google.inject.name.Names.named((XtextContentAssistProcessor.COMPLETION_AUTO_ACTIVATION_CHARS)))
-			.toInstance(".:");
-	}*/
-	
 	@Override
 	public Class<? extends org.eclipse.xtext.ui.editor.hover.html.IEObjectHoverDocumentationProvider> bindIEObjectHoverDocumentationProvider() {
 		return SpeADLHoverDocumentationProvider.class;

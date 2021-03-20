@@ -3,7 +3,6 @@
  */
 package fr.irit.smac.may.speadl;
 
-import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.scoping.IScopeProvider;
@@ -15,12 +14,11 @@ import org.eclipse.xtext.xbase.validation.JvmTypeReferencesValidator;
 import com.google.inject.Binder;
 import com.google.inject.name.Names;
 
-import fr.irit.smac.may.speadl.compiler.SpeADLJvmModelGenerator;
 import fr.irit.smac.may.speadl.compiler.SpeADLOutputConfigurationProvider;
 import fr.irit.smac.may.speadl.scoping.SpeADLImportSectionNamespaceScopeProvider;
 import fr.irit.smac.may.speadl.scoping.SpeADLQualifiedNameProvider;
-import fr.irit.smac.may.speadl.validation.SpeADLNamesAreUniqueValidationHelper;
 import fr.irit.smac.may.speadl.validation.SpeADLJvmTypeReferenceValidator;
+import fr.irit.smac.may.speadl.validation.SpeADLNamesAreUniqueValidationHelper;
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -41,11 +39,6 @@ public class SpeADLRuntimeModule extends AbstractSpeADLRuntimeModule {
 	@SingletonBinding(eager=true)
 	public Class<? extends JvmTypeReferencesValidator> bindJvmTypeReferencesValidator() {
 		return SpeADLJvmTypeReferenceValidator.class;
-	}
-	
-	@Override
-	public Class<? extends IGenerator> bindIGenerator() {
-		return SpeADLJvmModelGenerator.class;
 	}
 	
 	public Class<? extends INamesAreUniqueValidationHelper> bindINamesAreUniqueValidationHelper() {

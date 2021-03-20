@@ -29,6 +29,7 @@ import org.eclipse.xtext.Action;
 import org.eclipse.xtext.Parameter;
 import org.eclipse.xtext.ParserRule;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
+import org.eclipse.xtext.common.types.JvmInnerTypeReference;
 import org.eclipse.xtext.common.types.JvmLowerBound;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
@@ -164,6 +165,9 @@ public class SpeADLSemanticSequencer extends XbaseSemanticSequencer {
 					return; 
 				}
 				else break;
+			case TypesPackage.JVM_INNER_TYPE_REFERENCE:
+				sequence_JvmParameterizedTypeReference(context, (JvmInnerTypeReference) semanticObject); 
+				return; 
 			case TypesPackage.JVM_LOWER_BOUND:
 				if (rule == grammarAccess.getJvmLowerBoundAndedRule()) {
 					sequence_JvmLowerBoundAnded(context, (JvmLowerBound) semanticObject); 
@@ -175,8 +179,17 @@ public class SpeADLSemanticSequencer extends XbaseSemanticSequencer {
 				}
 				else break;
 			case TypesPackage.JVM_PARAMETERIZED_TYPE_REFERENCE:
-				sequence_JvmParameterizedTypeReference(context, (JvmParameterizedTypeReference) semanticObject); 
-				return; 
+				if (action == grammarAccess.getJvmParameterizedTypeReferenceAccess().getJvmInnerTypeReferenceOuterAction_1_4_0_0_0()) {
+					sequence_JvmParameterizedTypeReference_JvmInnerTypeReference_1_4_0_0_0(context, (JvmParameterizedTypeReference) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getJvmTypeReferenceRule()
+						|| rule == grammarAccess.getJvmParameterizedTypeReferenceRule()
+						|| rule == grammarAccess.getJvmArgumentTypeReferenceRule()) {
+					sequence_JvmParameterizedTypeReference(context, (JvmParameterizedTypeReference) semanticObject); 
+					return; 
+				}
+				else break;
 			case TypesPackage.JVM_TYPE_PARAMETER:
 				sequence_JvmTypeParameter(context, (JvmTypeParameter) semanticObject); 
 				return; 
@@ -562,6 +575,37 @@ public class SpeADLSemanticSequencer extends XbaseSemanticSequencer {
 		feeder.accept(grammarAccess.getFeatureAccess().getNameValidIDParserRuleCall_0_0(), semanticObject.getName());
 		feeder.accept(grammarAccess.getFeatureAccess().getParameterTypeJvmTypeReferenceParserRuleCall_2_0(), semanticObject.getParameterType());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     JvmTypeReference returns JvmInnerTypeReference
+	 *     JvmParameterizedTypeReference returns JvmInnerTypeReference
+	 *     JvmParameterizedTypeReference.JvmInnerTypeReference_1_4_0_0_0 returns JvmInnerTypeReference
+	 *     JvmArgumentTypeReference returns JvmInnerTypeReference
+	 *
+	 * Constraint:
+	 *     (
+	 *         outer=JvmParameterizedTypeReference_JvmInnerTypeReference_1_4_0_0_0 
+	 *         type=[JvmType|ValidID] 
+	 *         (arguments+=JvmArgumentTypeReference arguments+=JvmArgumentTypeReference*)?
+	 *     )
+	 */
+	protected void sequence_JvmParameterizedTypeReference(ISerializationContext context, JvmInnerTypeReference semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     JvmParameterizedTypeReference.JvmInnerTypeReference_1_4_0_0_0 returns JvmParameterizedTypeReference
+	 *
+	 * Constraint:
+	 *     (type=[JvmType|QualifiedName] arguments+=JvmArgumentTypeReference arguments+=JvmArgumentTypeReference*)
+	 */
+	protected void sequence_JvmParameterizedTypeReference_JvmInnerTypeReference_1_4_0_0_0(ISerializationContext context, JvmParameterizedTypeReference semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
