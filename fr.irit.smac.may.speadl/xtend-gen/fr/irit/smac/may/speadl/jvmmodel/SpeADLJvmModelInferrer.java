@@ -1168,7 +1168,7 @@ public class SpeADLJvmModelInferrer extends AbstractModelInferrer {
                   _builder.append("._newComponent(new ");
                   _builder.append(SpeADLJvmModelInferrer.REQUIRES_CLASS_PREFIX);
                   _builder.append("_");
-                  String _name_12 = ((SpeciesPart) part).getSpeciesReference().getPart().getName();
+                  String _name_12 = ((SpeciesPart)part).getSpeciesReference().getPart().getName();
                   _builder.append(_name_12);
                   _builder.append("_");
                   String _name_13 = ((SpeciesPart)part).getName();

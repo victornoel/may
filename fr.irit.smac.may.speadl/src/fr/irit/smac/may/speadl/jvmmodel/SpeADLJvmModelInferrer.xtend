@@ -613,7 +613,7 @@ class SpeADLJvmModelInferrer extends AbstractModelInferrer {
 						this.«part.name» = this.implem_«part.name»._newComponent(new «REQUIRES_CLASS_PREFIX»_«part.name»(), false);
 					«ELSEIF part instanceof SpeciesPart»
 						assert this.implementation.use_«part.name» != null: "This is a bug.";
-						this.«part.name» = this.implementation.use_«part.name»._newComponent(new «REQUIRES_CLASS_PREFIX»_«(part as SpeciesPart).speciesReference.part.name»_«part.name»(), false);
+						this.«part.name» = this.implementation.use_«part.name»._newComponent(new «REQUIRES_CLASS_PREFIX»_«part.speciesReference.part.name»_«part.name»(), false);
 					«ENDIF»
 				'''
 			]
